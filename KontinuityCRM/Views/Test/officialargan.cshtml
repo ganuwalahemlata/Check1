@@ -1,0 +1,500 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <link rel="stylesheet" href="~/officialargan/styles/jquery.ketchup.css" />
+    <script src="~/officialargan/jquery.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+			var thisIsRequired = "This field is required";
+			var lengthBetween1 = "This field must have a length between";
+			var andWord = "and";
+			var validEmail = "Must be a valid E-Mail.";
+			var minLength = "This field must have a minimal length of";
+			var maxLength = "This field must have a maximal length of";
+			var mustBeAtLeast = "Must be at least";
+			var canNotGreaterThan = "Can not be greater than";
+			var mustBeBetween = "Must be between";
+			var mustBeANumber = "Must be a number.";
+			var mustBeADigits = "Must be digits.";
+			var mustBeAValidURL = "Must be a valid URL.";
+			var mustBeAValidUsername = "Must be a valid username.";
+			var mustBe = "Must be";
+			var mustContain = "Must contain";
+			var mustBeAValidDate = "Must be a valid date.";
+			var selectAtLeast = "Select at least";
+			var varCheckboxes = "checkboxes";
+			var isSelected = "VERIFY OFFER TERMS";
+			var selectNotMoreThan = "Select not more than";
+			var selectBetween = "Select between";
+    </script>
+    <script src="/officialargan/jquery.ketchup.all.min.js" type="text/javascript"></script>
+    <script type='text/javascript' src='/officialargan/js/country-translate.js'></script>
+    <script type='text/javascript' src='/officialargan/js/webforms.js'></script>
+    <!--[if IE]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script type='text/javascript'>
+            var ll = jQuery.noConflict();
+            ll(document).ready(function() {
+                var date= new Date();
+                ll('option.month' + date.getMonth()).attr("selected","selected");
+                //ll('#ordernow').hover(
+                //function(){ // Change the input image's source when we "roll on"
+                //   ll(this).attr({ src : 'images/en/main-submit-green.png'});
+                //},
+                //function(){ // Change the input image's source back to the default on "roll off"
+                //   ll(this).attr({ src : 'images/en/main-submit.png'});
+                //}
+                //)
+                ll('#country').trigger('change');
+                ll('#opt_in_form')
+                .bind('formIsValid', function(event, form) {
+                    //do whatever when the form is valid
+                    //form - the form that is valid (jQuery Object)
+                    ll('#processing').show();
+                    ll('#ordernow').hide();
+                })
+                .bind('formIsInvalid', function(event, form) {
+                    //do whatever when the form is invalid
+                    //form - the form that is invalid (jQuery Object)
+                })
+                .bind('fieldIsValid', function(event, form, el) {
+                    //do whatever if a field is valid
+                    //form - the form where the el is located (jQuery Object)
+                    //el   - the element that is valid (jQuery Object)
+                    //alert(el.attr('id'));
+                    ll("#"+el.attr('id')).removeClass("failed");
+                    ll("#"+el.attr('id')+"_status").show();
+
+                })
+                .bind('fieldIsInvalid', function(event, form, el) {
+                    //do whatever if a field is invalid
+                    //form - the form where the el is located (jQuery Object)
+                    //el   - the element that is invalid (jQuery Object)
+                    ll("#"+el.attr('id')).addClass("failed");
+                    ll("#"+el.attr('id')+"_status").hide();
+                })
+                .ketchup();
+
+            });
+    </script>
+
+    <title>Essence of Argan</title>
+
+    <link rel='stylesheet' href='~/officialargan/annifont.css' type='text/css'>
+    <link rel='stylesheet' href='~/officialargan/oscb.css' type='text/css'>
+    <link rel="stylesheet" href="~/officialargan/styles/common/main.css" />
+    <link rel="stylesheet" href="styles/en/main_en.css" />
+    <!-- Save for Web Styles (argan2013 SP.psd) -->
+    <style type="text/css">
+        #Table_01 {
+            position: relative;
+            margin: 0 auto;
+            width: 950px;
+            height: 3850px;
+        }
+
+        #v2-02_ {
+            position: absolute;
+            background: url('../images/common/v2_02.jpg');
+            top: 0px;
+            width: 950px;
+            height: 610px;
+        }
+
+        #v2-04_ {
+            position: absolute;
+            background: url('/images/common/v2_04.jpg');
+            top: 610px;
+            width: 950px;
+            height: 3221px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .country-select {
+            width: 60px;
+            height: 20px;
+            float: left;
+            margin: 3px;
+            color: black;
+            font-size: 12px;
+            font-weight: bold;
+            line-height: 60px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        #us-flag {
+            background: url(/images/common/us.png) no-repeat top center;
+        }
+
+        #de-flag {
+            background: url(images/common/german.png) no-repeat top center;
+        }
+
+        #fr-flag {
+            background: url(images/common/france.png) no-repeat top center;
+        }
+
+        #es-flag {
+            background: url(images/common/spain.png) no-repeat top center;
+        }
+
+        #it-flag {
+            background: url(images/common/italy.png) no-repeat top center;
+        }
+
+        #pt-flag {
+            background: url(images/common/portugal.png) no-repeat top center;
+        }
+
+        #nl-flag {
+            background: url(images/common/netherlands.png) no-repeat top center;
+        }
+
+        #da-flag {
+            background: url(images/common/denmark.png) no-repeat top center;
+        }
+    </style>
+    <!-- End Save for Web Styles -->
+</head>
+<body onload="document.getElementById('fields_fname').focus()" style="background-color:#deeaf5;">
+    <!-- Save for Web Slices (argan2013 SP.psd) -->
+    <div id="Table_01">
+        <div id="selector">
+            <div class="country-select" id="us-flag">
+                en
+                <input type="hidden" value="en" class="country" />
+            </div>
+            <div class="clear"></div>
+        </div>
+        <div id="v2-02_">
+            <div id="samples1000">
+                ONLY 1000 SAMPLES GIVEN OUT PER DAY
+            </div>
+            <div id="before_text">BEFORE</div>
+            <div id="after_text"> AFTER</div>
+
+            <div id="wrinkletext_1" class="wrinkletext"> Scientifically Advanced Wrinkle</div>
+            <div id="wrinkletext_2" class="wrinkletext"> REDUCTION & PREVENTION</div>
+            <div id="wrinkletext_3" class="wrinkletext"> Without using BOTOX!®</div>
+
+            <div id="graphtext_1" class="graphtext"> Moisturization Increase Over 1000% after the first month!</div>
+            <div id="graphtext_2" class="graphtext"> Moisturization increase of greater than 500% after one week.</div>
+            <div id="graphtext_3" class="graphtext"> Decreases the visual appearance of fine lines  up to 60% after four weeks.</div>
+
+            <div id="agedefying_1" class="agedefying"> Finally! An age defying complex</div>
+            <div id="agedefying_2" class="agedefying"> that actually works.</div>
+
+            <div id="formtext1" class="agedefying"> TELL US WHERE TO SEND YOUR</div>
+            <div id="formtext2" class="agedefying"> TRIAL BOTTLE</div>
+
+            <div id="greenarrowtext1" class="agedefying arialfont"> ACT NOW TO<br />CLAIM YOUR</div>
+            <div id="greenarrowtext2" class="agedefying arialfont"> TRIAL PACKAGE</div>
+
+            <div id="magazinetext" class="agedefying arialfont"> Argan Oil As<br />Seen In:</div>
+
+            <div id="reddottext1" class="agedefying MyriadProBoldCondensedfont"> HURRY</div>
+            <div id="reddottext2" class="agedefying arialfont"> LIMITED<br />SUPPLY!</div>
+
+            <div id="section1-box">
+                <!--http://officialargan.com/en/step1process.php?geo=us&ss=0--> @*action="/api/partials"*@
+                <form accept-charset='ISO-8859-1' enctype='application/x-www-form-urlencoded;charset=ISO-8859-1' method="post"  id="opt_in_form" name="opt_in_form" onsubmit="document.charset = 'ISO-8859-1'">
+                    <input type="hidden" value="Argan Oil - Free Sample 30ml" id="product_name" name="product_name">
+                    <input type="hidden" value="first" name="step">
+                    <input type="hidden" value="" id="hasFormSubmitted">
+                    <input type="hidden" value="212" name="campaign_id">
+                    <input type="hidden" value="1" id="isWebForm">
+                    <input type="hidden" value="0" name="is_upsell">
+                    <input type="hidden" value="us" name="region">
+                    <input type='hidden' name='exitpop' id='exitpop' value="0" />
+                    <input type="hidden" name="ProductId" value="@ViewBag.ProductId" />
+                    <div class="form-input">
+                        <div class="form-label">First Name</div>
+                        <!--<input type="text" name="fields_fname" data-validate="validate(required)" class="basic failed" id="fields_fname" value="">-->
+                        <input type="text" name="FirstName" data-validate="validate(required)" class="basic failed" id="fields_fname" value="">
+                        <div class="form-status">
+                            <div id="fields_fname_status" class="check hidden" style="display: none;"></div>
+                        </div>
+                    </div>
+                    <div class="form-input">
+                        <div class="form-label">Last Name</div>
+                        <input type="text" name="LastName" data-validate="validate(required)" class="basic" id="fields_lname" value=""><div class="form-status"><div id="fields_lname_status" class="check hidden"></div></div>
+                    </div>
+                    <div class="form-input">
+                        <div class="form-label">Address Line 1</div>
+                        <input type="text" name="Address1" data-validate="validate(required)" class="basic" id="fields_address1" value="" maxlength="50"><div class="form-status"><div id="fields_address1_status" class="check hidden"></div></div>
+                    </div>
+                    <div class="form-input">
+                        <div class="form-label">Line 2 (optional)</div>
+                        <input type="text" name="Address2" class="basic" id="fields_address2" value=""><div class="form-status"><div id="fields_address2_status" class="check hidden"></div></div>
+                    </div>
+                    <div class="form-input">
+                        <div class="form-label">Country</div>
+                        <select size="1" name="country" id="country">
+                            <option value="US" selected='selected'>United States</option>
+                            <option value="CA">Canada</option>
+                        </select>        <div class="form-status"></div>
+                    </div>
+                    <div class="form-input">
+                        <div class="form-label">Postal Code</div>
+                        <input type="text" name="PostalCode" data-validate="validate(required, numbers)" onchange="getcitystate(this)" class="basic" id="fields_zip" value="">
+                        <div class="form-status">
+                            <div id="fields_zip_status" class="check hidden">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-input">
+                        <div class="form-label">City</div>
+                        <input type="text" name="City" data-validate='validate(required)' class="basic" id="fields_city" value="">
+                        <div class="form-status">
+                            <div id="fields_city_status" class="check hidden"></div>
+                        </div>
+                    </div>
+                    <div class="form-input">
+                        <div class="form-label">State</div>
+                        <div id="state_cus1">
+                            <input type="text" onchange="SetStateHid(this);" value="" name="Province" class="basic" id="fields_state">
+                        </div>
+                        <input type="text" style="display: none;" name="fields_state_hid" id="fields_state_hid">
+
+                        <div class="form-status"></div>
+                    </div>
+                    <div class="form-input">
+                        <div class="form-label">Phone Number</div>
+                        <input type="text" name="Phone" data-validate="validate(required, rangelength(9, 20))" class="basic" id="fields_phone" value="">
+                        <div class="form-status">
+                            <div id="fields_phone_status" class="check hidden"></div>
+                        </div>
+                    </div>
+                    <div class="form-input">
+                        <div class="form-label">Email</div>
+                        <input type="text" name="Email" data-validate="validate(required, email)" class="basic" id="fields_email" value="">
+                        <div class="form-status">
+                            <div id="fields_email_status" class="check hidden"></div>
+                        </div>
+                    </div>
+                    <div class="hidden" id="processing">
+                        <img alt="" src="~/images/en/loading.gif">
+                        <br>
+                        Please wait
+                    </div>
+                    <!--	<div class="buttongreentext">SEND ME MY EVALUATION</div>
+                        <input type="image" id="ordernow" value="Submit" src="images/common/green-button.png" class="hello"> -->
+                    <input type="submit" id="ordernow" value="SEND ME MY EVALUATION" class="hello buttongreentext" onclick="window.onbeforeunload = UnPopIt;">
+                    <input type="hidden" value="http://us.officialargan.com/en/" name="prevpage">
+                </form>
+            </div>
+        </div>
+        <div id="v2-04_">
+            <div id="box_row_2">
+                <!-- LEFT SIDE, BOX ROW 2 -->
+                <div id="titlewide_1" class="agedefying arialfont">A THIRST-QUENCHING, WRINKLE REDUCING COMPLEX FOR A VISIBLY REJUVENATED FACE</div>
+                <div id="howdoes_1" class="agedefying arialfont">HOW DOES<br /><strong>ESSENCE OF ARGAN</strong> WORK?</div>
+                <div id="howdoes_2" class="agedefying arialfont"><strong>The beauty secret of Argan oil lies in its unique composition.</strong></div>
+                <div id="howdoes_3" class="agedefying arialfont">Argan oil is rich in natural antioxidants, essential fatty acids, carotenoids, ferulic acid, sterols, polyphenols. It also contains remarkably high levels of vitamin E and Squalene. Argan Oil does not clog pores and has an amazingly diverse range of cosmetic benefits for the skin, hair and nails. Here are a few benefits in combination with the unique compositions of this amazing oil.</div>
+                <div id="howdoes_before" class="agedefying arialfont">BEFORE</div>
+                <div id="howdoes_after" class="agedefying arialfont">AFTER</div>
+                <div id="howdoes_6" class="agedefying arialfont">Essence of Argan Oil is an all-natural health and beauty product that has been used successfully to treat health and skin conditions for thousands of years! Try Essence of Argan for: Wrinkles, Aging, Acne, Dry Skin, Hair Treatment, Dry Scalp, Hair Growth, Hands and Nails, Stretch Marks, Diaper Rash, Cracked Feet, Eczema, and Psoriasis</div>
+
+                <!-- RIGHT SIDE, BOX ROW 2 -->
+                <div id="howdoes2_1" class="agedefying arialfont">THREE STEPS TO TRULY<br /><strong>YOUTHFUL SKIN</strong></div>
+                <div id="howdoes2_step1" class="agedefying arialfont"><strong>STEP 1</strong><br />Wash and dry your face.</div>
+                <div id="howdoes2_step2" class="agedefying arialfont"><strong>STEP 2</strong><br />Apply Essence of Argan.</div>
+                <div id="howdoes2_step3" class="agedefying arialfont"><strong>STEP 3</strong><br />Allow time for the product to absorb. Use daily for maximum result.</div>
+                <div id="howdoes2_4" class="agedefying arialfont">LOOK UP TO 10 YEARS YOUNGER</div>
+                <div id="howdoes2_before" class="agedefying arialfont">BEFORE</div>
+                <div id="howdoes2_after" class="agedefying arialfont">AFTER</div>
+            </div>
+
+            <div id="box_row_3">
+                <!-- BOX ROW 3 -->
+                <div id="titlewide_2" class="agedefying arialfont">
+                    LOOK UP TO 10 YEARS YOUNGER CLAIM YOUR TRIAL NOW
+                </div>
+                <div id="lookup_1" class="agedefying arialfont"><a href="#" class="buttonred MyriadProBoldCondensedfont">CLICK HERE</a></div>
+                <div id="lookup_before" class="agedefying arialfont">BEFORE</div>
+                <div id="lookup_after" class="agedefying arialfont">AFTER</div>
+            </div>
+
+            <div id="box_row_4">
+                <!-- BOX ROW 4 -->
+                <div id="box4_title" class="agedefying arialfont">REAL PEOPLE. <strong>REAL RESULTS.</strong></div>
+                <div id="box4_1" class="agedefying arialfont"><a href="#" class="buttonred b22 MyriadProBoldCondensedfont">CLAIM YOUR TRIAL</a></div>
+                <div id="box4_testi_title1" class="agedefying georgiafont"><strong>I am so impressed with the product!</strong></div>
+                <div id="box4_testi_title2" class="agedefying georgiafont"><strong>I love Essence of Argan!</strong></div>
+                <div id="box4_testi_title3" class="agedefying georgiafont"><strong>I'm so happy that my friend told me about Essence of Argan!</strong></div>
+                <div id="box4_testi_1" class="agedefying georgiafont">I recently had a baby and have been treating my stretch marks with Essence of Argan. I am so impressed with the product that I have been adding it to my baby's baths. This has been so good for both of us as our skin is easily irritated.<br /> <strong>Thanks, Essence of Argan!</strong><br /><span class="tname">Tina</span></div>
+                <div id="box4_testi_2" class="agedefying georgiafont">I'm 60 years old and love Essence of Argan. I use the 100% Organic Argan Oil everyday. It's a great moisturizer, it's so versatile and a few drops go a long way. I use it on my face, body, hair, hands, feet and nails!<br /><span class="tname">Donna</span></div>
+                <div id="box4_testi_3" class="agedefying georgiafont">I'm so happy that my friend told me about Essence of Argan! At first I was hesitant to put an oil on my acne-prone skin, but I'm so happy I did. I've been using it for two weeks and my skin has already significantly improved, especially the redness and dryness from all the benzoyl peroxide and salicylic acid in the acne creams I used to use.<br />Thank you!<br /><span class="tname">Emily</span></div>
+            </div>
+
+            <div id="box_row_5">
+                <!-- BOX ROW 5 -->
+                <div id="box5_title" class="agedefying arialfont">
+                    LOOK UP TO 10 YEARS YOUNGER CLAIM YOUR TRIAL NOW
+                </div>
+                <div id="box5_1" class="agedefying arialfont"><a href="#" class="buttonred MyriadProBoldCondensedfont">CLICK HERE</a></div>
+                <div id="box5_before" class="agedefying arialfont">BEFORE</div>
+                <div id="box5_after" class="agedefying arialfont">AFTER</div>
+            </div>
+
+            <div id="box_row_6">
+                <!-- BOX ROW 6 -->
+                <div id="box6_title" class="agedefying arialfont">SCIENTIFICALLY TESTED <strong>ESSENCE OF ARGAN</strong></div>
+                <div id="box6_1" class="agedefying arialfont">Studies show that Essence of Argan can be used to restore dry or damaged skin. It is helpful in combating the signs of normal skin aging, as well as skin conditions such as psoriasis, eczema, acne, and even reducing visible scar tissue! Simply apply a small amount of the rich oil to the desired area of your skin, allow it to soak in, and you'll notice the difference immediately. Continue to use regularly to eliminate any problem areas on your skin.</div>
+                <div id="box6_check1" class="agedefying arialfont"><strong>NO PAINFUL INJECTION</strong></div>
+                <div id="box6_check2" class="agedefying arialfont"><strong>NO EXPENSIVE LASERS</strong></div>
+                <div id="box6_check3" class="agedefying arialfont"><strong>NO INVASIVE SURGERY</strong></div>
+                <div id="box6_check4" class="agedefying arialfont"><strong>NO REGRETS</strong></div>
+            </div>
+
+            <div id="box_row_7">
+                <!-- BOX ROW 7 -->
+                <div id="box7_title" class="agedefying trebuchetfont">DISCOVER THE FOUNTAIN OF YOUTH IN A BOTTLE</div>
+                <div id="box7_1" class="agedefying trebuchetfont">with Essence of Argan!</div>
+                <div id="box7_2" class="agedefying MyriadProBoldCondensedfont">CLAIM YOUR TRIAL ORDER!</div>
+                <div id="box7_3" class="agedefying trebuchetfont"><a href="#" class="buttonred-big MyriadProBoldCondensedfont">CLICK HERE</a></div>
+            </div>
+
+            <div id="clickhere1"><a href="#Table_01" class="fill-div"></a></div>
+            <div id="clickhere2"><a href="#Table_01" class="fill-div"></a></div>
+            <div id="clickhere3"><a href="#Table_01" class="fill-div"></a></div>
+        </div>
+
+    </div>
+    <div id="footer" style="line-height: 16px;">
+        <br>
+        <a href="terms.php?ss=0" onclick="window.open(this.href, 'targetWindow', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=400,height=600');return false;">Terms and Conditions</a> |
+        <a href="privacy.php" onclick="window.open(this.href, 'targetWindow', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=400,height=600');return false;">Privacy Policy</a> |
+        <a href="contact.php" onclick="window.open(this.href, 'targetWindow', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=400,height=350');return false;">Contact</a><br>
+        <!-- 6741 W. Sunrise Blvd., Bay #5, Plantation, Fl. 33313
+           9 Karpenisiou Street, Strovolos, 2021 Nicosia, Cyprus -->
+        &copy;
+        2012-2015 All Rights Reserved     - Life Style Ventures, LTD. - Palazzo Pietro Stiges, 103, Strait Street, Valletta, Malta, VLT 1436    <br><br>
+        ALL PRODUCT RETURNS:<br> <p><span class='green-bold'><b>Life Style Ventures, LTD.</b></span><br />6741 W. Sunrise Blvd.<br />Bay #5 <br />Plantation, Fl. 33313<br /></p>
+    </div>
+
+    <!-- async clicky tracking below-->
+    <script type="text/javascript">
+var clicky_custom = clicky_custom || {};
+clicky_custom.cookie_domain = ".officialargan.com";
+var clicky_site_ids = clicky_site_ids || [];
+clicky_site_ids.push(100711539);
+(function() {
+  var s = document.createElement('script');
+  s.type = 'text/javascript';
+  s.async = true;
+  s.src = '//static.getclicky.com/js';
+  ( document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0] ).appendChild( s );
+})();
+    </script>
+    <noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/100711539ns.gif" /></p></noscript>
+    <!-- end async clicky tracking -->
+    <!-- End Save for Web Slices -->
+    <script type="text/javascript" src="~/js/send-ajax.js"></script>
+    <script language="javascript" type="text/javascript">
+            function getStates(country){
+                $.ajax({
+                    url:'includes/getstates.php',
+                    dataType:'json',
+                    data: 'country='+country,
+                    success:function(res){
+                        if(res.result=='success'){
+                            $("#fields_state").replaceWith(res.states);
+                        }
+                    },
+                    error:function(err){
+                        console.log(err);
+                    }
+                });
+            }
+            var initcountry = $("#country").val().toLowerCase();
+            getStates(initcountry);
+    </script>
+
+    <script type="text/javascript">
+        		     function PopIt() { $("#exitpop").val('1');
+		     					var encoded = "WAIT! BEFORE YOU GO - WE HAVE A SPECIAL OFFER!" + "\n\n\n"
+				     						 + "TAKE ADVANTAGE OF THIS SPECIAL OFFER !!!!! " + "\n"
+
+											 + "GET YOUR TRIAL NOW FOR ONLY &#36;3.99 SHIPPING AND HANDLING"
+
+		     						 		+ "\n\n\n" + "SIMPLY PRESS THE 'Cancel' or 'Stay On This Page' BUTTON TO HAVE THE DISCOUNTED SHIPPING AUTOMATICALLY APPLIED"
+		     					var decoded = $("<div/>").html(encoded).text();
+			 					return decoded;}
+		     function UnPopIt()  { /* nothing to return */ }
+
+        $(document).ready(function() {
+            window.onbeforeunload = PopIt;
+            $("a").click(function () { window.onbeforeunload = UnPopIt; });
+
+            // njhones here!!!
+            @*$('#ordernow').click(function (e) {
+
+                e.preventDefault();
+                
+                f = $(this.form);
+                
+                data = f.serialize();
+
+                    //alert(url);
+                $.post("/api/partials", data)//;
+                            .done(function (data) {
+                                //console.log(data); alert("New partial created. ID is ");
+                                window.location = "@Url.Action("officialarganorder")/" + data.PartialId;
+
+                            })
+                            .fail(function () { alert("Error creating the partial"); });
+
+                //}
+
+                //return false;
+            });*@
+
+
+            //$('#opt_in_form')
+            //    .submit(function (e) {
+            //        //e.preventDefault();
+            //        //f = $(this.form);
+            //        //f.validate();
+
+            //        //$.validator.unobtrusive.parse($(f));
+            //        //if (f.valid()) {
+            //        //alert(f.serialize());
+
+            //        //$.post("/api/partials", f.serialize())
+            //        //    .done(function (data) { console.log(data); alert("New partial created. ID is "); })
+            //        //    .fail(function () { alert("Error creating the partial"); });
+
+            //        //}
+
+            //        url = $('#opt_in_form').val('action');
+            //        data = $('#opt_in_form').serialize();
+            //        $.post(url, data, function (data) {
+            //            console.log("sds");
+            //            alert("here");
+            //            window.location = "http://www.homepage.co.uk/thankyou";
+            //        });
+            //        //.done(function (data) { console.log(data); alert("New order created. ID is "); })
+            //        //.fail(function () { alert("Error creating the order"); });
+
+            //        return false;
+            //    }); //;
+                    //.done(function (data) { console.log(data); alert("New partial created. ID is "); })
+                    //.fail(function () { alert("Error creating the order"); });
+
+		     });
+    </script>
+
+</body>
+</html>

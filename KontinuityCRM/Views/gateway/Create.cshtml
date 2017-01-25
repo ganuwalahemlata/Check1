@@ -1,0 +1,85 @@
+﻿@model KontinuityCRM.Models.Gateway
+@{
+
+}
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            @ViewBag.Title
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+                Create
+            </small>
+        </span>
+    </h1>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <form method="post" class="form-horizontal">
+            @Html.ValidationSummary()
+
+            <input type="hidden" name="Type" value="@ViewBag.Type" />
+
+            <div class="row">
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.Name, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.Name)
+                    </div>
+                </div>
+                <div class="form-group">
+                    @if (@ViewBag.Type != "Stripe")
+                    {
+                        @Html.LabelFor(model => model.Username, new { @class = "col-sm-3 control-label" })
+                    }
+                    else
+                    {
+                        @Html.Label("API Key", new { @class = "col-sm-3 control-label" })
+                    }
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.Username, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.Username)
+                    </div>
+                </div>
+                @if (@ViewBag.Type != "Stripe")
+                {
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Password, new { @class = "col-sm-3 control-label" })
+                        <div class="col-sm-9">
+                            @Html.TextBoxFor(model => model.Password, new { @class = "col-xs-12 col-sm-5" })
+                            @Html.ValidationMessageFor(model => model.Password)
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    @Html.HiddenFor(model => model.Password, new { Value = "not required" })
+                }
+            </div>
+            <div class="clearfix form-actions">
+                <div class="col-md-offset-3 col-md-9">
+                    <button type="submit" class="btn btn-primary btn-round">
+                        <i class="ace-icon fa fa-check"></i>
+                        Create
+                    </button>
+                    &nbsp; &nbsp; &nbsp;
+                    <a href="@Url.Action("index")" class="btn btn-white btn-default btn-round">
+                        <i class="ace-icon fa fa-times red2"></i>
+                        Cancel
+                    </a>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+@section Scripts {
+    <script src="~/Scripts/chosen.jquery.min.js"></script>
+
+}
+@section styles{
+    <link href="~/Content/chosen.css" rel="stylesheet" />
+}

@@ -1,0 +1,159 @@
+﻿@model KontinuityCRM.Models.OrderSearch
+
+
+
+@{
+    ViewBag.Title = "Orders Details";
+    ViewBag.icon = "fa-shopping-cart";
+    var checks = Model.UserAction != UserAction.filter;
+    var orderdetails = Model.UserAction == UserAction.detail;
+
+    if (orderdetails)
+    {
+        ViewBag.Title = "Order Details";
+    }
+}
+
+@section Styles {
+    <link href="~/Content/assets/css/datepicker.css" rel="stylesheet" />
+}
+
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            @ViewBag.Title
+        </span>
+        <span class="col-sm-4">
+            <span class="pull-right inline">
+    
+            </span>
+        </span>
+    </h1>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+
+                                                    
+        <div class="space-8"></div>
+
+        
+        <div class="results">
+
+
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+
+                    <tr>                        
+                        <th class="@ViewBag.idOrderIcon">
+                            @Html.ActionQueryLink("Id", "view", new { sortOrder = ViewBag.IdSortParm }, null, "display,page")
+                        </th>
+                        <th class="@ViewBag.statusOrderIcon">
+                            @Html.ActionQueryLink("Status", "view", new { sortOrder = ViewBag.StatusSortParm }, null, "display,page")
+                        </th>
+                        <th class="@ViewBag.dateOrderIcon">
+                            @Html.ActionQueryLink("Date", "view", new { sortOrder = ViewBag.DateSortParm }, null, "display,page")
+                        </th>
+                        <th class="@ViewBag.nameOrderIcon">
+                            @Html.ActionQueryLink("Customer Name", "view", new { sortOrder = ViewBag.NameSortParm }, null, "display,page")
+                        </th>
+                        <th class="@ViewBag.emailOrderIcon">
+                            @Html.ActionQueryLink("Customer Email", "view", new { sortOrder = ViewBag.EmailSortParm }, null, "display,page")
+                        </th>
+                        <th>
+                            Products
+                        </th>
+                        <th class="@ViewBag.totalOrderIcon">
+                            @Html.ActionQueryLink("Total", "view", new { sortOrder = ViewBag.TotalSortParm }, null, "display,page")
+                        </th>
+                        <th class="@ViewBag.qtyOrderIcon">
+                            @Html.ActionQueryLink("Qty", "view", new { sortOrder = ViewBag.QtySortParm }, null, "display,page")
+                        </th>
+                        <th class="@ViewBag.shippingmethodOrderIcon">
+                            @Html.ActionQueryLink("Shipping Method", "view", new { sortOrder = ViewBag.ShippingMethodSortParm }, null, "display,page")
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model.Orders)
+                    {
+                        <tr>                            
+                            <td>
+                                @Html.ActionLink(order.OrderId.ToString(), "details", "order", new { id = order.OrderId }, new { })
+                                @*@Html.ActionQueryLink(order.OrderId.ToString(), "index", new { oid = order.OrderId, UserAction = UserAction.detail }, new { @class = "" }, "display,page")*@
+                                @*@Html.DisplayFor(modelItem => order.OrderId)*@
+                            </td>
+                            <td>
+                                @Html.ActionLink(order.Status.DisplayValue(), "details", "order", new { id = order.OrderId }, new { })
+                            </td>
+                            <td>
+                                @Html.ActionLink(order.Created.ToString("g"), "details", "order", new { id = order.OrderId }, new { })
+                            </td>
+                            <td>
+                                @Html.ActionLink(order.Customer.FullName, "view", "customer", new { id = order.CustomerId }, new { })
+                                @*@Html.ActionQueryLink(order.Customer.FullName, "index", new { oid = order.OrderId, UserAction = UserAction.detail }, new { @class = "" }, "display,page")*@
+                                @*@Html.DisplayFor(modelItem => order.Customer.FirstName)*@
+                                @*@Html.DisplayFor(modelItem => order.Customer.LastName)*@
+                            </td>
+                            <td>
+                                @Html.ActionLink(order.Email, "view", "customer", new { id = order.CustomerId }, new { })
+                                @*@Html.ActionQueryLink(order.Email, "index", new { oid = order.OrderId, UserAction = UserAction.detail }, new { @class = "" }, "display,page")*@
+                                @*@Html.DisplayFor(modelItem => order.Customer.Email)*@
+                            </td>
+                            <td>
+                                @foreach (var p in order.OrderProducts.Where(o => o.OrderId == order.OrderId))
+                                {
+                                    <div>@p.Product.Name (@p.ProductId) x @p.Quantity @(!string.IsNullOrWhiteSpace(p.SKU) ? "(Variant: " + @p.SKU + ")" : "")</div>
+                                }
+                            </td>
+                            <td>
+                                $ @order.Total.ToString("F")
+                            </td>
+                            <td>
+                                @* Quantity (money) *@
+                                @Html.DisplayFor(modelItem => order.Quantity)
+                            </td>
+                            <td>
+                                @*@Html.DisplayFor(modelItem => order.ShippingMethod.Name)*@
+                                @string.Format("{0} ({1}) ${2}", order.ShippingMethod.Name, order.ShippingMethod.Id, order.ShippingMethod.Price)
+                            </td>
+
+
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+<script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+    @if (checks)
+    {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
+    <script src="~/Content/assets/js/ace/ace.widget-box.js"></script>
+    <script>
+
+$(function () {
+
+    $('#Display').change(function () {
+
+        var url = "@Html.Raw(Url.ActionQueryUrl("index", new { display = "_kdply_" }))";
+
+        window.location.href =  url.replace("_kdply_" , $(this).val());
+
+    });
+                 
+}());
+
+
+
+</script>
+
+
+}

@@ -1,0 +1,44 @@
+﻿<div class="row">
+    <div class="col-sm-4 col-xs-10">
+        <form method="get">
+            <div class="input-group">
+
+                @if (!string.IsNullOrEmpty(ViewBag.CurrentSort))
+                {
+                    <input type="hidden" name="sortOrder" value="@ViewBag.CurrentSort" />
+                    <input type="hidden" name="ProcessorType" value="@ViewBag.ProcessorType" />
+                    <input type="hidden" name="CardType" value="@ViewBag.CardType" />
+                }
+
+                @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control search-query", @placeholder = "Search..." })
+                <span class="input-group-btn">
+                    <button type="submit" class="btn btn-purple btn-sm">
+                        <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
+                        @*Search*@
+                    </button>
+                </span>
+            </div>
+        </form>
+    </div>
+    <div class="col-sm-4 col-sm-offset-4 col-xs-2">
+        @Html.DropDownList("Display", new SelectList(new List<int>() { 10, 25, 50, 100, 500, 1000 }, ViewBag.Display), new { @class = "pull-right" })
+    </div>
+
+</div>
+<div class="space-4"></div>
+@Html.Script(
+    @<script>
+
+    (function () {
+
+        $('#Display').change(function () {
+            var url = "@Html.Raw(Url.ActionQueryUrl("PrepaidTransactionReport", new { sortOrder = ViewBag.CurrentSort, ProcessorType= ViewBag.ProcessorType, CardType= ViewBag.CardType, currentFilter = ViewBag.CurrentFilter, display = "_kdpy_" }, "SearchString"))";
+            //console.log(url.slice(0, -1));
+            //window.location.href =  url.slice(0, -1) + $(this).val();
+            window.location.href = url.replace("_kdpy_", $(this).val());
+        });
+
+    }());
+
+    </script>
+)

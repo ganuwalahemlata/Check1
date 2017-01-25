@@ -1,0 +1,51 @@
+﻿@model KontinuityCRM.Models.ViewModels.IntViewModel
+
+@{
+    ViewBag.Title = String.Format("{0} Add Product", ViewBag.CategoryName);
+    ViewBag.icon = "fa-folder";
+}
+
+<div id="breadcrumb">
+	<a href="@Url.Action("index", "home")" title="Go to Home" class="tip-bottom"><i class="fa fa-home"></i> Home</a>
+    <a href="@Url.Action("index")" title="Go to Categories" class="tip-bottom"><i class="fa fa-folder"></i> Categories</a>
+    <a href="@Url.Action("products", new { id = ViewContext.RouteData.Values["id"] })" title="Go to Products" class="tip-bottom"><i class="fa fa-folder"></i> Products</a>
+	<a href="#" class="current">@ViewBag.Title</a>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <div class="widget-box">
+
+                <div class="widget-title">
+                    <span class="icon"><i class="fa fa-plus"></i></span>
+                    <h5>@ViewBag.Title</h5>
+                </div>
+
+                <div class="widget-content nopadding">
+
+                    <form method="post" class="form-horizontal">
+                    
+                        @Html.ValidationSummary(true)
+
+                        <div class="form-group">
+                            <label class="col-sm-3 col-md-3 col-lg-2 control-label">Product</label>
+							<div class="col-sm-9 col-md-9 col-lg-10">
+                               @Html.DropDownListFor(model => model.Value, new SelectList(ViewBag.Products, "ProductId", "Name"), "")
+                               @Html.ValidationMessageFor(model => model.Value)
+							</div>
+						</div>
+
+                        <div class="form-actions">
+							<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Add</button> or 
+                            @Html.ActionLink("Cancel", "products", new { id = ViewContext.RouteData.Values["id"] }, new { @class = "text-danger" })
+						</div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

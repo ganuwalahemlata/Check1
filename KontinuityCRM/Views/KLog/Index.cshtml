@@ -1,0 +1,62 @@
+﻿@model PagedList.IPagedList<KLog>
+
+@{
+    ViewBag.Title = "View Logs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            @ViewBag.Title
+        </span>
+    </h1>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        @Html.Partial("_PageTop")
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th class="@ViewBag.timeOrderIcon">
+                        @Html.ActionQueryLink("Time", "index", new { sortOrder = ViewBag.TimeSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.ipOrderIcon">
+                        @Html.ActionQueryLink("IP", "index", new { sortOrder = ViewBag.IpSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    
+                    <th class="@ViewBag.urlOrderIcon">
+                        @Html.ActionQueryLink("Url", "index", new { sortOrder = ViewBag.UrlSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+
+                    @*<th>@Html.DisplayNameFor(model => model.UserName)</th>
+                    <th>@Html.DisplayNameFor(model => model.Url)</th>
+                    <th>@Html.DisplayNameFor(model => model.IPAddress)</th>
+                    <th>@Html.DisplayNameFor(model => model.Timestamp)</th>
+                    <th></th>*@
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        @*<td>@Html.DisplayFor(modelItem => item.UserName)</td>*@
+                        <td>@Html.DisplayFor(modelItem => item.Timestamp)</td>                        
+                        <td>@Html.DisplayFor(modelItem => item.IPAddress)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Url)</td>
+                        
+                        
+                        @*<td>
+                            @Html.ActionLink("Delete", "delete", new { id = item.Id })
+                        </td>*@
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @Html.Partial("_PageBottom", Model)
+    </div>
+</div>
+
+
+

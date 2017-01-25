@@ -1,0 +1,241 @@
+﻿@using KontinuityCRM.Models.Enums
+@model KontinuityCRM.Models.Customer
+
+@{
+    var title = string.Format("Customer {0}", Model.CustomerId);
+    ViewBag.Title = title + " View";
+}
+<link href="~/Content/style.min.css" rel="stylesheet" />
+
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            @title
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+                View
+            </small>
+        </span>
+    </h1>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <form method="post" class="form-horizontal">
+            @* Customer Summary *@
+            <div class="widget-box">
+
+                <div class="widget-header">
+                    <h5 class="widget-title">Customer Summary</h5>
+                    <div class="widget-toolbar">
+
+                        <a href="#" data-action="collapse">
+                            <i class="ace-icon fa fa-chevron-up"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div class="widget-body">
+                    <div class="widget-main">
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.FirstName, new { @class = "col-sm-3 control-label no-padding-right" })
+                            <div class="col-sm-9">
+                                <span class="readonlydetail">@Html.DisplayFor(model => model.FirstName)</span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.LastName, new { @class = "col-sm-3 control-label no-padding-right" })
+                            <div class="col-sm-9">
+                                <span class="readonlydetail">@Html.DisplayFor(model => model.LastName)</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Address1, new { @class = "col-sm-3 control-label no-padding-right" })
+                            <div class="col-sm-9">
+                                <span class="readonlydetail">@Html.DisplayFor(model => model.Address1)</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Address2, new { @class = "col-sm-3 control-label no-padding-right" })
+                            <div class="col-sm-9">
+                                <span class="readonlydetail">@Html.DisplayFor(model => model.Address2)</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.City, new { @class = "col-sm-3 control-label no-padding-right" })
+                            <div class="col-sm-9">
+                                <span class="readonlydetail">@Html.DisplayFor(model => model.City)</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.PostalCode, new { @class = "col-sm-3 control-label no-padding-right" })
+                            <div class="col-sm-9">
+                                <span class="readonlydetail">@Html.DisplayFor(model => model.PostalCode)</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Province, new { @class = "col-sm-3 control-label no-padding-right" })
+                            <div class="col-sm-9">
+                                <span class="readonlydetail">@Html.DisplayFor(model => model.Province)</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Country, new { @class = "col-sm-3 control-label no-padding-right" })
+                            <div class="col-sm-9">
+                                <span class="readonlydetail">@Html.DisplayFor(model => model.Country)</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Email, new { @class = "col-sm-3 control-label no-padding-right" })
+                            <div class="col-sm-9">
+                                <span class="readonlydetail">@Html.DisplayFor(model => model.Email)</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Phone, new { @class = "col-sm-3 control-label no-padding-right" })
+                            <div class="col-sm-9">
+                                <span class="readonlydetail">@Html.DisplayFor(model => model.Phone)</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="space-8"></div>
+
+            @* Order History *@
+            <div class="widget-box">
+
+                <div class="widget-header">
+                    <h5 class="widget-title">Order History</h5>
+                    <div class="widget-toolbar">
+
+                        <a href="#" data-action="collapse">
+                            <i class="ace-icon fa fa-chevron-up"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <div class="dd dd-nodrag">
+                            @*<ol class="dd-list dd-nodrag">
+                                    @foreach (KeyValuePair<Order, List<Order>> order in ViewBag.CustomerOrders)
+                                    {
+                                        <li class="dd-item dd-nodrag">
+                                            <div class="dd-handle">
+                                                <u>#@Html.ActionLink(order.Key.OrderId.ToString(), "details", "order", new { id = order.Key.OrderId }, new { })</u>
+                                                <span> - </span> @order.Key.Created.ToString("MM/dd/yyyy hh:mm tt")
+                                                <span>(Utc)  - </span> $@order.Key.Total.ToString()
+                                                <span> - </span> @(EnumHelper<OrderStatus>.GetDisplayValue(@order.Key.Status))
+                                                <br />Products:
+                                                @foreach (var prd in order.Key.OrderProducts)
+                                                {
+                                                    <br /><text>- @prd.Product.Name ($ @prd.Price) x @prd.Quantity  </text>
+                                                }
+                                            </div>
+
+                                            @if (order.Value.Count() > 0)
+                                            {
+                                                <ol class="dd-list dd-nodrag">
+                                                    @foreach (var soon in order.Value.OrderBy(o => o.Created).ToList())
+                                                    {
+                                                        <li class="dd-item dd-nodrag">
+                                                            <div class="dd-handle">
+                                                                <u>#@Html.ActionLink(soon.OrderId.ToString(), "details", "order", new { id = soon.OrderId }, new { })</u>
+                                                                <span> - </span> @soon.Created.ToString("MM/dd/yyyy hh:mm tt")
+                                                                <span>(Utc)  - </span> Total:$ @soon.Total.ToString()
+                                                                <span> - </span> @(EnumHelper<OrderStatus>.GetDisplayValue(@soon.Status))
+                                                                <br />Products:
+                                                                @foreach (var prd in soon.OrderProducts)
+                                                                {
+                                                                    <br /><text>- @prd.Product.Name ($ @prd.Price) x @prd.Quantity</text>
+                                                                }
+                                                            </div>
+                                                        </li>
+                                                    }
+                                                </ol>
+                                            }
+                                        </li>
+                                    }
+
+                                </ol>*@
+
+                            <div id="html" class="demo">
+                                @CreateOrderTree(Model.Orders);
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="space-8"></div>
+        </form>
+
+    </div>
+</div>
+@helper CreateOrderTree(IEnumerable<Order> orders)
+{
+
+var parents = orders.Where(c => c.ParentId == null);
+    <ul>
+        @foreach (var v in parents)
+        {
+            @CreateChildTree(v);
+        }
+    </ul>
+}
+@helper CreateChildTree(Order order)
+        {
+    <li>
+        @Html.ActionLink( "Order #" + order.OrderId.ToString() +" (" +order.Status +")", "details", "order", new { id = order.OrderId }, new { })        
+        @{ var len = Model.Orders.OrderByDescending(n => n.Created).Where(n => n.ParentId == order.OrderId).Count();}
+        @if (len > 0)
+        {
+            <ul>
+                @foreach (var v in Model.Orders.OrderByDescending(n => n.Created).Where(n => n.ParentId == order.OrderId))
+                {
+                    @CreateChildTree(v)
+                }
+            </ul>
+        }
+    </li>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Content/assets/js/ace/ace.widget-box.js"></script>
+    <script src="~/Content/assets/js/jquery.nestable.js"></script>
+    <script src="~/js/jstree.min.js"></script>
+    <script type="text/javascript">
+        $('.dd').nestable({ draggable: false });
+        $(function () {
+            $('#html').jstree({
+                "core": {
+                    "theme": { "icons": false }
+                }
+            });
+
+        });
+        $('#html').on("changed.jstree", function (e, data) {
+            console.log(data.selected);
+        });
+    </script>
+}
+
+
+

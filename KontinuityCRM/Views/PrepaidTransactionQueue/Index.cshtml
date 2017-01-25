@@ -1,0 +1,126 @@
+﻿@model PagedList.IPagedList<KontinuityCRM.Models.TransactionViaPrepaidCardQueue>
+    @{
+        ViewBag.Title = "Transaction Details";
+    }
+    @section Scripts {
+        <script>
+            $('#selectAll').click(function (e) {
+                var table = $(e.target).closest('table');
+                $('td input:checkbox[id^="someid_"]', table).prop('checked', this.checked);
+            });
+        </script>
+    }
+    @using (Html.BeginForm())
+    {
+        <div class="page-header">
+            <h1 class="row no-padding">
+                <span class="col-sm-8 no-padding">
+                    @ViewBag.Title
+                </span>
+                <span class="col-sm-4">
+                    <span class="pull-right inline">
+                        <a href="@Url.Action("create")" class="btn btn-primary btn-round @Html.RenderHidden("create")">
+                            <i class="ace-icon fa fa-plus"></i>
+                            Create
+                        </a>
+                    </span>
+                </span>
+            </h1>
+        </div>
+        <form method="get" class="form-horizontal">
+            <div class="row" style="float:left;width:50%;margin-bottom:10px">
+                @*<label class="control-label bolder blue col-sm-1"></label>*@
+                <div class="radio-inline">
+                    <label>
+                        <input name="decline" type="radio" class="ace" value="1" @ViewBag.Decline />
+                        <span class="lbl"> Declined</span>
+                    </label>
+                </div>
+                <div class="radio-inline">
+                    <label>
+                        <input name="decline" type="radio" class="ace" value="2" @ViewBag.Success />
+                        <span class="lbl"> Approved</span>
+                    </label>
+                </div>
+                @*<input type="submit" />*@
+
+                @*<div class="space-4"></div>*@
+            </div>
+            <div class="row" style="float:right;width:50%;margin-bottom:10px">
+                @*@if (ViewBag.Decline == "checked" && Model.Count != 0)
+                    {
+                        <input type="submit" name="processDecline" value="Execute all decline" class="btn btn-primary btn-round" style="float:right;" />
+                    }*@
+
+                @if (ViewBag.Decline == "checked" && Model.Count != 0)
+                {
+                    <input type="submit" name="processDeclineSelected" value="Execute Selected Transaction" class="btn btn-purple btn-round" style="float:right; margin-right:10px" />
+                }
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    @Html.Partial("_PageTop")
+                    @if (Model.Count != 0)
+                    {
+                        <div style="width:100%;" name="tableDiv">
+                            <table name="prepaidCardTable" class="table table-bordered table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        @if (ViewBag.Decline == "checked")
+                                        {
+                                        <th><input type="checkbox" id="selectAll" /></th>
+                                        }
+                                        <th>ID</th>
+                                        <th>Prepaid Card</th>
+                                        <th>Processor</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        int i = 0;
+                                        foreach (var item in Model)
+                                        {
+                                    <tr>
+                                        @if (ViewBag.Decline == "checked")
+                                                {
+                                                <td style="width:2%">@Html.CheckBox("checkedItem", new { @id = "someid_" + i })</td>
+                                                }
+                                        <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.PrepaidCard.Number)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Processor.Name)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                                        @if (item.Success == true)
+                                                {
+                                                <td>Approved</td>
+                                                }
+                                                else
+                                                {
+                                                <td>Declined</td>
+                                                }
+
+                                        @*<td>
+                                                @Html.ActionLink("Edit", "edit", new { id = item.Id }, new { @class = @Html.RenderHidden("edit") })
+                                                <span class='@Html.RenderHidden("delete")'>|</span>
+                                                @Html.ActionLink("Delete", "delete", new { id = item.Id }, new { @class = @Html.RenderHidden("delete") })
+                                            </td>*@
+                                    </tr>
+                                            i++;
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                        @Html.Partial("_PageBottom", Model)
+
+                                        }
+                                        else
+                                        {
+                                            <h1 style="font-size:200%;color:gray">No Transaction Present</h1>
+                                        }
+                </div>
+            </div>
+        </form> 
+    }

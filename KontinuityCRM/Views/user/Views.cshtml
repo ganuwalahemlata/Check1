@@ -1,0 +1,144 @@
+﻿@model PagedList.IPagedList<KLog>
+
+@{
+    ViewBag.Title = "View Logs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            @ViewBag.Title
+        </span>
+    </h1>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="row">
+
+            <div class="col-sm-4 col-xs-10">
+
+                <form method="get" @*action="@Url.ActionQueryUrl("index", new { sortOrder = ViewBag.CurrentSort })"*@>
+                    @*@Url.ActionQueryUrl("index")*@
+
+                    <div class="input-group">
+                        @*<span class="input-group-addon">
+                            <i class="ace-icon fa fa-check"></i>
+                        </span>*@
+
+                        @if (!string.IsNullOrEmpty(ViewBag.CurrentSort))
+                        {
+                            <input type="hidden" name="sortOrder" value="@ViewBag.CurrentSort" />
+                        }
+
+
+                        @Html.TextBox("SearchString", ViewBag.CurrentFilter as string, new { @class = "form-control search-query", @placeholder = "Search..." })
+
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-purple btn-sm">
+                                <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
+                                @*Search*@
+                            </button>
+                        </span>
+                    </div>
+                </form>
+
+
+            </div>
+
+            <div class="col-sm-4 col-sm-offset-4 col-xs-2">
+
+                @Html.DropDownList("Display", new SelectList(new List<int>() { 10, 25, 50, 100, 500, 1000 }, ViewBag.Display), new { @class = "pull-right" })
+
+            </div>
+
+
+        </div>
+
+        <div class="space-4"></div>
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th class="@ViewBag.timeOrderIcon">
+                        @Html.ActionQueryLink("Time", "views", new { sortOrder = ViewBag.TimeSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.ipOrderIcon">
+                        @Html.ActionQueryLink("IP", "views", new { sortOrder = ViewBag.IpSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+
+                    <th class="@ViewBag.urlOrderIcon">
+                        @Html.ActionQueryLink("Url", "views", new { sortOrder = ViewBag.UrlSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+
+                    @*<th>@Html.DisplayNameFor(model => model.UserName)</th>
+                        <th>@Html.DisplayNameFor(model => model.Url)</th>
+                        <th>@Html.DisplayNameFor(model => model.IPAddress)</th>
+                        <th>@Html.DisplayNameFor(model => model.Timestamp)</th>
+                        <th></th>*@
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        @*<td>@Html.DisplayFor(modelItem => item.UserName)</td>*@
+                        <td>@Html.DisplayFor(modelItem => item.Timestamp)</td>
+                        <td>@Html.DisplayFor(modelItem => item.IPAddress)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Url)</td>
+
+
+                        @*<td>
+                                @Html.ActionLink("Delete", "delete", new { id = item.Id })
+                            </td>*@
+                    </tr>
+                }
+            </tbody>
+        </table>
+        
+
+        <div class="row">
+
+            <div class="col-sm-3 col-xs-3">
+
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+            </div>
+
+            <div class="col-sm-9 col-xs-9">
+
+                <div class="pull-right kpagination">
+
+                    @Html.PagedListPager(Model, page => Url.ActionQueryUrl("views", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }, "SearchString,display"))
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+   
+    
+<script>
+
+    (function () {
+
+        $('#Display').change(function () {
+            var url = "@Html.Raw(Url.ActionQueryUrl("views", new { sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter, display = "_kdpy_" }, "SearchString"))";
+            //console.log(url.slice(0, -1));
+            //window.location.href =  url.slice(0, -1) + $(this).val();
+            window.location.href = url.replace("_kdpy_", $(this).val());
+        });
+
+    }());
+
+</script> 
+
+}
+
+
+

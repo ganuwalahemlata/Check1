@@ -1,0 +1,1437 @@
+﻿@model KontinuityCRM.Models.Product
+@using KontinuityCRM.Models;
+
+@{
+    var productId = Model == null ? 0 : Model.ProductId;
+    bool editmode = (bool)ViewData["Edit"];
+}
+
+<div class="row">
+    <form method="post" class="form-horizontal">
+
+        <div class="col-sm-9 col-xs-12 widget-container-col">
+
+            <div class="widget-box">
+
+                <div class="widget-header">
+                    <h5 class="widget-title">Data</h5>
+                    @*<span class="icon"><i class="fa fa-info"></i></span>*@
+                    @*<h5>Product Info</h5>*@
+
+                    <div class="widget-toolbar">
+
+                        <a href="#" data-action="collapse">
+                            <i class="ace-icon fa fa-chevron-up"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div class="widget-body">
+                    <div class="widget-main">
+                        @Html.ValidationSummary()
+
+                        @if ((bool)ViewData["Edit"])
+                        {
+                            @Html.HiddenFor(model => model.ProductId)
+                        }
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Name, new { @class = "col-sm-3 control-label" })
+                            <div class="col-sm-9">
+                                @Html.TextBoxFor(model => model.Name, new { @class = "col-xs-12 col-sm-5" })
+                                @Html.ValidationMessageFor(model => model.Name)
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SKU, new { @class = "col-sm-3 control-label" })
+                            <div class="col-sm-9">
+                                @Html.TextBoxFor(model => model.SKU, new { @class = "col-xs-12 col-sm-5" })
+                                @Html.ValidationMessageFor(model => model.SKU)
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Price, new { @class = "col-sm-3 control-label" })
+                            <div class="col-sm-9">
+                                @Html.TextBoxFor(model => model.Price, new { @class = "col-xs-6 col-sm-3" })
+                                @Html.ValidationMessageFor(model => model.Price)
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Cost, new { @class = "col-sm-3 control-label" })
+                            <div class="col-sm-9">
+                                @Html.TextBoxFor(model => model.Cost, new { @class = "col-xs-6 col-sm-3" })
+                                @Html.ValidationMessageFor(model => model.Cost)
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.PreAuthAmount, new { @class = "col-sm-3 control-label" })
+                            <div class="col-sm-9">
+                                @Html.TextBoxFor(model => model.PreAuthAmount, new { @class = "col-xs-6 col-sm-3" })
+                            </div>
+                            @Html.ValidationMessageFor(model => model.PreAuthAmount)
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Currency, new { @class = "col-sm-3 control-label" })
+                            <div class="col-sm-9">
+                                <div class="col-xs-4 no-padding">
+                                    @Html.EnumDropdownListFor(model => model.Currency, new { @class = "chosen form-control" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Category, new { @class = "col-sm-3 control-label" })
+                            <div class="col-sm-9">
+                                <div class="col-sm-5 no-padding">
+                                    @Html.DropDownListFor(model => model.CategoryId, new SelectList(ViewBag.Categories, "Id", "Name"), "Select Category", new { @class = "chosen form-control" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.CategoryId)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Description, new { @class = "col-sm-3 control-label" })
+                            <div class="col-sm-9">
+                                @Html.TextAreaFor(model => model.Description, new { @class = "col-xs-12 col-sm-10" })
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-8"></div>
+
+            @* Processor / Balancer Box *@
+            <div class="widget-box">
+
+                <div class="widget-header">
+                    <h5 class="widget-title">Processor / Balancer</h5>
+
+                    <div class="widget-toolbar">
+
+                        <a href="#" data-action="collapse">
+                            <i class="ace-icon fa fa-chevron-up"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <div class="form-group" id="balancerform">
+                            @Html.Label("Balancer", new { @class = "col-sm-3 control-label" })
+                            <div class="col-sm-9">
+                                <div class="col-sm-5 no-padding">
+                                    @Html.DropDownListFor(model => model.BalancerId, new SelectList(ViewBag.Balancers, "Id", "Name"), "", new { @class = "form-control" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.BalancerId)
+                            </div>
+                        </div>
+                        <div class="form-group" id="processorform">
+                            @Html.Label("Processor", new { @class = "col-sm-3 control-label" })
+                            <div class="col-sm-9">
+                                <div class="col-sm-5 no-padding">
+                                    @Html.DropDownListFor(model => model.ProcessorId, new SelectList(ViewBag.Processors, "Id", "Name"), "Select Processor", new { @class = "chosen form-control" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.ProcessorId)
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-8"></div>
+            <div class="widget-box">
+
+                <div class="widget-header">
+                    <h5 class="widget-title">Payment</h5>
+
+                    <div class="widget-toolbar">
+
+                        <a data-action="collapse" href="#">
+                            <i class="ace-icon fa fa-chevron-up"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Payment Types</label>
+                            <div class="col-sm-9">
+                                <div class="col-sm-9 no-padding">
+                                    @Html.ListBoxFor(model => model.PaymentTypeIds, ViewBag.PaymentTypes as SelectList, new { @class = "form-control" })
+                                </div>
+                                @Html.ValidationMessageFor(model => model.PaymentTypeIds)
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="space-8"></div>
+            @* Product Events / EmailNotifications*@
+            @*@Html.EditorFor(model => model.ProductEvents)*@  @* It doesn't work because this will expect a view will expect a model that for just one product event *@
+            <div class="widget-box" id="emailnotifications">
+
+                <div class="widget-header">
+                    <h5 class="widget-title">Email Notifications</h5>
+                    <div class="widget-toolbar">
+                        <a href="#" data-action="collapse">
+                            <i class="ace-icon fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <div class="form-group">
+                            @Html.Label("Events", new { @class = "col-sm-3 control-label" })
+                            <div class="col-sm-9">
+                                <div class="row">
+                                    <div class="col-xs-9">
+                                        <select id="events" class="form-control chosen">
+                                            <option value=""></option>
+                                            @foreach (var item in ViewBag.Events)
+                                            {
+                                                <option value="@item.Id"
+                                                        data-template="@item.Template.Name"
+                                                        data-server="@item.SmtpServer.Name"
+                                                        data-type="@(((Event)item).Type.DisplayValue())">
+                                                    @item.Name
+                                                </option>
+                                            }
+
+                                        </select>
+                                    </div>
+                                    <div class="col-xs-3">
+                                        <button id="addevent" type="button" class="btn btn-default btn-sm plusbtn">
+                                            <i class="ace-icon fa fa-plus"></i>
+                                            Add
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <table class="table" id="etable">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Event</th>
+                                    <th>Template</th>
+                                    <th>SMTP</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @if (Model != null && Model.ProductEvents != null)
+                                {
+                                    foreach (var item in Model.ProductEvents)
+                                    {
+                                        <tr>
+                                            <td>@item.Event.Type.DisplayValue()</td>
+                                            <td>@item.Event.Name</td>
+                                            <td>@item.Event.Template.Name</td>
+                                            <td>@item.Event.SmtpServer.Name</td>
+                                            <td>
+                                                <button class="btn-link red rlink"
+                                                        data-id="@item.EventId"
+                                                        data-name="@item.Event.Name"
+                                                        data-server="@item.Event.SmtpServer.Name"
+                                                        data-type="@item.Event.Type.DisplayValue()"
+                                                        data-template="@item.Event.Template.Name">
+                                                    <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                                                </button>
+
+                                                <input type="hidden" name="events.Index" value="@item.EventId" />
+                                                <input type="hidden" value="@item.EventId" name="ProductEvents[@item.EventId].EventId">
+                                                <input type="hidden" value="@Model.ProductId" name="ProductEvents[@item.EventId].ProductId">
+                                            </td>
+                                        </tr>
+                                    }
+
+                                }
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-8"></div>
+
+            @* Shipping Box *@
+            <div id="shippingform">
+                <div class="widget-box">
+
+                    <div class="widget-header">
+                        <h5 class="widget-title">Shipping</h5>
+                        <div class="widget-toolbar">
+                            <a href="#" data-action="collapse">
+                                <i class="ace-icon fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <!-- ShipValue -->
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.ShipValue, new { @class = "col-sm-3 control-label" })
+                                <div class="col-xs-2">
+                                    @Html.TextBoxFor(model => model.ShipValue, new { @class = "col-xs-12 col-sm-5" })
+                                    @* @Html.ValidationMessageFor(model => model.ShipValue)*@
+                                </div>
+                                <div class="col-sm-6">
+                                    @Html.ValidationMessageFor(model => model.ShipValue)
+                                </div>
+                            </div>
+
+                            <!-- Weight -->
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.Weight, new { @class = "col-sm-3 control-label" })
+                                <div class="col-xs-2">
+                                    @Html.TextBoxFor(model => model.Weight, new { @class = "col-xs-12 col-sm-5" })
+                                </div>
+                                <div class="col-sm-6">
+                                    @Html.ValidationMessageFor(model => model.Weight)
+                                </div>
+                            </div>
+
+                            <!-- FulfillmentProviderId -->
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.FulfillmentProvider, new { @class = "col-sm-3 control-label" })
+                                <div class="col-sm-8 col-md-8 col-lg-7">
+                                    @Html.DropDownListFor(model => model.FulfillmentProviderId, new SelectList(ViewBag.FulfillmentProviders, "Id", "Alias"))
+                                    @Html.ValidationMessageFor(model => model.FulfillmentProviderId)
+                                </div>
+                            </div>
+
+                            <!-- IsSignatureConfirmation, IsDeliveryConfirmation -->
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">@*Properties*@</label>
+                                <div class="col-sm-8 col-md-8 col-lg-7">
+                                    <label>@Html.CheckBoxFor(model => model.IsSignatureConfirmation) @Html.DisplayNameFor(model => model.IsSignatureConfirmation)</label>
+                                    <label>@Html.CheckBoxFor(model => model.IsDeliveryConfirmation) @Html.DisplayNameFor(model => model.IsDeliveryConfirmation)</label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="space-8"></div>
+            </div>
+
+            @* Subcription Box *@
+            <div id="subcriptionform">
+                <div class="widget-box">
+
+                    <div class="widget-header">
+                        <h5 class="widget-title">Subscription</h5>
+                        <div class="widget-toolbar">
+                            <a href="#" data-action="collapse">
+                                <i class="ace-icon fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="widget-body">
+                        <div class="widget-main">
+
+                            <h4 class="row header smaller lighter blue" style="margin: 0 0px;">
+                                <span class="col-xs-12"> Recurring Settings </span><!-- /.col -->
+                            </h4>
+
+                            <div class="space-12"></div>
+
+
+                            <div class="form-group">
+
+                                @Html.LabelFor(model => model.RecurringProductId, new { @class = "col-sm-3 control-label" })
+                                <div class="col-sm-9">
+                                    <div class="row">
+                                        <div class="col-sm-5 col-md-5 col-lg-4">
+                                            @Html.DropDownListFor(model => model.RecurringProductId,
+                                        new SelectList(((IEnumerable<Product>)ViewBag.Products)
+                                        .Where(p => p.ProductId != productId), "ProductId", "Name"), "Select product", new { @class = "form-control chosen" })
+
+                                        </div>
+
+                                        <div class="col-sm-3 col-md-3 col-lg-3">
+                                            <label id="ss4">@Html.CheckBox("selfrecurring", this.Model != null && this.Model.RecurringProductId == productId) Self Recurring</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+
+                                @Html.LabelFor(model => model.BillType, new { @class = "col-sm-3 control-label" })
+                                <div class="col-sm-9">
+
+                                    <div class="col-sm-2" style="padding-left:0;">
+                                        @Html.EnumDropdownListFor(model => model.BillType) @*, new { @class = "tip-bottom", @title="Subscription will be billed every N days" }*@
+                                    </div>
+
+                                    <label class="col-sm-4 control-label" id="billvaluelabel">Days to next billing</label>
+                                    <div class="col-sm-6">
+                                        <div id="inputbillvalueform">
+
+                                            @Html.TextBoxFor(model => model.BillValue, new { @class = "tip-bottom col-xs-6 col-sm-3", @title = "Subscription will be billed every N days" })
+                                            @Html.ValidationMessageFor(model => model.BillValue)
+
+                                        </div>
+                                        <div id="selectbillvalueform" style="display: none;">
+                                            <div class="col-sm-8 col-md-8 col-lg-9">
+
+
+                                                @if (editmode)
+                                                {
+                                                    @Html.DropDownList("billday", KontinuityCRMHelper.GetBillDay(Model.BillValue ?? 0).ToSelectList())
+                                                    @: &nbsp;
+                                                    @Html.DropDownList("dayofweek", KontinuityCRMHelper.GetDateOfWeek(Model.BillValue ?? 0).ToSelectList())
+                                                }
+                                                else
+                                                {
+                                                    @Html.DropDownList("billday", KontinuityCRM.Models.BillDay.First.ToSelectList())
+                                                    @: &nbsp;
+                                                    @Html.DropDownList("dayofweek", DayOfWeek.Sunday.ToSelectList())
+
+                                                }
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+
+
+
+
+                            </div>
+
+
+
+
+
+                            <h4 class="row header smaller lighter blue" style="margin: 0 0px;">
+                                <span class="col-xs-12"> Salvage Profiles </span><!-- /.col -->
+                            </h4>
+
+                            <div class="space-12"></div>
+
+                            <div class="form-group">
+                                @Html.Label("Profiles", new { @class = "col-sm-3 control-label" })
+                                <div class="col-sm-9">
+                                    <div class="row">
+                                        <div class="col-xs-9">
+                                            @Html.DropDownGropList("salvageprofiles", ((IEnumerable<SalvageProfile>)ViewBag.SalvageProfiles)
+                                                .OrderBy(p => p.DeclineType.Name)
+                                                .ThenBy(p => p.Name)
+                                                .Select(p => new GroupedSelectListItem
+                                                {
+                                                    GroupKey = p.DeclineTypeId.ToString(),
+                                                    GroupName = p.DeclineType.Name,
+                                                    Text = string.Format("{0} ({1})", p.Name, p.Id),
+                                                    Value = p.Id.ToString(),
+                                                    Disabled = Model == null || Model.ProductSalvages == null ? false : Model.ProductSalvages.Select(s => s.SalvageProfile.DeclineTypeId).Contains(p.DeclineTypeId)
+                                                    //Selected = p.ProductId == Model.NextProductId
+                                                })
+                                                , optionLabel: ""
+                                                , htmlAttributes: new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <button id="addsalvage" type="button" class="btn btn-default btn-sm plusbtn">
+                                                <i class="ace-icon fa fa-plus"></i>
+                                                Add
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <table class="table" id="sptable">
+                                <thead>
+                                    <tr>
+                                        <th>Decline Type</th>
+                                        <th>Salvage Profile</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @if (Model != null && Model.ProductSalvages != null)
+                                    {
+                                        foreach (var item in Model.ProductSalvages)
+                                        {
+                                            <tr>
+                                                <td>@item.SalvageProfile.DeclineType.Name</td>
+                                                <td>@string.Format("{0} ({1})", item.SalvageProfile.Name, item.SalvageProfile.Id)</td>
+                                                <td>
+                                                    <button class="btn-link red rslink"
+                                                            data-id="@item.SalvageProfileId"
+                                                            data-declineid="@item.SalvageProfile.DeclineTypeId">
+                                                        <i class="ace-icon fa fa-trash-o bigger-130"></i>
+                                                    </button>
+
+                                                    <input type="hidden" name="ProductSalvages.Index" value="@item.SalvageProfileId" />
+                                                    <input type="hidden" value="@item.SalvageProfileId" name="ProductSalvages[@item.SalvageProfileId].SalvageProfileId">
+                                                    <input type="hidden" value="@Model.ProductId" name="ProductSalvages[@item.SalvageProfileId].ProductId">
+                                                </td>
+                                            </tr>
+                                        }
+
+                                    }
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="space-8"></div>
+            </div>
+
+            @* Redemption Box *@
+            <div id="redemptionform">
+                <div class="widget-box">
+
+                    <div class="widget-header">
+                        <h5 class="widget-title">Redemption Settings</h5>
+                        <div class="widget-toolbar">
+                            <a href="#" data-action="collapse">
+                                <i class="ace-icon fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    @*<div class="widget-title">
+                            <span class="icon"><i class="fa fa-gift"></i></span>
+                            <h5>Redemption Settings</h5>
+                        </div>*@
+
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <div class="form-group">
+
+                                <div class="col-sm-6 col-md-6">
+
+                                    @Html.LabelFor(model => model.SalePoints, new { @class = "col-sm-7 col-md-7 col-lg-8 control-label" })
+                                    <div class="col-sm-5 col-md-5 col-lg-4">
+                                        @Html.TextBoxFor(model => model.SalePoints, new { @class = "col-xs-12 col-sm-5" })
+                                    </div>
+
+                                </div>
+
+                                <div class="col-sm-6 col-md-6">
+
+                                    @Html.LabelFor(model => model.RedemptionPoints, new { @class = "col-sm-7 col-md-7 col-lg-8 control-label" })
+                                    <div class="col-sm-5 col-md-5 col-lg-4">
+                                        @Html.TextBoxFor(model => model.RedemptionPoints, new { @class = "col-xs-12 col-sm-5" })
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <div class="space-8"></div>
+            </div>
+
+            @* Providers Box *@
+            <div id="providersform">
+                <div class="widget-box">
+
+                    <div class="widget-header">
+                        <h5 class="widget-title">Providers</h5>
+                        <div class="widget-toolbar">
+                            <a href="#" data-action="collapse">
+                                <i class="ace-icon fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    @*<div class="widget-title">
+                            <span class="icon"><i class="fa fa-thumbs-up"></i></span>
+                            <h5>Providers</h5>
+                        </div>*@
+
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.AutoResponderProviderId, new { @class = "col-sm-3 control-label" })
+                                <div class="col-sm-8 col-md-8 col-lg-7">
+                                    @Html.DropDownListFor(model => model.AutoResponderProviderId, new SelectList(ViewBag.AutoResponderProviders, "Id", "Alias"), "")
+                                </div>
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-sm-6 col-md-6">
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.AutoResponderProspectId, new { @class = "col-sm-6 col-md-6 col-lg-6 control-label" })
+                                        <div class="col-sm-6 col-md-6 col-lg-6">
+                                            @Html.TextBoxFor(model => model.AutoResponderProspectId, new { @class = "col-xs-12 col-sm-5" })
+                                            @Html.ValidationMessageFor(model => model.AutoResponderProspectId)
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-sm-6 col-md-6">
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.AutoResponderCustomerId, new { @class = "col-sm-6 col-md-6 col-lg-6 control-label" })
+                                        <div class="col-sm-6 col-md-6 col-lg-6">
+                                            @Html.TextBoxFor(model => model.AutoResponderCustomerId, new { @class = "col-xs-12 col-sm-5" })
+                                            @Html.ValidationMessageFor(model => model.AutoResponderCustomerId)
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="space-8"></div>
+            </div>
+
+            @* Post Back Url Configuration Box *@
+            <div id="postbackform">
+                <div class="widget-box">
+
+                    <div class="widget-header">
+                        <h5 class="widget-title">Post Back Url Configuration</h5>
+                        <div class="widget-toolbar">
+                            <a href="#" data-action="collapse">
+                                <i class="ace-icon fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="widget-body nopadding">
+                        <div class="widget-main">
+                            <div id="pburls" class="postbackurls">
+
+                                @if (Model != null && Model.PostBackUrls != null)
+                                {
+                                    var first = true;
+                                    foreach (var item in Model.PostBackUrls)
+                                    {
+                                        <div id="pbu_@item.Id">
+
+                                            <div class="form-group">
+                                                <div class="col-sm-3">
+                                                    <select class="urltype form-control" data-index="@item.Id">
+                                                        <option value="type" @(item.IsAction ? "" : "selected")>Order Type</option>
+                                                        <option value="action" @(!item.IsAction ? "" : "selected")>Order Actions</option>
+                                                    </select>
+                                                </div>
+                                                @if (!first)
+                                                {
+                                                    <div class="col-sm-3 col-md-3 col-lg-2">
+                                                        <a class="btn btn-default btn-sm removeurl" data-index="@item.Id"><i class="fa fa-trash-o"></i> </a>
+                                                    </div>
+                                                }
+                                            </div>
+
+                                            <input type="hidden" name="PostBackUrls.Index" value="@item.Id" />
+                                            <input type="hidden" value="@Model.ProductId" name="PostBackUrls[@item.Id].ProductId">
+                                            <input type="hidden" value="@item.Id" name="PostBackUrls[@item.Id].Id">
+
+                                            <div class="form-group">
+                                                <div class="col-sm-12 col-md-12 col-lg-12">
+                                                    <input class="form-control" type="text" value="@item.Url" name="PostBackUrls[@item.Id].Url" placeholder="URL e.g. http://domain.com/AFID={affiliate}&SID={sub_affiliate}">
+                                                </div>
+                                            </div>
+
+                                            <div id="pb_@item.Id">
+
+                                                @if (item.IsAction)
+                                                {
+                                                    <input type="hidden" value="true" name="PostBackUrls[@item.Id].IsAction">
+
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 col-md-3 col-lg-2 control-label">Order</label>
+                                                        <div class="col-sm-9 col-md-9 col-lg-10">
+
+                                                            @foreach (UrlOrderAction value in Enum.GetValues(typeof(UrlOrderAction)))
+                                                            {
+                                                                var name = KontinuityCRM.Helpers.EnumHelper<UrlOrderAction>.GetDisplayValue(value);
+
+                                                                <label>
+                                                                    <input type="checkbox" name="PostBackUrls[@item.Id].OrderActions"
+                                                                           value="@value" @(item.OrderActions.HasFlag(value) ? "checked" : "") /> @name
+                                                                    </label>
+
+                                                            }
+
+                                                        </div>
+                                                    </div>
+
+                                                }
+                                                else
+                                                {
+
+                                                    <input type="hidden" value="false" name="PostBackUrls[@item.Id].IsAction">
+
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 col-md-3 col-lg-2 control-label">Order Types</label>
+                                                        <div class="col-sm-9 col-md-9 col-lg-10">
+                                                            <label>
+                                                                <input type="radio" name="PostBackUrls[@item.Id].OrderType" @(item.OrderType.HasFlag(UrlOrderType.Both) ? "checked" : "")
+                                                                       value="@UrlOrderType.Both" />@UrlOrderType.Both.DisplayValue()
+                                                                </label>
+                                                                <label>
+                                                                    <input type="radio" name="PostBackUrls[@item.Id].OrderType" @(item.OrderType.HasFlag(UrlOrderType.Initial) ? "checked" : "")
+                                                                           value="@UrlOrderType.Initial" />@UrlOrderType.Initial.DisplayValue()
+                                                                    </label>
+                                                                    <label>
+                                                                        <input type="radio" name="PostBackUrls[@item.Id].OrderType" @(item.OrderType.HasFlag(UrlOrderType.Subscription) ? "checked" : "")
+                                                                               value="@UrlOrderType.Subscription" />@UrlOrderType.Subscription.DisplayValue()
+                                                                        </label>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label class="col-sm-3 col-md-3 col-lg-2 control-label">Order Status</label>
+                                                                    <div class="col-sm-9 col-md-9 col-lg-10">
+                                                                        <label>
+                                                                            <input type="radio" name="PostBackUrls[@item.Id].OrderStatus" @(item.OrderStatus.HasFlag(UrlOrderStatus.Both) ? "checked" : "")
+                                                                                   value="@UrlOrderStatus.Both" /> @UrlOrderStatus.Both.DisplayValue()
+                                                                            </label>
+                                                                            <label>
+                                                                                <input type="radio" name="PostBackUrls[@item.Id].OrderStatus" @(item.OrderStatus.HasFlag(UrlOrderStatus.Approved) ? "checked" : "")
+                                                                                       value="@UrlOrderStatus.Approved" /> @UrlOrderStatus.Approved.DisplayValue()
+                                                                                </label>
+                                                                                <label>
+                                                                                    <input type="radio" name="PostBackUrls[@item.Id].OrderStatus" @(item.OrderStatus.HasFlag(UrlOrderStatus.Declined) ? "checked" : "")
+                                                                                           value="@UrlOrderStatus.Declined" /> @UrlOrderStatus.Declined.DisplayValue()
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="form-group">
+                                                                                <label class="col-sm-3 col-md-3 col-lg-2 control-label">Payments</label>
+                                                                                <div class="col-sm-9 col-md-9 col-lg-10">
+                                                                                    <label>
+                                                                                        <input type="radio" name="PostBackUrls[@item.Id].Payments" @(item.Payments.HasFlag(UrlPayments.Both) ? "checked" : "")
+                                                                                               value="@UrlPayments.Both" />
+                                                                                        @UrlPayments.Both.DisplayValue()
+                                                                                    </label>
+                                                                                    <label>
+                                                                                        <input type="radio" name="PostBackUrls[@item.Id].Payments" @(item.Payments.HasFlag(UrlPayments.NonTestPayments) ? "checked" : "")
+                                                                                               value="@UrlPayments.NonTestPayments" />
+                                                                                        @UrlPayments.NonTestPayments.DisplayValue()
+                                                                                    </label>
+                                                                                    <label>
+                                                                                        <input type="radio" name="PostBackUrls[@item.Id].Payments" @(item.Payments.HasFlag(UrlPayments.TestPayments) ? "checked" : "")
+                                                                                               value="@UrlPayments.TestPayments" />
+                                                                                        @UrlPayments.TestPayments.DisplayValue()
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
+
+                                                }
+
+                                            </div>
+
+                                        </div>
+
+                                        first = false;
+                                    }
+                                }
+
+                            </div>
+
+                            <div class="form-group">
+                                <button type="button" class="btn btn-default btn-sm plusbtn" id="addurl">
+                                    <i class="fa fa-plus"></i>
+                                    Add Additional URL
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            @* Tax Profile *@
+            <div id="taxableform">
+                <div class="widget-box">
+
+                    <div class="widget-header">
+                        <h5 class="widget-title">Tax Profile</h5>
+
+                        <div class="widget-toolbar">
+                            <a href="#" data-action="collapse">
+                                <i class="ace-icon fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="widget-body">
+                        <div class="widget-main">
+                            <div class="form-group">
+                                @Html.Label("Select a Tax Profile", new { @class = "col-sm-3 control-label" })
+                                <div class="col-sm-9">
+                                    <div class="col-sm-5 no-padding">
+                                        @Html.DropDownListFor(model => model.TaxProfileId, new SelectList(ViewBag.TaxProfiles, "Id", "Name"), new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-sm-3 col-xs-12" id="opts">
+
+            <h3 class="row header smaller lighter blue">
+                <span class="col-xs-6"> Options </span><!-- /.col -->
+            </h3>
+            <div class="form-group">
+                <div class="col-sm-1"></div>
+                <div class="col-sm-9 col-md-9 col-lg-10">
+                    <label>@Html.CheckBoxFor(model => model.IsSinglePurchaseLimit) @Html.DisplayNameFor(model => model.IsSinglePurchaseLimit)</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-1"></div>
+                <div class="col-sm-9 col-md-9 col-lg-10">
+                    <label>@Html.CheckBoxFor(model => model.IsTaxable) @Html.DisplayNameFor(model => model.IsTaxable)</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-1"></div>
+                <div class="col-sm-9 col-md-9 col-lg-10">
+                    <label id="ss3">@Html.CheckBoxFor(model => model.LoadBalancer) @Html.DisplayNameFor(model => model.LoadBalancer)</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-1"></div>
+                <div class="col-sm-9 col-md-9 col-lg-10">
+                    <label id="ss2">@Html.CheckBoxFor(model => model.IsShippable) @Html.DisplayNameFor(model => model.IsShippable)</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-1"></div>
+                <div class="col-sm-9 col-md-9 col-lg-10">
+                    <label id="ss1">@Html.CheckBoxFor(model => model.IsSubscription) @Html.DisplayNameFor(model => model.IsSubscription)</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-1"></div>
+                <div class="col-sm-9 col-md-9 col-lg-10">
+                    <label id="ss5">@Html.CheckBoxFor(model => model.HasRedemption) @Html.DisplayNameFor(model => model.HasRedemption)</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-1"></div>
+                <div class="col-sm-9 col-md-9 col-lg-10">
+                    <label id="ss6">
+                        @Html.CheckBox("Provider", (bool)ViewData["Edit"] && Model.AutoResponderProviderId.HasValue)
+                        Third Party Providers
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-1"></div>
+                <div class="col-sm-9 col-md-9 col-lg-10">
+                    <label id="ss7">
+                        @Html.CheckBox("hasurls", (bool)ViewData["Edit"] && Model.PostBackUrls.Count() > 0)
+                        Post Back URL
+                    </label>
+                </div>
+            </div>
+
+            @*<div class="widget-content nopadding">*@
+
+
+
+            <div class="form-actions clearfix">
+                <div class="col-md-offset-1 col-md-11">
+
+                    @if ((bool)ViewData["Edit"])
+                    {
+                        <button type="submit" class="btn btn-primary btn-sm btn-round">
+                            <i class="ace-icon fa fa-save"></i>
+                            Save
+                        </button>
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn btn-primary btn-sm btn-round">
+                            <i class="ace-icon fa fa-check"></i>
+                            Create
+                        </button>
+                    }
+                    &nbsp;
+                    <a href="@Url.Action("index")" class="btn btn-white btn-sm btn-default btn-round">
+                        <i class="ace-icon fa fa-times red2"></i>
+                        Cancel
+                    </a>
+                </div>
+            </div>
+
+
+            @*or
+                @Html.ActionLink("Cancel", "index", null, new { @class = "text-danger" })*@
+            @*</div>*@
+
+            @*</div>*@
+
+        </div>
+
+        @*</div>*@
+
+    </form>
+</div>
+
+<div id="divProduct" title="Create new product">
+    <div class="page-content-area" style="margin: 15px;">
+        <span id="spanValidationSummary">@ViewBag.message</span>
+
+        @using (Ajax.BeginForm("CreateProduct", "Product", new AjaxOptions { HttpMethod = "POST", InsertionMode = InsertionMode.Replace, UpdateTargetId = "divProduct" }, new { @id= "frmDialoug" , @class="form-horizontal" }))
+        {
+            <br />
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, new { @class = "col-sm-3 control-label" })
+                <div class="col-sm-9">
+                    @Html.TextBox("Name", "", new { @class = "col-xs-12 col-sm-5" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.SKU, new { @class = "col-sm-3 control-label" })
+                <div class="col-sm-9">
+                    @Html.TextBox("SKU", "", new { @class = "col-xs-12 col-sm-5" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Price, new { @class = "col-sm-3 control-label" })
+                <div class="col-sm-9">
+                    @Html.TextBox("Price", "", new { @class = "col-xs-12 col-sm-5" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Cost, new { @class = "col-sm-3 control-label" })
+                <div class="col-sm-9">
+                    @Html.TextBox("Cost", "", new { @class = "col-xs-12 col-sm-5" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.PreAuthAmount, new { @class = "col-sm-3 control-label" })
+                <div class="col-sm-9">
+                    @Html.TextBox("PreAuthAmount", "", new { @class = "col-xs-12 col-sm-5" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Currency, new { @class = "col-sm-3 control-label" })
+                <div class="col-sm-9">
+                    <div class="col-xs-4 no-padding">
+                        @Html.EnumDropdownListFor(model => model.Currency, new { @class = "chosen form-control" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Category, new { @class = "col-sm-3 control-label" })
+                <div class="col-sm-9">
+                    <div class="col-sm-5 no-padding">
+                        @Html.DropDownList("CategoryId", new SelectList(ViewBag.Categories, "Id", "Name"), "Select Category", new { @class = "chosen form-control" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, new { @class = "col-sm-3 control-label" })
+                <div class="col-sm-9">
+                    @Html.TextArea("Description", new { @class = "col-xs-12 col-sm-10" })
+                </div>
+            </div>
+
+            <div class="form-group" id="processorform">
+                @Html.Label("Processor", new { @class = "col-sm-3 control-label" })
+                <div class="col-sm-9">
+                    <div class="col-sm-5 no-padding">
+                        @Html.DropDownList("ProcessorId", new SelectList(ViewBag.Processors, "Id", "Name"), "Select Processor", new { @class = "chosen form-control" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Payment Types</label>
+                <div class="col-sm-9">
+                    <div class="col-sm-9 no-padding">
+                        @Html.ListBox("PaymentTypeIds", ViewBag.PaymentTypes as SelectList, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+         
+            <button type="button" id="btndialougSubmit" class="btn btn-primary btn-sm btn-round">
+                <i class="ace-icon fa fa-check"></i>
+                Create
+            </button>
+
+        }
+    </div>
+</div>
+
+<script src="/Scripts/jquery-ui-1.10.3.min.js"></script>
+
+@Html.Script(
+
+    @<script type="text/javascript">
+
+        var ordertypes = function (index) {
+            var result = '<label><input type="radio" name="PostBackUrls[_index].OrderType" checked value="@UrlOrderType.Both"/> @UrlOrderType.Both.DisplayValue()</label> ' +
+                         '<label><input type="radio" name="PostBackUrls[_index].OrderType" value="@UrlOrderType.Initial" /> @UrlOrderType.Initial.DisplayValue()</label> ' +
+                         '<label><input type="radio" name="PostBackUrls[_index].OrderType" value="@UrlOrderType.Subscription" /> @UrlOrderType.Subscription.DisplayValue()</label> ';
+
+            return result.replace(/_index/g, index);
+        }
+
+        var orderstatus = function (index) {
+            var result =
+               '<label><input type="radio" name="PostBackUrls[_index].OrderStatus" checked value="@UrlOrderStatus.Both" /> @UrlOrderStatus.Both.DisplayValue()</label> ' +
+               '<label><input type="radio" name="PostBackUrls[_index].OrderStatus" value="@UrlOrderStatus.Approved" /> @UrlOrderStatus.Approved.DisplayValue()</label> ' +
+               '<label><input type="radio" name="PostBackUrls[_index].OrderStatus" value="@UrlOrderStatus.Declined" /> @UrlOrderStatus.Declined.DisplayValue()</label> ';
+
+
+            return result.replace(/_index/g, index);
+        }
+
+        var orderpayment = function (index) {
+            var result =
+              '<label><input type="radio" name="PostBackUrls[_index].Payments" checked value="@UrlPayments.Both" /> @UrlPayments.Both.DisplayValue()</label> ' +
+              '<label><input type="radio" name="PostBackUrls[_index].Payments" value="@UrlPayments.NonTestPayments" /> @UrlPayments.NonTestPayments.DisplayValue()</label> ' +
+              '<label><input type="radio" name="PostBackUrls[_index].Payments" value="@UrlPayments.TestPayments" /> @UrlPayments.TestPayments.DisplayValue()</label> ';
+
+            return result.replace(/_index/g, index);
+        }
+
+        var orderactions = function (index) {
+            var result = '@Html.Raw(ViewBag.OrderActions)';
+
+            return result.replace(/_index/g, index);
+        }
+
+        var oType = function (index) {
+
+            var ct = '';
+            ct += '<input type="hidden" value="false" name="PostBackUrls[' + index + '].IsAction">';
+            ct += '<input type="hidden" value="@(Model == null ? 0 : Model.ProductId)" name="PostBackUrls[' + index + '].ProductId">';
+
+            ct += '<div class="form-group">';
+            ct += '<label class="col-sm-3 col-md-3 col-lg-2 control-label">Order Types</label>';
+            ct += '<div class="col-sm-9 col-md-9 col-lg-10">';
+            ct += ordertypes(index);
+            ct += '</div>';
+            ct += '</div>';
+
+            ct += '<div class="form-group">';
+            ct += '<label class="col-sm-3 col-md-3 col-lg-2 control-label">Order Status</label>';
+            ct += '<div class="col-sm-9 col-md-9 col-lg-10">';
+            ct += orderstatus(index);
+            ct += '</div>';
+            ct += '</div>';
+
+
+            ct += '<div class="form-group">';
+            ct += '<label class="col-sm-3 col-md-3 col-lg-2 control-label">Payments</label>';
+            ct += '<div class="col-sm-9 col-md-9 col-lg-10">';
+            ct += orderpayment(index);
+            ct += '</div>';
+            ct += '</div>';
+
+            return ct;
+        };
+
+        $("#pburls").on('change', '.urltype', function () {
+
+            $this = $(this);
+            var index = $this.data('index');
+            var value = $this.val();
+            var container = $('#pb_' + index);
+
+            var ct = '';
+
+            if (value == 'action') {
+
+                ct += '<input type="hidden" value="true" name="PostBackUrls[' + index + '].IsAction">';
+                ct += '<div class="form-group">';
+                ct += '<label class="col-sm-3 col-md-3 col-lg-2 control-label">Order</label>';
+                ct += orderactions(index);
+                ct += '</div>';
+                ct += '</div>';
+            }
+            else {
+
+                ct += oType(index);
+
+
+            }
+            container.html(ct);
+            //container.html(ct).find(':radio, :checkbox').iCheck({
+            //    checkboxClass: 'icheckbox_flat-blue',
+            //    radioClass: 'iradio_flat-blue'
+            //});
+
+        });
+
+        $("#pburls").on('click', '.removeurl', function () {
+
+            $this = $(this);
+            var index = $this.data('index');
+            $('#pbu_' + index).remove();
+
+        });
+
+        function initIndex() {
+            return @(Model != null && Model.PostBackUrls != null && Model.PostBackUrls.Count() > 0 ? Model.PostBackUrls.Select(u => u.Id).Max() : 0) +1;
+        }
+
+
+        var urlindex = initIndex();
+        $("#addurl").click(function () {
+            //console.log('here');
+
+            var container = $('#pburls');
+
+            var ct = '<div id="pbu_' + urlindex + '" class="pbu">';
+
+            ct += '<div class="form-group">';
+            ct += '<div class="col-sm-3">';
+            ct += '<select class="urltype form-control" data-index="' + urlindex + '">';
+            ct += '<option value="type">Order Type</option>';
+            ct += '<option value="action">Order Actions</option>';
+            ct += '</select>';
+            ct += '</div>';
+            if (urlindex > 1) {
+                ct += '<div class="col-sm-2 col-md-2 col-lg-2">';
+                ct += '<a class="btn btn-default btn-sm removeurl" data-index="' + urlindex + '"> <i class="fa fa-trash-o"></i> </a>';
+                ct += '</div>';
+            }
+            ct += '</div>';
+
+            ct += '<input type="hidden" name="PostBackUrls.Index" value="' + urlindex + '" />';
+            ct += '<input type="hidden" name="PostBackUrls[' + urlindex + '].ProductId" value="@(Model == null ? 0 : Model.ProductId)" />';
+
+
+            ct += '<div class="form-group">';
+            ct += '<div class="col-sm-12 col-md-12 col-lg-12">';
+            ct += '<input class="form-control" type="text" value="" name="PostBackUrls[' + urlindex + '].Url" placeholder="URL e.g. http://domain.com/AFID={affiliate}&SID={sub_affiliate}">';
+            ct += '</div>';
+            ct += '</div>';
+
+            ct += '<div id="pb_' + urlindex + '">';
+            ct += oType(urlindex);
+            ct += '</div>';
+
+            ct += '</div>';
+
+            container.append(ct);
+            //container.append(ct).find(':radio, :checkbox').iCheck({
+            //    checkboxClass: 'icheckbox_flat-blue',
+            //    radioClass: 'iradio_flat-blue'
+            //});
+
+            //container.find('select').select2();
+            urlindex++;
+        });
+
+        /* The adapter signature:
+            adapterName is the name of the adapter, and matches the name of the rule in the HTML element.
+
+            params is an array of parameter names that you're expecting in the HTML attributes, and is optional. If it is not provided,
+            then it is presumed that the validator has no parameters.
+
+            fn is a function which is called to adapt the HTML attribute values into jQuery Validate rules and messages.
+
+            The function will receive a single parameter which is an options object with the following values in it:
+            element
+            The HTML element that the validator is attached to
+
+            form
+            The HTML form element
+
+            message
+            The message string extract from the HTML attribute
+
+            params
+            The array of name/value pairs of the parameters extracted from the HTML attributes
+
+            rules
+            The jQuery rules array for this HTML element. The adapter is expected to add item(s) to this rules array for the specific jQuery
+            Validate validators
+            that it wants to attach. The name is the name of the jQuery Validate rule, and the value is the parameter values for the jQuery
+            Validate rule.
+
+            messages
+            The jQuery messages array for this HTML element. The adapter is expected to add item(s) to this messages array for the specific jQuery Validate
+            validators that it wants to attach, if it wants a custom error message for this rule. The name is the name of the jQuery Validate rule, and the
+            value is the custom message to be displayed when the rule is violated.
+            */
+
+        jQuery.validator.addMethod('requiredif', function (value, element, params) {
+            //console.log('here');
+            var checkboxId = $(element).attr('data-val-requiredif-boolprop');
+            var checkboxValue = $('#' + checkboxId).first().is(":checked");
+            var expected = $(element).attr('data-val-requiredif-expected') == "True";
+
+            //console.log(checkboxValue);
+            if (expected) {
+                return !checkboxValue || value;
+            }
+            return checkboxValue || value;
+
+        }, '');
+
+        jQuery.validator.unobtrusive.adapters.add('requiredif', ["boolprop", "expected"], function (options) {
+            options.rules['requiredif'] = true; // "#" + options.params.boolprop;
+            options.messages['requiredif'] = options.message;
+        });
+
+
+        $("#addevent").click(function () {
+
+            var event = $('#events').find(":selected");
+            var eventid = event.val();
+            var eventname = event.text();
+            var template = event.data('template');
+            var server = event.data('server');
+            var type = event.data('type');
+
+            if (eventid === '') {
+                return;
+            }
+
+            $("#etable tbody:last").append(addevent(eventname, eventid, template, type, server));
+
+            //product.attr('disabled', 'disabled');
+            //product.removeAttr("selected");
+            event.remove();
+            //$('#events').select2();
+
+            //var form = $("#mform");
+            //form.removeData('validator');
+            //form.removeData('unobtrusiveValidation');
+            //$.validator.unobtrusive.parse(form);
+        });
+
+        function addevent(eventname, eventid, template, type, server) {
+            var result = '<tr>';
+            result += '<td>' + type + '</td>'; // type
+
+            result += '<td>' + eventname + '</td>'; // event
+
+            result += '<td>' + template + '</td>'; // template
+
+            result += '<td>' + server + '</td>'; // smtp
+
+            result += '<td>';
+            result += '<button class="rlink btn-link red" data-id="' + eventid + '" data-name="' + eventname + '" data-type="' + type + '" data-template="' + template + '" data-server="' + server + '"><i class="fa fa-trash-o bigger-130 ace-icon"></i></button>';
+            result += '<input type="hidden" name="ProductEvents.Index" value="' + eventid + '" />';
+            result += '<input type="hidden" value="' + eventid + '" name="ProductEvents[' + eventid + '].EventId">';
+            result += '<input type="hidden" value="' + @(Model == null ? 0 : Model.ProductId) + '" name="ProductEvents[' + eventid + '].ProductId">';
+            result += '</td>';
+
+            result += '</tr>'
+
+            return result;
+
+        }
+
+
+        $("#addsalvage").click(function () {
+
+            var $salvage = $('#salvageprofiles').find(":selected");
+            var salvageId = $salvage.val();
+
+
+            if (salvageId === '') {
+                return;
+            }
+
+            var $declineType = $salvage.closest('optgroup');
+
+            var declineTypeName = $declineType.attr("label");
+            var salvageName = $salvage.text();
+
+            var declineId = $declineType.attr("value");
+
+            $("#sptable tbody:last").append(addSalvage(salvageId, declineTypeName, salvageName, declineId));
+
+            $declineType.children().prop("disabled", true);
+            $('#salvageprofiles').children().first().prop("selected", true);
+        });
+
+        function addSalvage(salvageId, declineTypeName, salvageName, declineId) {
+            var result = '<tr>';
+            result += '<td>' + declineTypeName + '</td>';
+            result += '<td>' + salvageName + '</td>';
+            result += '<td>';
+            result += '<button class="rslink btn-link red" data-id="' + salvageId + '" data-declineid="' + declineId + '"><i class="fa fa-trash-o bigger-130 ace-icon"></i></button>';
+            result += '<input type="hidden" name="ProductSalvages.Index" value="' + salvageId + '" />';
+            result += '<input type="hidden" value="' + salvageId + '" name="ProductSalvages[' + salvageId + '].SalvageProfileId">';
+            result += '<input type="hidden" value="' + @(Model == null ? 0 : Model.ProductId) + '" name="ProductSalvages[' + salvageId + '].ProductId">';
+            result += '</td>';
+
+            result += '</tr>'
+
+            return result;
+        }
+
+        function validateDialougForm() {
+            var validate = true;
+            $("#spanValidationSummary").text("");
+            if ($('#divProduct').find('#Name').val().trim() == "") {
+                validate = false;
+                $("#spanValidationSummary").append("The Name field is required.");
+            }
+            if ($('#divProduct').find('#Price').val().trim() == "") {
+                validate = false;
+                $("#spanValidationSummary").append("</br> The Price field is required.");
+            }
+            if ($('#divProduct').find('#Cost').val().trim() == "") {
+                validate = false;
+                $("#spanValidationSummary").append("</br> The Cost field is required.");
+            }
+            if ($('#divProduct').find('#CategoryId').val().trim() == "") {
+                validate = false;
+                $("#spanValidationSummary").append("</br> The CategoryId field is required.");
+            }
+            if ($('#divProduct').find('#ProcessorId').val().trim() == "") {
+                validate = false;
+                $("#spanValidationSummary").append("</br> The Processor field is required.");
+            }
+            if ($('#divProduct').find('#PaymentTypeIds option:selected').text() == "") {
+                validate = false;
+                $("#spanValidationSummary").append("</br> The Payment Type field is required.");
+            }
+            return validate;
+        }
+
+        function refreshProduct() {
+
+            $.ajax({
+                type: "GET",
+                url: "GetAllProduct",
+                contentType: "application/json;charset=utf-8",
+                success: function (result) {
+                    //console.log(result);
+
+                    $('#RecurringProductId').empty(); //remove all child nodes
+                    $('#RecurringProductId').prepend('<option value="Create New">Create a new product</option>');
+
+                    $.each(result.ProductList, function (index, value) {
+                        var newOption;
+                        if (index == result.ProductList.length) {
+                            newOption = $('<option value="' + value.ProductId + '">' + value.Name + '</option>');
+                        } else {
+                             newOption = $('<option value="' + value.ProductId + '">' + value.Name + '</option>');
+                        }
+                       
+                        $('#RecurringProductId').append(newOption);
+                    });
+                    $('#RecurringProductId').trigger("chosen:updated");
+
+                    setTimeout(function () {
+                        if (result.ProductList.length > 0) {
+                            $('#RecurringProductId').val(result.ProductList[result.ProductList.length - 1].ProductId);
+                        }
+
+                        $('#RecurringProductId').trigger("chosen:updated");
+                    }, 2000);
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+            });
+
+           
+        }
+
+        $(function () {
+            $('#RecurringProductId').prepend('<option value="Create New">Create a new product</option>');
+            $('#RecurringProductId').trigger("chosen:updated");
+
+            $('#RecurringProductId').on('change', function () {
+
+                if ($(this).val() == "Create New") {
+                    $("#divProduct").dialog({ width: "700", height: "820", position: { my: "center", at: "top" } });
+                }
+
+            });
+
+            $("#btndialougSubmit").on('click', function () {
+                if (validateDialougForm()) {
+                    //$("#frmDialoug").submit();
+
+                    var form = $("#frmDialoug");
+                    $.ajax({
+                        url: form.attr("action"),
+                        method: form.attr("method"),  // post
+                        data: form.serialize(),
+                        success: function (result) {
+                            refreshProduct();
+
+                            //Close dialoug
+                            $("#divProduct").dialog("close");
+                   
+                        },
+                        error: function (e) {
+                            // Show errors
+
+                        }
+                    });
+                }
+            });
+
+            $("#divProduct").hide();
+
+        });
+
+    </script>
+
+            )

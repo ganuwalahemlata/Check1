@@ -1,0 +1,51 @@
+﻿@model KontinuityCRM.Models.BlackList
+
+@{
+    ViewBag.Title = "Black List";
+}
+
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            @ViewBag.Title
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+                Create
+            </small>
+        </span>
+    </h1>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+
+        @using (Html.BeginForm("create", "blacklist", FormMethod.Post, new { @class = "form-horizontal", @role = "form" }))
+        {
+            @Html.ValidationSummary(true)
+
+            @Html.EditorForModel()
+
+            <div class="clearfix form-actions">
+                <div class="col-md-offset-3 col-md-9">
+                    <button type="submit" class="btn btn-primary btn-round">
+                        <i class="ace-icon fa fa-check"></i>
+                        Create
+                    </button>
+                    &nbsp; &nbsp; &nbsp;
+                    <a href="@Url.Action("index")" class="btn btn-white btn-default btn-round">
+                        <i class="ace-icon fa fa-times red2"></i>
+                        Cancel
+                    </a>
+                </div>
+            </div>
+
+        }
+
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

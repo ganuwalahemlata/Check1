@@ -1,0 +1,219 @@
+﻿@model KontinuityCRM.Models.DeclineSalvage
+
+@{
+    ViewBag.Title = "Product";
+    ViewBag.icon = "fa-folder";
+}
+
+
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            @ViewBag.Title
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+                Decline Salvage
+            </small>
+        </span>
+    </h1>
+</div>
+
+@if (Model == null)
+{
+   
+    <div class="row">
+        <div class="col-xs-8">
+            <div class="widget-box">
+                <div class="widget-title">
+                    <span class="icon"><i class="fa fa-plus"></i></span>
+                    <h5>@ViewBag.Title</h5>
+                </div>
+                <div class="widget-content nopadding">
+                    @Html.ActionLink("Define Salvage", "createsalvage", new { id = ViewContext.RouteData.Values["id"] })
+                </div>
+            </div>
+        </div>
+    </div>
+    
+}
+else
+{
+    <div class="row">
+        <form method="post" class="form-horizontal">
+            <div class="col-sm-9">
+
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => model.ProductId)
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.BillType, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.EnumDropdownListFor(model => model.BillType)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" id="billvaluelabel">Days to next billing</label>
+                    <div id="inputbillvalueform">
+                        <div class="col-sm-9">
+                            @Html.TextBoxFor(model => model.BillValue, new { @class = "tip-bottom col-xs-6 col-sm-3", @title = "Subscription will be billed every N days" })
+                            @Html.ValidationMessageFor(model => model.BillValue)
+                        </div>
+                    </div>
+                    <div id="selectbillvalueform" style="display: none;">
+                        <div class="col-sm-9">
+
+                            @Html.DropDownList("billday", ((KontinuityCRM.Models.BillDay)ViewBag.billday).ToSelectList())
+                            @Html.DropDownList("dayofweek", ((DayOfWeek)ViewBag.dayofweek).ToSelectList())
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CancelAfter, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.CancelAfter, new { @class = "col-xs-6 col-sm-3" })
+                        @Html.ValidationMessageFor(model => model.CancelAfter)
+                    </div>
+                </div>
+
+                <div id="lowerform">
+
+                    <h3 class="row header smaller lighter purple">
+                        <span class="col-sm-6"> Lower Price Settings </span>
+                    </h3>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.LowerPriceAfter, new { @class = "col-sm-3 control-label" })
+                        <div class="col-sm-9">
+                            @Html.TextBoxFor(model => model.LowerPriceAfter, new { @class = "col-xs-6 col-sm-3" })
+                            @Html.ValidationMessageFor(model => model.LowerPriceAfter)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.LowerAmount, new { @class = "col-sm-3 control-label" })
+                        <div class="col-sm-9">
+                            @Html.TextBoxFor(model => model.LowerAmount, new { @class = "col-xs-6 col-sm-3" })
+                            @Html.ValidationMessageFor(model => model.LowerAmount)
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-sm-3">
+
+                <div class="widget-box">
+
+                    <div class="widget-header">
+                        <h5 class="widget-title">Options</h5>
+                    </div>
+
+                    <div class="widget-body">
+                        <div class="widget-main no-padding">
+
+                            <div class="space-6"></div>
+                            <div class="form-group">
+                                <div class="col-sm-10 col-sm-offset-2">
+                                    @Html.CheckBoxFor(model => model.LowerPrice) @Html.DisplayNameFor(model => model.LowerPrice)
+                                </div>
+                            </div>
+
+                            <div class="form-actions clearfix">
+                                <div class="col-md-offset-1 col-md-11">
+                                    <button type="submit" class="btn btn-primary btn-sm btn-round">
+                                        <i class="ace-icon fa fa-save"></i>
+                                        Save
+                                    </button>
+                                    &nbsp;
+                                    <a href="@Url.Action("index")" class="btn btn-white btn-sm btn-default btn-round">
+                                        <i class="ace-icon fa fa-times red2"></i>
+                                        Cancel
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </form>
+    </div>
+}
+
+@section Scripts {
+
+    @if (Model != null)
+    {
+        
+    
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/custom-validation.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            isLowerPrice();
+            $("#LowerPrice").change(function () {
+                isLowerPrice();
+            });
+
+            billType($("#BillType").val()); // call to the function
+            $("#BillType").change(function () {
+                billType(this.value);
+            });
+        });
+
+        function isLowerPrice() {
+            if ($("#LowerPrice").is(':checked')) {
+            //var pdiv = $("#ss1 > div").first();
+            //if (pdiv.hasClass("checked")) {
+                $("#lowerform").show();
+            }
+            else {
+                $("#lowerform").hide();
+            }
+        }
+
+        function billType(valueSelected) {
+            var inputbillvalueform = $('#inputbillvalueform');
+
+            switch (valueSelected) {
+                case 'ByCycle':
+                    $('#billvaluelabel').text("Days to next billing");
+                    $('#BillValue').attr('data-original-title', "Subscription will be billed every N days");
+                    if (!inputbillvalueform.is(":visible")) {
+                        $('#selectbillvalueform').hide();
+                        inputbillvalueform.show();
+                    }
+                    break;
+                case 'ByDate':
+                    $('#billvaluelabel').text("Billing date");
+                    $('#BillValue').attr('data-original-title', "Subscription will be billed on the Nth day of every month");
+                    if (!inputbillvalueform.is(":visible")) {
+                        $('#selectbillvalueform').hide();
+                        inputbillvalueform.show();
+                    }
+                    break;
+                case 'ByDay':
+                    $('#billvaluelabel').text("Billing Day");
+                    if (inputbillvalueform.is(":visible")) {
+                        inputbillvalueform.hide();
+                        $('#selectbillvalueform').show();
+                    }
+                    break;
+            }
+        }
+
+    </script>
+        
+    }
+}
+

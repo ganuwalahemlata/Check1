@@ -1,0 +1,35 @@
+﻿@model IEnumerable<KontinuityCRM.Models.ViewModels.QuartzJob>
+@{
+    ViewBag.Title = "Schedule Jobs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>All Scheduled Jobs</h2>
+
+<table class="table table-bordered table-hover table-striped">
+    <thead>
+        <tr>
+            <th>Job Name</th>
+            <th>Job Group</th>
+            <th>Previous Fire Time</th>
+            <th>Next Fire Time</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.JobName</td>
+                <td>@item.JobGroup</td>
+                @*<td>@(item.PreviousFireTime.HasValue ? item.PreviousFireTime.Value.ToLocalTime().ToString() : string.Empty) </td>*@
+                <td>@item.PreviousFireTimePersist</td>
+                <td>@(item.NextFireTime.HasValue? item.NextFireTime.Value.ToLocalTime().ToString() : string.Empty) </td>
+                <td>
+                    <a href="@Url.Action("firejob", new { id = item.JobName })">Execute Now</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

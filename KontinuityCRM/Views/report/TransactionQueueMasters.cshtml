@@ -1,0 +1,92 @@
+﻿@using KontinuityCRM.Models.ViewModels.Enum
+@using System.Linq;
+@model PagedList.IPagedList<KontinuityCRM.Models.TransactionQueueMaster>
+    @{
+        ViewBag.Title = "Transaction Queue Masters Report";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    @section styles {
+        <link href="~/Content/assets/css/datepicker.css" rel="stylesheet" />
+    }
+@using (Html.BeginForm())
+{
+    <div class="page-header">
+        <h1 class="row no-padding">
+            <span class="col-sm-8 no-padding">
+                @ViewBag.Title
+            </span>
+        </h1>
+    </div>
+    <form method="get" class="form-horizontal">
+        <div class="row">
+            <div class="col-xs-12">
+                @Html.Partial("_PageTop_TransactionQueueMasters")
+                <div style="overflow:scroll;width:100%;">
+                    <table class="table table-bordered table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th class="@ViewBag.idTQMIcon">
+                                    @Html.ActionQueryLink("Id", "TransactionQueueMasters", new { sortOrder = ViewBag.IdSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                                </th>
+                                <th class="@ViewBag.nooftransactionTQMIcon">
+                                    @Html.ActionQueryLink("No of Transactions", "TransactionQueueMasters", new { sortOrder = ViewBag.NoOfTransactionsSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                                </th>
+                                <th class="@ViewBag.amountTQMIcon">
+                                    @Html.ActionQueryLink("Amount", "TransactionQueueMasters", new { sortOrder = ViewBag.AmountSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                                </th>
+                                <th class="@ViewBag.processoridTQMIcon">
+                                    @Html.ActionQueryLink("Processor Name", "TransactionQueueMasters", new { sortOrder = ViewBag.ProcessorIdSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                                </th>
+                                <th class="@ViewBag.cardtypeTQMIcon">
+                                    @Html.ActionQueryLink("Card Type", "TransactionQueueMasters", new { sortOrder = ViewBag.CardTypeSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                                </th>
+                                <th class="@ViewBag.remainingtransactionsTQMIcon">
+                                    @Html.ActionQueryLink("Remaining Transactions", "TransactionQueueMasters", new { sortOrder = ViewBag.RemainingTransactionsSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                                </th>
+                                <th class="@ViewBag.dateTQMIcon">
+                                    @Html.ActionQueryLink("Date", "TransactionQueueMasters", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                                </th>
+                                <th class="@ViewBag.finishedTQMIcon">
+                                    @Html.ActionQueryLink("Finished", "TransactionQueueMasters", new { sortOrder = ViewBag.finishedSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr onclick="document.location='@(Url.Action("ViewTransactionQueueDetailsByMasterID", "report", new { Id = item.Id }))';">
+                                    <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.NoOfTransactions)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Processor.Name)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.CardType)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.RemainingTransactions)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Date)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.finished)</td>
+                                    <td>
+                                        @if (item.finished == true)
+                                        {
+
+                                            @Html.ActionLink("Start", "EditTransactionQueueMaster", new { id = item.Id }, new { @class = @Html.RenderHidden("edit") })
+                                            <span class='@Html.RenderHidden("delete")'>|</span>
+                                            @Html.ActionLink("Delete", "DeleteTransactionQueueMaster", new { id = item.Id }, new { @class = @Html.RenderHidden("delete") })
+
+                                        }
+                                        else
+                                        {
+                                            @Html.ActionLink("Stop", "EditTransactionQueueMaster", new { id = item.Id }, new { @class = @Html.RenderHidden("edit") })
+                                            <span class='@Html.RenderHidden("delete")'>|</span>
+                                            @Html.ActionLink("Delete", "DeleteTransactionQueueMaster", new { id = item.Id }, new { @class = @Html.RenderHidden("delete") })
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                @Html.Partial("_PageBottom_TransactionQueueMasters", Model)
+            </div>
+        </div>
+        </form>
+}

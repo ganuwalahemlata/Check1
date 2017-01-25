@@ -1,0 +1,49 @@
+﻿@model IEnumerable<KontinuityCRM.Models.KLog>
+
+@{
+    ViewBag.Title = "View Logs";
+    ViewBag.icon = "fa-file";
+}
+
+<div id="breadcrumb">
+	<a href="@Url.Action("index", "home")" title="Go to Home" class="tip-bottom"><i class="fa fa-home"></i> Home</a>
+	<a href="#" class="current">@ViewBag.Title</a>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+
+        <div class="widget-box">
+            <div class="widget-title">
+                <span class="icon">
+                    <i class="fa @ViewBag.icon"></i>
+                </span>
+                <h5>@ViewBag.Title</h5>
+            </div>
+            <div class="widget-content nopadding">
+
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.UserName)</th>
+                            <th>@Html.DisplayNameFor(model => model.Url)</th>
+                            <th>@Html.DisplayNameFor(model => model.Timestamp)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.UserName)</td>
+                                <td>
+                                    <a href="@item.Url">@Html.DisplayFor(modelItem => item.Url)</a>
+                                </td>
+                                <td>@Html.DisplayFor(modelItem => item.Timestamp)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

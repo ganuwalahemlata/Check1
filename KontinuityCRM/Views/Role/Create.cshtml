@@ -1,0 +1,86 @@
+﻿@model KontinuityCRM.Models.UserGroup
+
+@{
+    ViewBag.Title = "Roles";
+    ViewBag.icon = "fa-user";
+}
+
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            @ViewBag.Title
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+                Create
+            </small>
+        </span>
+    </h1>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+
+        @using (Html.BeginForm("create", "role", FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            @Html.ValidationSummary(true)
+
+            @Html.EditorForModel()
+
+            <div class="clearfix form-actions">
+                <div class="col-md-offset-3 col-md-9">
+                    <button type="submit" class="btn btn-primary btn-round">
+                        <i class="ace-icon fa fa-check"></i>
+                        Create
+                    </button>
+                    &nbsp; &nbsp; &nbsp;
+                    <a href="@Url.Action("index")" class="btn btn-white btn-default btn-round">
+                        <i class="ace-icon fa fa-times red2"></i>
+                        Cancel
+                    </a>
+                </div>
+            </div>
+
+        }
+
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Content/assets/js/ace/ace.widget-box.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            
+            $("#viewpermissions").change(function() {
+            //$("#ss1 ins").click(function () {
+                isPermissions();
+            });
+
+            applyColumns($('#pck label'));
+
+        });
+
+        //$(function () {
+        //    //var labels = $('#pck label');
+
+        //    applyColumns($('#pck label'));
+        //    applyColumns($('#pck1 label'));
+
+        //});
+
+        function applyColumns(labels) {
+            ncols = 3;
+            col = 12 / ncols;
+            j = Math.ceil(labels.length / ncols);
+
+            $.each(labels, function (i, el) {
+                if (i % j == 0) {
+                    labels.slice(i, i + j).wrapAll('<div class="col-xs-12 col-sm-6 col-md-' + col + '">');
+                }
+            });
+        }
+
+    </script>
+}
+

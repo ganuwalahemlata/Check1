@@ -1,0 +1,70 @@
+﻿@model KontinuityCRM.Models.Postback
+
+@{
+    ViewBag.Title = "Postback Delete";
+    ViewBag.icon = "fa-inbox";
+}
+
+<div id="breadcrumb">
+	<a href="@Url.Action("index", "home")" title="Go to Home" class="tip-bottom"><i class="fa fa-home"></i> Home</a>
+    <a href="@Url.Action("index")">Postbacks</a>
+	<a href="#" class="current">Delete</a>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <div class="widget-box">
+
+                <div class="widget-title">
+                    <span class="icon"><i class="fa fa-trash-o"></i></span>
+                    <h5>@ViewBag.Title</h5>
+                </div>
+
+                <div class="widget-content nopadding">
+
+                    <form method="post" class="form-horizontal">
+                    
+                        @Html.HiddenFor(model => model.PostbackId)
+
+                        <div class="form-group">
+                             @Html.LabelFor(model => model.PostbackURL, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-9 col-md-9 col-lg-10">
+                                @Html.TextBoxFor(model => model.PostbackURL, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Product, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-9 col-md-9 col-lg-10">
+                               @Html.TextBoxFor(model => model.Product.Name, new { @class = "form-control input-sm" , @readonly = ""})
+							</div>
+						</div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.EventType, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-9 col-md-9 col-lg-10">
+                                @Html.TextBoxFor(model => model.EventType, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                             @Html.LabelFor(model => model.Parameters, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-9 col-md-9 col-lg-10">
+                                @Html.TextBoxFor(model => model.Parameters, new { @class = "form-control input-sm" , @readonly = ""})
+							</div>
+						</div>
+
+                          <div class="form-actions">
+							<button type="submit" class="btn btn-danger btn-sm">Delete</button> or 
+                            @Html.ActionLink("Cancel", "index", null, new { @class = "text-danger" })
+						</div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

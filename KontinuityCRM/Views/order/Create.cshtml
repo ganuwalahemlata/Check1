@@ -1,0 +1,660 @@
+﻿@using KontinuityCRM.Helpers
+@model KontinuityCRM.Models.Order
+
+@{
+    ViewBag.Title = "Order";
+    ViewBag.icon = "fa-shopping-cart";
+    List<KontinuityCRM.Models.Product> products = ((List<KontinuityCRM.Models.Product>)ViewBag.Products);
+}
+
+@section styles{
+    <link href="~/Content/chosen.css" rel="stylesheet" />
+    <style>
+        .field-validation-error, .validation-summary-errors li {
+            padding: 0 5px;
+            font-size: large;
+            color: red;
+        }
+    </style>
+
+}
+
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            @ViewBag.Title
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+                Create
+            </small>
+        </span>
+    </h1>
+</div>
+
+@*<div class="container-fluid">*@
+<div class="row">
+    <form method="post" class="form-horizontal" id="mform">
+        <div class="col-xs-12">
+            @* Order Products *@
+            @Html.Partial("_OrderProducts", Model)
+
+
+            @* Order Data *@
+            <div class="">
+
+                <h3 class="row header smaller lighter purple">
+                    <span class="col-sm-6"> Data </span><!-- /.col -->
+                </h3>
+                @if (Model == null)
+                {
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Customer, new { @class = "col-sm-3 control-label" })
+                        <div class="col-sm-9">
+                            <input type="text" id="CustomerAutocomplete" value="@(Model == null ? "" : Model.Customer.FullName)" placeholder="New Customer" class="col-xs-12 col-sm-5" />
+                            <input type="hidden" name="CustomerId" id="CustomerId" value="@(Model == null ? 0 : Model.CustomerId)" />
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Customer, new { @class = "col-sm-3 control-label" })
+                        <div class="col-sm-9">
+                            <input type="text" id="CustomerAutocomplete" value="@(Model.Customer == null ? "" : Model.Customer.FullName)" placeholder="New Customer" class="col-xs-12 col-sm-5" />
+                            <input type="hidden" name="CustomerId" id="CustomerId" value="@(Model == null ? 0 : Model.CustomerId)" />
+                        </div>
+                    </div>
+                }
+                <div class="form-group">
+                    @Html.Label("Shipping Method", new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        <div class="col-xs-12 no-padding col-sm-5">
+                            @*<select name="ShippingMethodId" id="select-product" class="chosen-select" style="width:50%; height: 10px;"
+                                                                 data-bind="options: shippingMethods(), optionsText: 'Name',
+                                optionsValue: 'Id', value: 'Id'" data-placeholder=""></select> @*, select2:{}, optionsCaption: ' '*@
+
+                            @Html.DropDownListFor(model => model.ShippingMethodId,
+                                              ((IEnumerable<ShippingMethod>)ViewBag.ShippingMethods).Select(s => new SelectListItem
+                                              {
+                                                  Value = s.Id.ToString(),
+                                                  Text = String.Format("{0} ({1}) ${2}", s.Name, s.Id, s.Price.ToString("F"))
+
+
+                                              }), "", new { @class = "form-control chosen" })
+                        </div>
+                        @*//new SelectList(ViewBag.ShippingMethods, "Id", "Name"), "")*@
+                        @Html.ValidationMessageFor(model => model.ShippingMethodId)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.AffiliateId, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.AffiliateId, new { @class = "col-xs-6 col-sm-2" })
+                        @Html.ValidationMessageFor(model => model.AffiliateId)
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SubId, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.SubId, new { @class = "col-xs-6 col-sm-2" })
+                        @Html.ValidationMessageFor(model => model.SubId)
+                    </div>
+                </div>
+
+
+
+                @*</div>*@
+            </div>
+
+            @* Shipping / Billing Information *@
+            <div class="">
+
+                @*<div class="widget-title">
+                        <span class="icon"><i class="fa fa-user"></i></span>
+                        <h5>Shipping / Billing Information</h5>
+                    </div>*@
+
+                <h3 class="row header smaller lighter purple">
+                    <span class="col-sm-6"> Shipping / Billing </span><!-- /.col -->
+                </h3>
+
+                @*<div class="widget-content nopadding">*@
+
+                @* ShippingFirstName *@
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ShippingFirstName, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.ShippingFirstName, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.ShippingFirstName)
+                        @Html.HiddenFor(model => model.BillingFirstName)
+                    </div>
+                </div>
+
+                @* ShippingLastName *@
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ShippingLastName, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.ShippingLastName, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.ShippingLastName)
+                        @Html.HiddenFor(model => model.BillingLastName)
+                    </div>
+                </div>
+
+                @* ShippingAddress1 *@
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ShippingAddress1, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.ShippingAddress1, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.ShippingAddress1)
+                    </div>
+                </div>
+
+
+                @* ShippingAddress2 *@
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ShippingAddress2, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.ShippingAddress2, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.ShippingAddress2)
+                    </div>
+                </div>
+
+
+                @* ShippingCity *@
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ShippingCity, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.ShippingCity, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.ShippingCity)
+                    </div>
+                </div>
+
+
+                @* ShippingProvince *@
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ShippingProvince, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.ShippingProvince, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.ShippingProvince)
+                    </div>
+                </div>
+
+
+
+                @* ShippingPostalCode *@
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ShippingPostalCode, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.ShippingPostalCode, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.ShippingPostalCode)
+                    </div>
+                </div>
+
+
+                @* ShippingCountry *@
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ShippingCountry, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @*@Html.TextBoxFor(model => model.ShippingCountry, new { @class = "col-xs-12 col-sm-5" })*@
+                        <div class="col-xs-12 no-padding col-sm-5">
+                            @Html.DropDownListFor(model => model.ShippingCountry, new SelectList(ViewBag.Countries,
+                           "CountryAbbreviation", "Name"), "", new { @class = "form-control chosen" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ShippingCountry)
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Billing Address Is Different From Shipping Address ?</label>
+                    <div class="col-sm-9">
+                        <input type="checkbox" id="cb_billingAddress">
+                    </div>
+                </div>
+                <div class="form-group" id="billingFirstName">
+                    @Html.LabelFor(model => model.BillingFirstName, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.BillingFirstName, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.BillingFirstName)
+
+                    </div>
+                </div>
+
+                @* ShippingLastName *@
+                <div class="form-group" id="billingLastName">
+                    @Html.LabelFor(model => model.BillingLastName, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.BillingLastName, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.BillingLastName)
+                    </div>
+                </div>
+                <div class="form-group" id="billingAddress">
+                    @Html.LabelFor(model => model.BillingAddress1, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.BillingAddress1, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.BillingAddress1)
+                    </div>
+                </div>
+
+                <div class="form-group" id="billingAddress2">
+                    @Html.LabelFor(model => model.BillingAddress2, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.BillingAddress2, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.BillingAddress2)
+                    </div>
+                </div>
+
+                <div class="form-group" id="billingCity">
+                    @Html.LabelFor(model => model.BillingCity, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.BillingCity, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.BillingCity)
+                    </div>
+                </div>
+
+
+                <div class="form-group" id="billingProvince">
+                    @Html.LabelFor(model => model.BillingProvince, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.BillingProvince, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.BillingProvince)
+                    </div>
+                </div>
+
+                <div class="form-group" id="billingPostalCode">
+                    @Html.LabelFor(model => model.BillingPostalCode, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.BillingPostalCode, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.BillingPostalCode)
+                    </div>
+                </div>
+
+                <div class="form-group" id="billingCountry">
+                    @Html.LabelFor(model => model.BillingCountry, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @*@Html.TextBoxFor(model => model.ShippingCountry, new { @class = "col-xs-12 col-sm-5" })*@
+                        <div class="col-xs-12 no-padding col-sm-5">
+                            @Html.DropDownListFor(model => model.BillingCountry, new SelectList(ViewBag.Countries,
+                           "CountryAbbreviation", "Name", "14"), "", new { @class = "form-control" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.BillingCountry)
+
+                    </div>
+                </div>
+
+
+                @* Phone *@
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Phone, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.Phone, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.Phone)
+                    </div>
+                </div>
+
+                @* Email *@
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Email, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.Email, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.Email)
+                    </div>
+                </div>
+
+
+
+                @*</div>*@
+
+            </div>
+            @* Payment Information *@
+            <div class="">
+
+                @*<div class="widget-title">
+                        <span class="icon"><i class="fa fa-money"></i></span>
+                        <h5>Payment Information</h5>
+                    </div>*@
+
+                <h3 class="row header smaller lighter purple">
+                    <span class="col-sm-6"> Payment </span><!-- /.col -->
+                </h3>
+
+                @*<div class="widget-content nopadding">*@
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PaymentType, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        <div class="col-xs-12 no-padding col-sm-5">
+                            @Html.EnumDropdownListFor(model => model.PaymentType, new { @class = "form-control chosen" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CreditCardNumber, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.CreditCardNumber, new { @class = "", @size = 17 })
+                        @Html.ValidationMessageFor(model => model.CreditCardNumber)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Expiration Date", new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-5">
+                        <div class="row">
+                            <div class="col-sm-5 col-xs-8">
+                                @*@Html.EnumDropdownListFor(model => model.CreditCardExpirationMonth, new { @class = "form-control" })*@
+                                @Html.DropDownListFor(model => model.CreditCardExpirationMonth,
+                               EnumHelper<Month>.GetValue(DateTime.Today.Month).ToSelectIntList(), new { @class = "form-control chosen" })
+                            </div>
+                            <div class="col-sm-4 col-xs-4">
+                                @Html.DropDownListFor(model => model.CreditCardExpirationYear,
+                               new SelectList(ViewBag.CreditCardExpirationYears, "Value", "Text"), new { @class = "form-control chosen" })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CreditCardCVV, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.CreditCardCVV, new { @class = "", @size = 4 })
+                        @Html.ValidationMessageFor(model => model.CreditCardCVV)
+                    </div>
+                </div>
+
+                <div class="clearfix form-actions">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button type="submit" class="btn btn-primary btn-round">
+                            <i class="ace-icon fa fa-check"></i>
+                            Create
+                        </button>
+                        &nbsp; &nbsp; &nbsp;
+                        <a href="@Url.Action("index")" class="btn btn-white btn-default btn-round">
+                            <i class="ace-icon fa fa-times red2"></i>
+                            Cancel
+                        </a>
+                    </div>
+                </div>
+
+                @*</div>*@
+
+            </div>
+
+        </div>
+    </form>
+</div>
+
+@*</div>*@
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery-ui-1.10.3.min.js"></script>
+    <script src="~/Scripts/jquery.loader.js"></script>
+    <script src="~/Scripts/chosen.jquery.min.js"></script>
+    <script type="text/javascript">
+
+        (function () {
+
+            $(".chosen").chosen({ max_selected_options: 2 });
+            $(".chosen-deselect").chosen({ allow_single_deselect: true });
+            $(".chosen").chosen().change();
+            $(".chosen").trigger('liszt:updated');
+
+
+
+            $('#CustomerAutocomplete').focusout(function () {
+                $('body').addClass('loading')
+                    .loader('show', {
+                        overlay: true
+                    });
+                setTimeout(function () {
+                    $.get('/order/GetCustomerInfo?CustomerId=' + $("#CustomerId").val(), function (response) {
+                        //Data
+                        $('#ShippingMethodId').val(response.ShippingMethodId);
+                        $('#AffiliateId').val(response.AffiliateId);
+                        $('#SubId').val(response.SubId);
+
+                        //Pouplate all the fields from the response
+                        $('#ShippingFirstName').val(response.ShippingFirstName);
+                        $('#ShippingLastName').val(response.ShippingLastName);
+                        $('#ShippingAddress1').val(response.ShippingAddress1);
+                        $('#ShippingAddress2').val(response.ShippingAddress2);
+                        $('#ShippingProvince').val(response.ShippingProvince);
+                        $('#ShippingCity').val(response.ShippingCity);
+                        $('#ShippingPostalCode').val(response.ShippingPostalCode);
+                        $('#ShippingCountry').val(response.ShippingCountry);
+                        $('#Phone').val(response.Phone);
+                        $('#Email').val(response.Email);
+
+                        //Billing
+                        $('#BillingFirstName').val(response.BillingFirstName);
+                        $('#BillingLastName').val(response.BillingLastName);
+
+                        if (!$('#cb_billingAddress').is(':checked')) {
+
+                            $('#BillingAddress1').val(response.BillingAddress1);
+                            $('#BillingAddress2').val(response.BillingAddress2);
+                            $('#BillingProvince').val(response.BillingProvince);
+                            $('#BillingCity').val(response.BillingCity);
+                            $('#BillingPostalCode').val(response.BillingPostalCode);
+                            $('#BillingCountry').val(response.BillingCountry);
+
+                        }
+
+                        if ($('body').hasClass('loading')) {
+                            $('body').removeClass('loading')
+                            .loader('hide');
+                        }
+                    });
+                }, 500)
+
+            });
+
+            $('#CustomerAutocomplete').autocomplete({
+                source: '@Url.Action("CustomerAutocomplete", "Helper")',
+                messages: {
+                    noResults: '',
+                    results: function () { }
+                },
+                select: function (event, ui) {
+                    $("#CustomerId").val(ui.item ? ui.item.id : "0");
+                    $('#CustomerAutocomplete').trigger('focusout');
+
+                },
+                change: function (event, ui) {
+                    //alert(ui.item);
+                    $("#CustomerId").val(ui.item ? ui.item.id : "0");
+                }
+            });
+
+            $('#ShippingFirstName').on('input', function () {
+                if (!$('#cb_billingAddress').is(':checked')) {
+                    $('#BillingFirstName').val($(this).val());
+                }
+                calculateTax();
+            });
+
+            $('#ShippingLastName').on('input', function () {
+                if (!$('#cb_billingAddress').is(':checked')) {
+                    $('#BillingLastName').val($(this).val());
+                }
+                calculateTax();
+            });
+
+            $('#ShippingAddress1').on('input', function () {
+                if (!$('#cb_billingAddress').is(':checked')) {
+                    $('#BillingAddress1').val($(this).val());
+                }
+                calculateTax();
+            });
+
+            $('#ShippingAddress2').on('input', function () {
+                if (!$('#cb_billingAddress').is(':checked')) {
+                    $('#BillingAddress2').val($(this).val());
+                }
+                calculateTax();
+            });
+
+            $('#ShippingProvince').on('input', function () {
+                if (!$('#cb_billingAddress').is(':checked'))
+                { $('#BillingProvince').val($(this).val()); }
+
+                calculateTax();
+            });
+
+            $('#ShippingCity').on('input', function () {
+                if (!$('#cb_billingAddress').is(':checked'))
+                { $('#BillingCity').val($(this).val()); }
+
+                calculateTax();
+            });
+
+            $('#ShippingFirstName').on('input', function () {
+                $('#BillingFirstName').val($(this).val());
+                calculateTax();
+            });
+
+            $('#ShippingPostalCode').on('input', function () {
+                if (!$('#cb_billingAddress').is(':checked'))
+                { $('#BillingPostalCode').val($(this).val()); }
+                calculateTax();
+            });
+
+            $('#ShippingCountry').on('change', function () {
+
+                if (!$('cb_billingAddress').is(':checked'))
+                { $('#BillingCountry').val($(this).val()); }
+
+                calculateTax();
+            });
+
+            $('#ShippingMethodId').on('change', function () {
+                calculateTax();
+            });
+
+
+
+            $('#cb_billingAddress').on('change', function () {
+                if ($(this).is(':checked')) {
+
+                    //---Empty Text present in fields
+                    setTimeout(function () {
+
+                        showBillingAddress();
+                        assignFields(true);
+                    });
+                }
+                else {
+
+                    hideBillingAddress();
+                    assignFields(false);
+                }
+            });
+
+            hideBillingAddress();
+            assignDefaultValues();
+        }())
+
+        function calculateTax() {
+
+            var url = '/order/getTaxInfo';
+            var country = $('#ShippingCountry').val();
+            var province = $('#BillingProvince').val();
+            var city = $('#BillingCity').val();
+            var postalCode = $('#BillingPostalCode').val();
+            var shippingMethod = $('#ShippingMethodId').val();
+            var ids = "";
+            var prices = "";
+
+            $('#ptable tr').each(function (index, element) {
+                var productIds = $(element).find("td").eq(0).find("input[name='orderproducts.Index']").val();
+                var pr = $(element).find("td").eq(3).find("input[name='OrderProducts[" + productIds + "].Subtotal']").val();
+
+                if (productIds != undefined) ids += productIds + ",";
+                if (pr != undefined) prices += pr + ",";
+            });
+
+            jQuery.ajax({
+                'url': url,
+                'type': 'POST',
+                'data': { 'ids': ids, 'country': country, 'province': province, 'city': city, 'postalCode': postalCode, 'prices': prices, 'shippingMethod': shippingMethod },
+                'datatype': 'json',
+                'success': function (res) {
+                    $.each(res, function (i, val) {
+                        $("input[name='orderproducts.Index'][value=" + i + "]").parent().parent().find('td.tax').html(val);
+                    });
+
+                }
+            });
+        }
+        //#region private functions
+        function assignFields(isChecked) {
+
+
+            if (isChecked) {
+
+                $('#BillingAddress1').val("");
+                $('#BillingAddress2').val("");
+                $('#BillingCity').val("");
+                $('#BillingProvince').val("");
+                $('#BillingPostalCode').val("");
+                $('#BillingCountry').val("");
+                $('#BillingFirstName').val("");
+                $('#BillingLastName').val("");
+            }
+            else {
+                //Assign values
+                $('#ShippingFirstName').val().length > 0 ? $('#BillingFirstName').val($('#ShippingFirstName').val()) : $('#BillingFirstName').val("First Name");
+                $('#ShippingLastName').val().length > 0 ? $('#BillingLastName').val($('#ShippingLastName').val()) : $('#BillingLastName').val("Last Name");
+                $('#ShippingAddress1').val().length > 0 ? $('#BillingAddress1').val($('#ShippingAddress1').val()) : $('#BillingAddress1').val("Address");
+                $('#ShippingCity').val().length > 0 ? $('#BillingCity').val($('#ShippingCity').val()) : $('#BillingCity').val("City");
+                $('#ShippingPostalCode').val().length > 0 ? $('#BillingPostalCode').val($('#ShippingPostalCode').val()) : $('#BillingPostalCode').val("Postal Code");
+
+                $('#ShippingCountry').val().length > 0 ? $('#BillingCountry').val($('#ShippingCountry').val()) : $('#BillingCountry').val("AX")
+            }
+        }
+
+        //To Hide Wrong Validations
+        function assignDefaultValues() {
+
+            //Assign Initial Values to required fields.
+
+            $('#BillingAddress1').val("Billing Address");
+            $('#BillingCity').val("Billing City");
+            $('#BillingPostalCode').val("Billing Postal Code");
+            $("#BillingCountry").val("AX");
+            $('#BillingFirstName').val("Billing First Name");
+            $('#BillingLastName').val("Billing Last Name");
+        }
+
+        function hideBillingAddress() {
+            //Hide Fields
+            $('#billingAddress').hide();
+            $('#billingAddress2').hide();
+            $('#billingCity').hide();
+            $('#billingProvince').hide();
+            $('#billingPostalCode').hide();
+            $('#billingCountry').hide();
+            $('#billingLastName').hide();
+            $('#billingFirstName').hide();
+        }
+
+        function showBillingAddress() {
+
+            //----Show Hidden Billing Fields
+            $('#billingAddress').show();
+            $('#billingAddress2').show();
+            $('#billingCity').show();
+            $('#billingProvince').show();
+            $('#billingPostalCode').show();
+            $('#billingCountry').show();
+            $('#billingFirstName').show();
+            $('#billingLastName').show();
+        }
+
+        //#endregion
+    </script>
+
+}

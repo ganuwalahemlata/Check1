@@ -1,0 +1,79 @@
+﻿@model PagedList.IPagedList<KontinuityCRM.Models.ShippingMethod>
+
+@{
+    ViewBag.Title = "Shipping Methods";
+}
+
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            @ViewBag.Title
+        </span>
+        <span class="col-sm-4">
+            <span class="pull-right inline">
+                <a href="@Url.Action("create")" class="btn btn-primary btn-round @Html.RenderHidden("create")">
+                    <i class="ace-icon fa fa-plus"></i>
+                    Create
+                </a>
+            </span>
+        </span>
+    </h1>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        @Html.Partial("_PageTop")
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th class="@ViewBag.idOrderIcon">
+                        @Html.ActionQueryLink("Id", "index", new { sortOrder = ViewBag.IdSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.nameOrderIcon">
+                        @Html.ActionQueryLink("Name", "index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.priceOrderIcon">
+                        @Html.ActionQueryLink("Price", "index", new { sortOrder = ViewBag.priceSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.recurringpriceOrderIcon">
+                        @Html.ActionQueryLink("Recurring Price", "index", new { sortOrder = ViewBag.recurringpriceSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.categoryOrderIcon">
+                        @Html.ActionQueryLink("Category", "index", new { sortOrder = ViewBag.categorySortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    
+                    @*<th>@Html.DisplayNameFor(model => model.Id)</th>
+                    <th>@Html.DisplayNameFor(model => model.Name)</th>
+                    <th>@Html.DisplayNameFor(model => model.Price)</th>
+                    <th>@Html.DisplayNameFor(model => model.RecurringPrice)</th>
+                    <th>@Html.DisplayNameFor(model => model.ShippingCategory)</th>
+                    <th>@Html.DisplayNameFor(model => model.Description)</th>*@
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Price)</td>
+                        <td>@Html.DisplayFor(modelItem => item.RecurringPrice)</td>
+                        <td>@Html.DisplayFor(modelItem => item.ShippingCategory.Name)</td>
+                        @*<td>@Html.DisplayFor(modelItem => item.Description)</td>*@
+                        <td>
+                            @Html.ActionLink("Edit", "edit", new { id = item.Id }, new { @class = @Html.RenderHidden("edit") })
+                            <span class='@Html.RenderHidden("delete")'>|</span>
+                            @Html.ActionLink("Delete", "delete", new { id = item.Id }, new { @class = @Html.RenderHidden("delete") })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @Html.Partial("_PageBottom", Model)
+    </div>
+</div>
+
+
+
+

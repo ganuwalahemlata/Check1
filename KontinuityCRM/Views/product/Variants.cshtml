@@ -1,0 +1,71 @@
+﻿@model IEnumerable<KontinuityCRM.Models.ProductVariant>
+
+@{
+    ViewBag.Title = "Product Variants";
+    ViewBag.icon = "fa-random";
+}
+
+
+@section breadcrumbs{
+    @*Home > Products > Product Name > active:Variants*@ 
+    <li>
+        <a href="@Url.Action("index", "product")">Products</a>
+    </li>
+    <li>
+        @{
+            var product = (Product)ViewBag.Product;
+        }
+        <a href="@Url.Action("edit", "product", new { id = product.ProductId })">@Html.Raw(product.Name)</a>
+    </li>
+    <li>
+        Variants
+    </li>
+}
+
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            Variants
+        </span>
+        <span class="col-sm-4">
+            <span class="pull-right inline">
+                <a href="@Url.Action("createvariant", new { id = ViewContext.RouteData.Values["id"] })" class="btn btn-primary btn-round">
+                    <i class="fa fa-plus"></i> Create
+                </a>
+            </span>
+        </span>
+    </h1>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Country)</th>
+                    <th>@Html.DisplayNameFor(model => model.SKU)</th>
+                    <th>@Html.DisplayNameFor(model => model.Cost)</th>
+                    <th>@Html.DisplayNameFor(model => model.Price)</th>
+                    <th>@Html.DisplayNameFor(model => model.Currency)</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Country.Name)</td>
+                        <td>@Html.DisplayFor(modelItem => item.SKU)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Cost)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Price)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Currency)</td>
+                        <td>
+                            @Html.ActionLink("Edit", "editvariant", new { id=item.ProductVariantId }) |
+                            @Html.ActionLink("Delete", "deletevariant", new { id=item.ProductVariantId })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

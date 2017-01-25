@@ -1,0 +1,9 @@
+﻿@model KontinuityCRM.Models.AutoResponders.GetResponse
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ApiKey, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.ApiKey, new { @class = "col-xs-12 col-sm-5" })
+        @Html.ValidationMessageFor(model => model.ApiKey)
+    </div>
+</div>

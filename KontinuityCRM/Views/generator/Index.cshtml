@@ -1,0 +1,535 @@
+﻿@using KontinuityCRM.Models.ViewModels
+@model KontinuityCRM.Models.ViewModels.FormGenerationModel
+
+@{
+    ViewBag.Title = "Form Generator";
+    ViewBag.icon = "fa-tags";
+}
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            @ViewBag.Title
+        </span>
+    </h1>
+</div>
+<div class="col-md-8 col-md-offset-2">
+    <form accept-charset='ISO-8859-1' role="form" class="form-horizontal" method="post" id="generator-form" name="generator-form">
+        <div id="rootwizard">
+            <ul class="hidden">
+                <li><a href="#tab1" data-toggle="tab">First</a></li>
+                <li><a href="#tab2" data-toggle="tab">Second</a></li>
+                <li><a href="#tab3" data-toggle="tab">Third</a></li>
+                <li><a href="#tab4" data-toggle="tab">Fourth</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane" id="tab1">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">General</h3>
+                        </div>
+                        <div style="height: 531px; padding: 5px">
+                            <div class="form-group row">
+                                <label for="UseProspect" class="col-sm-3 control-label">Use Prospect?</label>
+                                <div class="col-sm-9">
+                                    <input type="checkbox" class="form-control" id="UseProspect" name="UseProspect">
+                                </div>
+                            </div>
+                            <div class="form-group row total-pages">
+                                <label for="TotalPages" class="col-sm-3 control-label">How many pages?</label>
+                                <div class="col-sm-9">
+                                    <input type="number" class="form-control" id="TotalPages" name="TotalPages" pattern="[0-9]*" value="2" min="1" onchange=" setMaxPageValue() " required />
+                                </div>
+                            </div>
+
+                            @*foreach (formname field in Model.FormNames)
+                                {*@
+                            @if (@Model.FormNames.Count > 0)
+                            {
+                                <div class="form-group row">
+                                    <label for="@Model.FormNames[0].Name" class="col-sm-3 control-label">Page 1 Name</label>
+                                    <div class="col-sm-5">
+                                        <input style="width:100%" type="text" class="input-group form-field-name" id="Page-@Model.FormNames[0].Name" name="@Model.FormNames[0].Name" required />
+                                    </div>
+
+                                    <label class="col-sm-3 control-label">without extension</label>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="@Model.FormNames[1].Name"  class="col-sm-3 control-label">Page 2 Name</label>
+                                    <div class="col-sm-5">
+                                        <input style="width:100%" type="text" class="input-group form-field-name" id="Page-@Model.FormNames[1].Name" name="@Model.FormNames[1].Name" required />
+
+                                    </div>
+
+                                    <label class="col-sm-3 control-label">without extension</label>
+                                </div>
+                                @*<table>
+                                    <div class="form-group">
+                                        <tr>
+                                            <td>
+                                                <label for=" @Model.FormNames[0].Name " class=" control-label ">
+                                                    Page 1
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <input type="text" class="input-group form-field-name" id="Page-@Model.FormNames[0].Name" name="@Model.FormNames[0].Name" required />
+                                            </td>
+
+                                        </tr>
+                                    </div>
+
+                                        <tr>
+                                            <td><label for="@Model.FormNames[1].Name" class="control-label ">Page 2</label></td>
+                                            <td>
+                                                <input type="text" class="input-group form-field-name" id="Page-@Model.FormNames[1].Name" name="@Model.FormNames[1].Name" required />
+                                            </td>
+
+                                        </tr>
+</table>*@
+                                   
+                                    }
+                                    @* }*@
+
+                                    <div class="row">
+                                        <label for="ProductId" class="col-sm-3 control-label">Product</label>
+                                        <div class="form-group col-sm-4">
+                                            <div class="col-sm-12">
+                                                <select class="form-control" name="ProductId" id="ProductId" multiple required style="height: 150px">
+                                                    @{
+                                                        foreach (Product product in Model.Products)
+                                                        {
+                                                            <option value="@product.ProductId">@product.Name</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <label for="ProductPage" class="col-sm-1 control-label">Page</label>
+                                        <div class="form-group col-sm-2">
+                                            <div class="col-sm-12">
+                                                <input type="number" class="form-control page-index" id="ProductPage" name="ProductPage" value="2" min="1" required />
+                                            </div>
+                                        </div>
+                                        <label for="ProductOrder" class="col-sm-1 control-label">Order</label>
+                                        <div class="form-group  col-sm-2">
+                                            <div class="col-sm-12">
+                                                <input type="number" class="form-control" id="ProductOrder" name="ProductOrder" value="2" min="1" required />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <label for="ShippingMethodId" class="col-sm-3 control-label">Shipping Method</label>
+                                        <div class="form-group col-sm-4">
+                                            <div class="col-sm-12">
+                                                <select class="form-control" name="ShippingMethodId" id="ShippingMethodId" multiple required style="height: 150px">
+                                                    @{
+                                                        foreach (ShippingMethod method in Model.ShippingMethods)
+                                                        {
+                                                            <option value="@method.Id">@method.Name</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <label for="ShippingMethodPage" class="col-sm-1 control-label">Page</label>
+                                        <div class="form-group col-sm-2">
+                                            <div class="col-sm-12">
+                                                <input type="number" class="form-control page-index" id="ShippingMethodPage" name="ShippingMethodPage" value="2" min="1" required />
+                                            </div>
+                                        </div>
+                                        <label for="ShippingMethodOrder" class="col-sm-1 control-label">Order</label>
+                                        <div class="form-group col-sm-2">
+                                            <div class="col-sm-12">
+                                                <input type="number" class="form-control" id="ShippingMethodOrder" name="ShippingMethodOrder" value="2" min="1" required />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                    </div>
+                    <hr />
+                </div>
+                <div class="tab-pane" id="tab2">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">User data</h3>
+                        </div>
+                        <div style="height: 531">
+                            <div class="table-responsive" style="height: 531px">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Field</th>
+                                            <th>Included</th>
+                                            <th>Appears on page</th>
+                                            <th>Appearing order</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            foreach (FormFieldInfo field in Model.FormFields.Where(f => f.PageIndex == 1))
+                                            {
+                                                var checkedData = field.Required ? "checked readonly disabled value='on'" : "";
+                                                <tr>
+                                                    <td><label for="@field.Name" class="control-label ">@field.Label</label></td>
+                                                    <td><input type="checkbox" class="input-group form-field" id="@field.Name" name="@field.Name" @checkedData></td>
+                                                    <td>
+                                                        <input type="number" class="input-group page-index" id="Page-@field.Name" name="Page-@field.Name" pattern="[0-9]*" required value="1" min="1" />
+                                                        <input type="checkbox" class="input-group hidden form-required" id="Required-@field.Name" name="Required-@field.Name" value="@field.Required" @checkedData />
+                                                        <input type="hidden" class="input-group form-regex" id="Regex-@field.Name" name="Regex-@field.Name" value="@field.ValidationExpression" />
+                                                        <input type="hidden" class="input-group form-type" id="Type-@field.Name" name="Type-@field.Name" value="@field.InputType" />
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" class="input-group" id="Order-@field.Name" name="Order-@field.Name" pattern="[0-9]*" required value="1" min="1" />
+                                                    </td>
+                                                </tr>
+                                            }
+
+
+
+
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                </div>
+                <div class="tab-pane" id="tab3">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Credit Card &amp; Billing Info</h3>
+                        </div>
+                        <div style="height: 531px">
+                            <div class="table-responsive" style="height: 531px">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Field</th>
+                                            <th>Included</th>
+                                            <th>Appears on page</th>
+                                            <th>Appearing order</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{
+                                            foreach (FormFieldInfo field in Model.FormFields.Where(f => f.PageIndex == 2))
+                                            {
+                                                var checkedData = field.Required ? "checked readonly disabled value='on'" : "";
+                                                <tr>
+                                                    <td><label for="@field.Name" class="control-label ">@field.Label</label></td>
+                                                    <td><input type="checkbox" class="input-group form-field" id="@field.Name" name="@field.Name" @checkedData></td>
+                                                    <td>
+                                                        <input type="number" class="input-group page-index" id="Page-@field.Name" name="Page-@field.Name" pattern="[0-9]*" required value="2" min="2" />
+                                                        <input type="checkbox" class="input-group hidden form-required" id="Required-@field.Name" name="Required-@field.Name" value="@field.Required" @checkedData />
+                                                        <input type="hidden" class="input-group form-regex" id="Regex-@field.Name" name="Regex-@field.Name" value="@field.ValidationExpression" />
+                                                        <input type="hidden" class="input-group form-type" id="Type-@field.Name" name="Type-@field.Name" value="@field.InputType" />
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" class="input-group" id="Order-@field.Name" name="Order-@field.Name" pattern="[0-9]*" required value="2" min="2" />
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                </div>
+                <div class="tab-pane" id="tab4">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Final result</h3>
+
+                        </div>
+                        <div class="panel-body" style="height: 531px; overflow: auto;">
+                            <ul id="myTab" class="nav nav-tabs">
+                                <li class="active"> <a href="#tab-generated-form" data-toggle="tab"> Generated Form </a> </li>
+                                <li><a href="#tab-html-code" data-toggle="tab">HTML Code</a></li>
+                            </ul>
+                            <div id="myTabContent" class="tab-content">
+                                <div class="tab-pane fade in active" id="tab-generated-form">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">This is the HTML sample generated</h3>
+                                        </div>
+                                        <div id="formResult" style="padding: 5px">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="tab-html-code">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Copy this code into your site</h3>
+                                        </div>
+                                        <pre class="prettyprint" id="formResultPreview" style="max-height: 30em">
+                                            </pre>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                </div>
+
+                <ul class="pager wizard"></ul>
+                <ul class="pager wizard">
+                    @*                    <li class="previous first" style="display: none;"><a href="#">First</a></li>*@
+                    <li class="previous hidden">
+                        <a href="#" style="border: 0px; border-radius: 0px;">
+                            <div class="btn btn-sm btn-primary">Previous</div>
+                        </a>
+                    </li>
+                    <li class="next  last" style="display: none;"><a href="#">Last</a></li>
+                    <li class="next nextBtn">
+                        <a href="#" style="border: 0px; border-radius: 0px;">
+                            <div class="btn btn-sm btn-primary">Next</div>
+                        </a>
+                    </li>
+                 
+                    <li class="next nextDownload hidden">
+                        <a href="#" id="nextDownload" class="next nextDownload hidden" style="border: 0px; border-radius: 0px;" target="_blank">
+                            <div class="btn btn-sm btn-primary">Download Page1</div>
+                        </a>
+                    </li>
+                    <li class="next nextDownload2 hidden">
+                        <a href="#" id="nextDownload2" class="next nextDownload2 hidden" style="border: 0px; border-radius: 0px;" target="_blank">
+                            <div class="btn btn-sm btn-primary">Download Page2</div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </form>
+    <div class="progress hidden">
+        <div class="progress-bar progress-bar-info
+                    progress-bar-striped active"
+             style="width: 100%">
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-2.1.3.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/form2js.js"></script>
+<script src="~/Scripts/jquery.toObject.js"></script>
+<script src="~/Scripts/json2.js"></script>
+<script src="~/Scripts/jquery.bootstrap.wizard.min.js"></script>
+<script src="~/Scripts/prettify.js"></script>
+<script src="~/Scripts/validator.min.js"></script>
+<script type="text/javascript">
+    var shown = false;
+    $(document).ready(function () {
+        var that = this;
+
+        $("#rootwizard").bootstrapWizard(
+            {
+                tabClass: "nav nav-pills",
+                shown: false,
+                onNext: nextWizard,
+                onPrevious: prevWizard
+            }
+        );
+        setMaxPageValue();
+    });
+
+    function prevWizard(tab, navigation, index) {
+        shown = false;
+        $(".nextBtn").removeClass("hidden");
+        $(".nextDownload").addClass("hidden");
+        $(".nextDownload2").addClass("hidden");
+        if (index == 0) {
+            $(".previous").addClass("hidden");
+        }
+    }
+
+    function nextWizard(tab, navigation, index) {
+
+        if (index == 4)
+            return true;
+        var formHasErrors = false;
+        $('#generator-form').validator('validate');
+        $('.form-group').each(function () {
+            formHasErrors = formHasErrors || $(this).hasClass('has-error');
+        });
+        if (formHasErrors) {
+            return false;
+        }
+        $(".previous").removeClass("hidden");
+        $('#generator-form').validator('validate');
+        if (index == 3 && !shown) {
+            $(".nextBtn").addClass("hidden");
+            $(".nextDownload").removeClass("hidden");
+            $(".nextDownload2").removeClass("hidden");
+            var fields = [];
+            var pagenames = [];
+            var useProspect = $("#UseProspect")[0].checked;
+            var totalPages = $("#TotalPages")[0].value;
+            var productId = $("#ProductId")[0].value;
+            var shippingMethodId = $("#ShippingMethodId")[0].value;
+            for (var i = 0; i < $(".form-field").length; i++) {
+                var name = $(".form-field")[i].name;
+                if ($(".page-index[name=Page-" + name + "]").length > 0) {
+                    var checked = $(".form-field")[i].checked;
+                    var page = $(".page-index[name=Page-" + name + "]")[0].value;
+                    var order = $(".input-group[name=Order-" + name + "]")[0].value;
+                    var label = $(".control-label[for=" + name + "]")[0].innerHTML;
+                    var required = $(".form-required[id=Required-" + name + "]")[0].checked;
+                    var regex = $(".form-regex[id=Regex-" + name + "]")[0].value;
+                    var type = $(".form-type[id=Type-" + name + "]")[0].value;
+                    var fieldInfo = {
+                        PageIndex: page,
+                        Visible: checked,
+                        Label: label,
+                        Order: order,
+                        Required: required,
+                        ValidationExpression: regex,
+                        InputType: type,
+                        Name: name
+                    };
+                    fields.push(fieldInfo);
+                }
+            }
+
+            for (var i = 0; i < $(".form-field-name").length; i++) {
+                var name = $(".form-field-name")[i].name;
+
+
+                var pagenamesInfo = {
+
+                    Name: name
+                };
+                pagenames.push(pagenamesInfo);
+
+            }
+
+
+            var data = form2js("generator-form", ".", false, function (node) {
+            }, false, true);
+            $(".progress").removeClass("hidden");
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("FormGenerator1", "generator")',
+                contentType: 'application/json',
+                dataType: 'json',
+                data: JSON.stringify(
+                    assembleJsonData())
+            })
+                .done(function (result) {
+                    shown = true;
+                    $("#rootwizard").bootstrapWizard({
+                        tabClass: "nav nav-pills",
+                        onNext: nextWizard,
+                        onPrevious: prevWizard
+                    });
+                    $("#rootwizard").bootstrapWizard("show", 3);
+                    $("#formResult").html(result.Widget);
+                    $("#formResultPreview").html(result.Html);
+                    $(".progress").addClass("hidden");
+
+                    $("#nextDownload").attr("href", '@Url.Action("Download", "generator")' + "?id=" + result.FormCode);
+
+                    $("#nextDownload2").attr("href", '@Url.Action("Download2", "generator")' + "?id=" + result.FormCode2);
+                    //                    $(".previous").addClass("hidden");
+                    console.log(data);
+                })
+                .fail(function () {
+                    shown = false;
+                    $(".nextBtn").removeClass("hidden");
+                    $(".nextDownload").addClass("hidden");
+                    $(".nextDownload2").addClass("hidden");
+                    $(".previous").removeClass("hidden");
+                    $(".previous").addClass("hidden");
+                    $(".progress").addClass("hidden");
+                });
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    function assembleJsonData() {
+        var fields = [];
+        var pagenames = [];
+        var useProspect = $("#UseProspect")[0].checked;
+        var totalPages = $("#TotalPages")[0].value;
+        for (var i = 0; i < $(".form-field").length; i++) {
+            var name = $(".form-field")[i].name;
+            if ($(".page-index[name=Page-" + name + "]").length > 0) {
+                var checked = $(".form-field")[i].checked;
+                var page = $(".page-index[name=Page-" + name + "]")[0].value;
+                var order = $(".input-group[name=Order-" + name + "]")[0].value;
+                var label = $(".control-label[for=" + name + "]")[0].innerHTML;
+                var required = $(".form-required[id=Required-" + name + "]")[0].checked;
+                var regex = $(".form-regex[id=Regex-" + name + "]")[0].value;
+                var type = $(".form-type[id=Type-" + name + "]")[0].value;
+                var fieldInfo = {
+                    PageIndex: page,
+                    Visible: checked,
+                    Label: label,
+                    Order: order,
+                    Required: required,
+                    ValidationExpression: regex,
+                    InputType: type,
+                    Name: name
+                };
+                fields.push(fieldInfo);
+            }
+        }
+
+        for (var i = 0; i < $(".form-field-name").length; i++) {
+            var name = $(".form-field-name")[i].name;
+            var value = $(".form-field-name")[i].value;
+            var pagenamesInfo = {
+                Name: name,
+                Value: value
+            };
+            pagenames.push(pagenamesInfo);
+
+        }
+        var data = form2js("generator-form", ".", false, function (node) {
+        }, false, true);
+        var jsonData = {
+            UseProspect: useProspect,
+            TotalPages: totalPages,
+            ProductId: data.ProductId,
+            ShippingMethodId: data.ShippingMethodId,
+            ShippingMethodPage: data.ShippingMethodPage,
+            ShippingMethodOrder: data.ShippingMethodOrder,
+            ProductPage: data.ProductPage,
+            ProductOrder: data.ProductOrder,
+            FormFields: fields,
+            FormNames: pagenames
+        };
+        return jsonData;
+    }
+
+    function downloadAsHtml() {
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("Download", "generator")' + "?model=" + JSON.stringify(assembleJsonData()),
+            contentType: 'application/json',
+            dataType: 'json',
+            data: {}
+        })
+            .done(function (result) {
+
+                console.log(result);
+            })
+            .fail(function (result) {
+                console.error(result);
+            });
+    }
+
+    function setMaxPageValue() {
+        $(".page-index").attr("max", $("#TotalPages").val());
+
+    }
+    function showTotalPages() {
+        if ($("#UseProspect")[0].checked)
+            $(".total-pages").removeClass("hidden");
+        else
+            $(".total-pages").addClass("hidden");
+
+    }
+</script>

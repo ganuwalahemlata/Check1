@@ -1,0 +1,43 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>A Special Offer For You - Essence of Argan</title>
+    @*<link rel="icon" type="image/ico" href="https://getessenceofargan.com/assets/site/argan/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="https://getessenceofargan.com/assets/site/argan/css/styles.essenceofargan.min.css">
+    <link rel="stylesheet" type="text/css" href="https://getessenceofargan.com/assets/site/argan/css/normalize.css">
+    <link rel="stylesheet" type="text/css" href="https://getessenceofargan.com/assets/site/argan/css/upsells.css">
+    <link rel="stylesheet" type="text/css" href="https://getessenceofargan.com/assets/shared/styles/views.css">*@
+
+    <link rel="stylesheet" type="text/css" href="~/officialargan/styles/upsell.css" media="all">
+
+</head>
+<body>
+
+    <div id="subpages_content">
+        @*<img src="" alt="img" class="subpage_headline_1">
+        <img src="" alt="img" class="subpage_headline_1_258">*@
+        <img src="~/officialargan/images/subpage_headline_1.png" alt="img" class="subpage_headline_1" />
+        <img src="~/officialargan/images/logo.png" alt="img" class="subpage_headline_1_258" />
+
+        <div class="">
+            <!--Wrapper class-->
+            <div class="upsell_wrapper">
+                @*<a href=""></a>*@
+                <form method="post" action="@Url.Action("upsell", new { id = ViewBag.OrderId })">
+                    <input type="hidden" name="[0].ProductId" value="@ViewBag.ProductId" />
+                    <input type="hidden" name="[0].Quantity" value="1" />
+                    <input type="submit" value="order now" />
+                </form>
+            </div>
+        </div>
+    </div>
+    
+</body>
+</html>

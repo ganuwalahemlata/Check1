@@ -1,0 +1,289 @@
+﻿@model Balancer
+@{
+    
+    var processors = ((IEnumerable<Processor>)ViewBag.Processors);
+    if (Model.BalancerProcessors == null)
+    {
+        Model.BalancerProcessors = new List<BalancerProcessor>();
+    }
+    var inprocessors = Model.BalancerProcessors.Select(l => l.ProcessorId);
+    
+}
+
+
+@Html.ValidationSummary()
+@Html.HiddenFor(model => model.Id)
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Name, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.Name, new { @class = "col-xs-10 col-sm-5", @placeholder = "Balancer Name" })
+        @Html.ValidationMessageFor(model => model.Name)
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-sm-3 control-label"></div>
+    <div class="col-sm-9">
+        @*<label>
+                @Html.RadioButtonFor(model => model.AllocationBalance, true)
+                Allocation Balance
+                @Html.RadioButtonFor(model => model.AllocationBalance, false)
+                Percent Balance
+            </label>*@
+        <label>@Html.EditorFor(model => model.AllocationBalance) @Html.DisplayNameFor(model => model.AllocationBalance)</label>
+    </div>
+</div>
+
+<div class="form-group">
+
+    <div class="col-sm-12 col-md-12 col-lg-12">
+
+        <h3 class="row header smaller lighter purple">
+            <span class="col-sm-6"> Processors </span><!-- /.col -->
+        </h3>
+
+        @Html.Label("Select a Processor", new { @class = "col-sm-3 control-label" })
+        <div class="col-sm-9">
+            <div>
+                <div class="col-xs-8 no-padding col-sm-5">
+                    @Html.DropDownList("Processors",
+                        new SelectList(processors.Where(p => !Model.BalancerProcessors.Select(l => l.ProcessorId).Contains(p.Id)),
+                            "Id", "Name"), "Select Processor", new { @class = "chosen form-control" })
+                </div>
+                    <button type="button" class="btn btn-default btn-sm plusbtn" id="addprocessor"><i class="fa fa-plus"></i> Add</button>
+                
+            </div>
+        </div>
+
+        @* Products table *@
+        <table class="table" id="ptable">
+            <tbody>
+
+                @*@Html.EditorFor(model => model.BalancerProcessors)*@
+
+                @foreach (var item in Model.BalancerProcessors)
+                {
+
+                    var processorname = item.Processor == null ? ((IEnumerable<Processor>)ViewBag.Processors).Single(p => p.Id == item.ProcessorId).Name : item.Processor.Name;
+
+                    <tr>
+                        <td>
+
+                            @*@Html.EditorFor(modelItem => item)*@
+
+                            <div class="row" style="padding: 0 15px 5px;">
+                                <strong>@processorname</strong>
+                                <input type="hidden" name="BalancerProcessors.Index" value="@item.ProcessorId" />
+                                <input type="hidden" value="@Model.Id" name="BalancerProcessors[@item.ProcessorId].BalancerId">
+                                <input type="hidden" value="@item.ProcessorId" name="BalancerProcessors[@item.ProcessorId].ProcessorId">
+                            </div>
+
+                            <div class="row">
+
+
+                                @* Preserved *@
+                                <div class="col-sm-2 col-md-2" style="font-size: small;">
+                                    <label><input data-val="true" data-val-required="The Preserved field is required." name="BalancerProcessors[@item.ProcessorId].IsPreserved" type="checkbox" value="true"><input name="BalancerProcessors[@item.ProcessorId].IsPreserved" type="hidden" value="false"> Preserved</label>
+                                </div>
+
+                                @*  *@
+                                <div class="alloc balloc @(Model.AllocationBalance ? string.Empty : "hidden")">
+                                    <div class="col-sm-5 col-md-5" style="font-size: small;">
+                                        <label>Initials Limit:</label> <input value="@item.InitialLimit" class="form-control input-sm" type="text"
+                                                                              name="BalancerProcessors[@item.ProcessorId].InitialLimit"
+                                                                              data-val-number="The field Initial Limit must be a number." data-val="true"
+                                                                              style="width: 30%; display: inline; font-size: small; padding: 2px 5px; height: inherit;"
+                                                                              data-val-requiredif="The Allocation Percent field is required." data-val-requiredif-boolprop="AllocationBalancer" data-val-requiredif-expected="True">
+                                        <span class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="BalancerProcessors[@item.ProcessorId].InitialLimit"></span>
+                                    </div>
+
+                                    <div class="col-sm-5 col-md-5" style="font-size: small;">
+                                        <label>Allocation:</label> <input value="@item.Allocation" class="form-control input-sm" type="text"
+                                                                          name="BalancerProcessors[@item.ProcessorId].Allocation"
+                                                                          data-val-number="The field Allocation must be a number." data-val="true"
+                                                                          style="width: 30%; display: inline; font-size: small; padding: 2px 5px; height: inherit;"
+                                                                          data-val-requiredif="The Allocation Percent field is required." data-val-requiredif-boolprop="AllocationBalancer" data-val-requiredif-expected="True">
+                                        <span class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="BalancerProcessors[@item.ProcessorId].Allocation"></span>
+                                    </div>
+                                </div>
+
+                                @*  *@
+                                <div class="alloc palloc @(Model.AllocationBalance ?  "hidden" : string.Empty )">
+                                    <div class="col-sm-6 col-md-6" style="font-size: small;">
+                                        <label>Allocation Percent:</label>
+                                        <input value="@item.AllocationPercent" class="form-control input-sm" type="text"
+                                               name="BalancerProcessors[@item.ProcessorId].AllocationPercent"
+                                               data-val-number="The field Allocation Percent must be a number." data-val="true"
+                                               style="width: 30%; display: inline; font-size: small; padding: 2px 5px; height: inherit;"
+                                               data-val-requiredif="The Allocation Percent field is required." data-val-requiredif-boolprop="AllocationBalancer" data-val-requiredif-expected="False">
+                                        <span class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="BalancerProcessors[@item.ProcessorId].AllocationPercent"></span>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+
+                            <div class="row">
+                                <a href="#" data-id="@item.ProcessorId" class="rlink" data-name="@processorname">Remove</a>
+                            </div>
+
+                        </td>
+
+                    </tr>
+                }
+
+
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+
+@*<div class="widget-box">
+    <div class="widget-title">
+        <span class="icon"><i class="fa fa-plus"></i></span>
+        <h5>Processors</h5>
+    </div>
+    <div class="widget-content nopadding">
+
+        
+
+    </div>
+</div>*@
+
+@Html.Script(
+
+@<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#AllocationBalance').change(function () {
+            
+            $("#ptable").find('.alloc').toggleClass('hidden');
+
+            var form = $("#mform");
+            form.removeData('validator');
+            form.removeData('unobtrusiveValidation');
+            $.validator.unobtrusive.parse(form);
+            
+        });
+
+        $("#addprocessor").click(function () {
+            
+            var processor = $('#Processors').find(":selected");
+            var processorid = processor.val();
+            var processorname = processor.text();
+            
+
+            // this the no processor
+            if (processorid === '') {
+                return;
+            }
+
+            var hiddenclass = $('#AllocationBalance').is(":checked") ? '.palloc' : '.balloc';
+
+            $("#ptable tbody:last").append(addprocessor(processorname, processorid)).find(hiddenclass).addClass('hidden');
+
+           
+            processor.remove();
+            //$('#Processors').select2();
+
+            var form = $("#mform");
+            form.removeData('validator');
+            form.removeData('unobtrusiveValidation');
+            $.validator.unobtrusive.parse(form);
+        });
+
+    });
+
+    function addprocessor(processorname, processorid)
+    {
+        var result = '<tr> <td>';
+        result += '<div class="row" style="padding: 0 15px 5px;">';
+        result += '<strong>' + processorname + '</strong>'
+        result += '<input type="hidden" name="BalancerProcessors.Index" value="' + processorid + '" />';
+        result += '<input type="hidden" value="' + processorid + '" name="BalancerProcessors[' + processorid + '].ProcessorId">';
+        result += '<input type="hidden" value="' + @Model.Id + '" name="BalancerProcessors[' + processorid + '].BalancerId">';
+        result += '</div>';
+
+        result += '<div class="row">';
+
+        //result += '<div class="col-sm-3 col-md-3" style="font-size: small; margin-top: 4px;"> </div>';
+        result += '<div class="col-sm-2 col-md-2" style="font-size: small;">';
+        result += '<label><input data-val="true" data-val-required="The Preserved field is required." name=""BalancerProcessors[' + processorid + '].IsPreserved" type="checkbox" value="true"><input name=""BalancerProcessors[' + processorid + '].IsPreserved" type="hidden" value="false"> Preserved</label>';
+        //result += '<label>Preserved:</label> <input class="form-control input-sm" type="text" value="1" name="BalancerProcessors[' + processorid + '].IsPreserved" data-val-required="The IsPreserved field is required." data-val-number="The field IsPreserved must be a number." data-val="true" style="width: 30%; display: inline; font-size: small; padding: 2px 5px; height: inherit;" >';
+        //result += '<div><span class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="BalancerProcessors[' + processorid + '].IsPreserved"></span></div> </div>'
+        result += '</div>';
+
+        
+
+        result += '<div class="alloc balloc" >';
+        result += '<div class="col-sm-5 col-md-5" style="font-size: small;">';
+        result += '<label>Initials Limit:</label> <input class="form-control input-sm" type="text" name="BalancerProcessors[' + processorid + '].InitialLimit" data-val-number="The field Initial Limit must be a number." data-val="true" style="width: 30%; display: inline; font-size: small; padding: 2px 5px; height: inherit;" data-val-requiredif="The Initial Limit field is required." data-val-requiredif-boolprop="AllocationBalancer" data-val-requiredif-expected="True">';
+        result += ' <span class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="BalancerProcessors[' + processorid + '].InitialLimit"></span> </div>'
+        
+        result += '<div class="col-sm-5 col-md-5" style="font-size: small;">';
+        result += '<label>Allocation:</label> <input class="form-control input-sm" type="text" name="BalancerProcessors[' + processorid + '].Allocation" data-val-number="The field Allocation must be a number." data-val="true" style="width: 30%; display: inline; font-size: small; padding: 2px 5px; height: inherit;" data-val-requiredif="The Allocation field is required." data-val-requiredif-boolprop="AllocationBalancer" data-val-requiredif-expected="True">';
+        result += ' <span class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="BalancerProcessors[' + processorid + '].Allocation"></span> </div>'
+        result += '</div>';
+
+        result += '<div class="alloc palloc" >';
+        
+        result += '<div class="col-sm-6 col-md-6" style="font-size: small;">';
+        result += '<label>Allocation Percent:</label> <input class="form-control input-sm" type="text" name="BalancerProcessors[' + processorid + '].AllocationPercent" data-val-number="The field Allocation must be a number." data-val="true" style="width: 30%; display: inline; font-size: small; padding: 2px 5px; height: inherit;" data-val-requiredif="The Allocation Percent field is required." data-val-requiredif-boolprop="AllocationBalancer" data-val-requiredif-expected="False">';
+        result += ' <span class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="BalancerProcessors[' + processorid + '].AllocationPercent"></span> </div>'
+        result += '</div>';
+
+        result += '</div>';
+
+        result += '<div class="row"><a href="#" data-id="' + processorid + '" class="rlink" data-name="' + processorname + '">Remove</a></div>';
+        result += '</td></tr>';
+
+        return result;
+
+    }
+
+    $(document).on("click", "a.rlink", function () {
+
+        // remove the product from the table
+        $this = $(this);
+        $this.parents("tr:first").remove();
+        var pid = $this.data('id');
+        var pname = $this.data('name');
+        
+        var processors = $("#Processors");
+        processors.append($("<option></option>")
+            .attr("value", pid)
+            .text(pname));
+        //processors.select2();
+        return false;
+    });
+
+
+    //jQuery.validator.addMethod('requiredif', function (value, element, params) {
+    //    //console.log('here');
+    //    var checkboxId = $(element).attr('data-val-requiredif-boolprop');
+    //    var checkboxValue = $('#' + checkboxId).first().is(":checked");
+    //    var expected = $(element).attr('data-val-requiredif-expected') == "True";
+
+    //    //console.log(checkboxValue);
+    //    if (expected) {
+    //        return !checkboxValue || value;
+    //    }
+    //    return checkboxValue || value;
+
+    //}, '');
+
+    //jQuery.validator.unobtrusive.adapters.add('requiredif', ["boolprop", "expected"], function (options) {
+    //    options.rules['requiredif'] = true; // "#" + options.params.boolprop;
+    //    options.messages['requiredif'] = options.message;
+    //});
+    
+</script>
+
+)

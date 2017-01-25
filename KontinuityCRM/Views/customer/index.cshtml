@@ -1,0 +1,74 @@
+﻿@model PagedList.IPagedList<KontinuityCRM.Models.Customer>
+
+@{
+    ViewBag.Title = "Customers";
+   
+}
+
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            @ViewBag.Title
+        </span>
+        <span class="col-sm-4">
+            <span class="pull-right inline">
+                <a href="@Url.Action("create")" class="btn btn-primary btn-round @Html.RenderHidden("create")">
+                    <i class="ace-icon fa fa-plus"></i>
+                    Create
+                </a>
+            </span>
+        </span>
+    </h1>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        @Html.Partial("_PageTop")
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th class="@ViewBag.idOrderIcon">
+                        @Html.ActionQueryLink("Id", "index", new { sortOrder = ViewBag.IdSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.firstnameOrderIcon">
+                        @Html.ActionQueryLink("First Name", "index", new { sortOrder = ViewBag.FirstNameSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.LastNameOrderIcon">
+                        @Html.ActionQueryLink("Last Name", "index", new { sortOrder = ViewBag.LastNameSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.phoneOrderIcon">
+                        @Html.ActionQueryLink("Phone", "index", new { sortOrder = ViewBag.PhoneSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.emailOrderIcon">
+                        @Html.ActionQueryLink("Email", "index", new { sortOrder = ViewBag.EmailSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.CustomerId)</td>
+                        <td>@Html.DisplayFor(modelItem => item.FirstName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.LastName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Phone)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                        <td>
+                            @Html.ActionLink("Edit", "edit", new { id = item.CustomerId }, new { @class = @Html.RenderHidden("edit") })
+                            <span class='@Html.RenderHidden("delete")'>|</span>
+                             @Html.ActionLink(
+                            "Delete",
+                            "delete",
+                            new { id = item.CustomerId },
+                            new { onclick = "return confirm('Are you sure you wish to delete customer?');" })
+                            
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @Html.Partial("_PageBottom", Model)
+    </div>
+</div>
+

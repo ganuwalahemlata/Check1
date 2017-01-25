@@ -1,0 +1,130 @@
+﻿@model KontinuityCRM.Models.ProductVariant
+
+@{
+    ViewBag.Title = "Edit Variant";
+    ViewBag.icon = "fa-random";
+}
+
+@section breadcrumbs{
+    @*Home > Products > Product Name > Variants > active:edit*@
+    @{
+        var product = (Product)ViewBag.Product;
+    }
+    <li>
+        <a href="@Url.Action("index", "product")">Products</a>
+    </li>
+    <li>
+        <a href="@Url.Action("edit", "product", new { id = product.ProductId })">@Html.Raw(product.Name)</a>
+    </li>
+    <li>
+        <a href="@Url.Action("variants", "product", new { id = product.ProductId })">Variants</a>
+    </li>
+    <li>
+        Edit
+    </li>
+}
+
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            Edit
+        </span>
+        <span class="col-sm-4">
+            <span class="pull-right inline">
+                <a href="@Url.Action("createfield", new { id = Model.ProductVariantId })" class="btn btn-primary btn-round">
+                    <i class="fa fa-plus"></i>
+                    Add field
+                </a>
+            </span>
+        </span>
+    </h1>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+
+        <form method="post" class="form-horizontal" id="mform">
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(model => model.ProductVariantId)
+            @Html.HiddenFor(model => model.ProductId)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Country, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+                <div class="col-sm-9 col-md-9 col-lg-10">
+                    @Html.DropDownListFor(model => model.CountryId, new SelectList(ViewBag.Countries, "Id", "Name"))
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.SKU, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+                <div class="col-sm-1">
+                    @Html.TextBoxFor(model => model.SKU, new { @class = "form-control input-sm" })
+                </div>
+                <div class="col-sm-6">
+                    @Html.ValidationMessageFor(model => model.SKU)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Price, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+                <div class="col-sm-1">
+                    @Html.TextBoxFor(model => model.Price, new { @class = "form-control input-sm" })
+                </div>
+                <div class="col-sm-6">
+                    @Html.ValidationMessageFor(model => model.Price)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Cost, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+                <div class="col-sm-1">
+                    @Html.TextBoxFor(model => model.Cost, new { @class = "form-control input-sm" })
+                </div>
+                <div class="col-sm-6">
+                    @Html.ValidationMessageFor(model => model.Cost)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Currency, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+                <div class="col-sm-9 col-md-9 col-lg-10">
+                    @Html.EnumDropdownListFor(model => model.Currency)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Add Extra Field", new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+                <div class="col-sm-9 col-md-9 col-lg-10">
+                    <select id="extra" name="extra" multiple>
+                        @foreach (var item in ViewBag.ExtraFields)
+                        {
+                            <option value="@item.Text" data-value="@item.Value" @if (item.Selected) { @: selected
+                                    	                                }>
+                                @item.Text
+                                                                    </option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div id="extracontent">
+
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i> Save</button> or
+                @Html.ActionLink("Cancel", "variants", new { id = Model.ProductId }, new { @class = "text-danger" })
+            </div>
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script src="~/Scripts/kontinuitycrm.variant.extras.js"></script>
+    <script type="text/javascript">
+        addextras();
+    </script>
+
+}

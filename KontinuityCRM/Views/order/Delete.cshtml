@@ -1,0 +1,317 @@
+﻿@model KontinuityCRM.Models.Order
+
+@{
+    ViewBag.Title = "Order Delete";
+    ViewBag.icon = "fa-shopping-cart";
+}
+
+<div id="breadcrumb">
+	<a href="@Url.Action("index", "home")" title="Go to Home" class="tip-bottom"><i class="fa fa-home"></i> Home</a>
+    <a href="@Url.Action("index")">Orders</a>
+	<a href="#" class="current">Delete</a>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <div class="widget-box">
+
+               <div class="widget-title">
+                    <span class="icon"><i class="fa fa-trash-o"></i></span>
+                    <h5>@ViewBag.Title</h5>
+                </div>
+
+                <div class="widget-content nopadding">
+
+                    <form method="post" class="form-horizontal">
+                    
+                       @* @Html.HiddenFor(model => model.OrderId)*@
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Customer, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-8 col-md-8 col-lg-9">
+                              @Html.TextBoxFor(model => model.Customer.FirstName, new { @class = "form-control input-sm", @readonly = ""})
+							</div>
+						</div>
+
+                         <div class="form-group">
+                             @Html.LabelFor(model => model.ShippingFirstName, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-2 col-md-2">
+                                 @Html.TextBoxFor(model => model.ShippingFirstName, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                             @Html.LabelFor(model => model.ShippingLastName, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-2 col-md-2">
+                                 @Html.TextBoxFor(model => model.ShippingLastName, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                         <div class="form-group">
+                             @Html.LabelFor(model => model.ShippingAddress1, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-2 col-md-2">
+                               @Html.TextBoxFor(model => model.ShippingAddress1, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                         <div class="form-group">
+                             @Html.LabelFor(model => model.ShippingAddress2, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-2 col-md-2">
+                                @Html.TextBoxFor(model => model.ShippingAddress2, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                         <div class="form-group">
+                             @Html.LabelFor(model => model.ShippingCity, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-2 col-md-2">
+                                @Html.TextBoxFor(model => model.ShippingCity, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                             @Html.LabelFor(model => model.ShippingProvince, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-2 col-md-2">
+                                @Html.TextBoxFor(model => model.ShippingProvince, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                             @Html.LabelFor(model => model.ShippingPostalCode, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-1">
+                                @Html.TextBoxFor(model => model.ShippingPostalCode, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                         <div class="form-group">
+                             @Html.LabelFor(model => model.ShippingCountry, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-2 col-md-2">
+                                @Html.TextBoxFor(model => model.ShippingCountry, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                         <div class="form-group">
+                             @Html.LabelFor(model => model.Phone, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-2 col-md-2">
+                                 @Html.TextBoxFor(model => model.Phone, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                         <div class="form-group">
+                             @Html.LabelFor(model => model.Email, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-2 col-md-2">
+                                @Html.TextBoxFor(model => model.Email, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                             @Html.LabelFor(model => model.BillingFirstName, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-2 col-md-2">
+                                @Html.TextBoxFor(model => model.BillingFirstName, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                             @Html.LabelFor(model => model.BillingLastName, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-2 col-md-2">
+                                @Html.TextBoxFor(model => model.BillingLastName, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                             @Html.LabelFor(model => model.BillingAddress1, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-2 col-md-2">
+                                 @Html.TextBoxFor(model => model.BillingAddress1, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                             @Html.LabelFor(model => model.BillingAddress2, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-2 col-md-2">
+                                 @Html.TextBoxFor(model => model.BillingAddress2, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                             @Html.LabelFor(model => model.BillingCity, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-2 col-md-2">
+                                 @Html.TextBoxFor(model => model.BillingCity, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                             @Html.LabelFor(model => model.BillingProvince, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-2 col-md-2">
+                                 @Html.TextBoxFor(model => model.BillingProvince, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                             @Html.LabelFor(model => model.BillingPostalCode, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-1">
+                                @Html.TextBoxFor(model => model.BillingPostalCode, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                             @Html.LabelFor(model => model.BillingCountry, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-2 col-md-2">
+                                @Html.TextBoxFor(model => model.BillingCountry, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ShippingMethod, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-8 col-md-8 col-lg-9">
+                               @Html.TextBoxFor(model => model.ShippingMethod.Name, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Processor, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-8 col-md-8 col-lg-9">
+                                @Html.TextBoxFor(model => model.Processor.Name, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.SubTotal, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+                            <div class="col-sm-1">
+                                @Html.TextBoxFor(model => model.SubTotal, new { @class = "form-control input-sm", @readonly = "" })
+                            </div>
+                        </div>
+
+                         <div class="form-group">
+                             @Html.LabelFor(model => model.ShippingTotal, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-1">
+                                @Html.TextBoxFor(model => model.ShippingTotal, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                         <div class="form-group">
+                             @Html.LabelFor(model => model.Tax, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-1">
+                                @Html.TextBoxFor(model => model.Tax, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+                            
+						</div>
+
+                         <div class="form-group">
+                             @Html.LabelFor(model => model.Total, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-1">
+                                 @Html.TextBoxFor(model => model.Total, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                         @*<div class="form-group">
+                             @Html.LabelFor(model => model.NextDate, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-2">
+                               @Html.TextBoxFor(model => model.NextDate, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                         <div class="form-group">
+                             @Html.LabelFor(model => model.NextProductId, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-8 col-md-8 col-lg-9">
+                              @Html.TextBoxFor(model => model.NextProductId, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>*@
+
+                        <div class="form-group">
+                             @Html.LabelFor(model => model.RebillPrice, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-1">
+                                @Html.TextBoxFor(model => model.RebillPrice, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                             @Html.LabelFor(model => model.IPAddress, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-8 col-md-8 col-lg-9">
+                                @Html.TextBoxFor(model => model.IPAddress, new { @class = "form-control input-sm", @readonly = "" })
+                               
+							</div>
+						</div>
+
+                         <div class="form-group">
+                             @Html.LabelFor(model => model.AffiliateId, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-1">
+                                @Html.TextBoxFor(model => model.AffiliateId, new { @class = "form-control input-sm", @readonly = "" })
+                                
+							</div>
+                           
+						</div>
+
+                         <div class="form-group">
+                             @Html.LabelFor(model => model.SubId, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-1">
+                                @Html.TextBoxFor(model => model.SubId, new { @class = "form-control input-sm" , @readonly = ""})
+                               
+							</div>
+                            
+						</div>
+
+                        <div class="form-group">
+                            <label class="col-sm-4 col-md-4 col-lg-3 control-label">@*Properties*@</label>
+							<div class="col-sm-8 col-md-8 col-lg-9">
+								<label class="disabled">@Html.CheckBoxFor(model => model.IsChargeBack, new { @disabled = "disabled" }) @Html.DisplayNameFor(model => model.IsChargeBack)</label>
+							</div>
+						</div>
+
+                        <div class="form-group">
+                             @Html.LabelFor(model => model.ChargebackDate, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-2">
+                                @Html.TextBoxFor(model => model.ChargebackDate, new { @class = "datepicker form-control input-sm", @readonly = ""  })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                             @Html.LabelFor(model => model.PaymentType, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-8 col-md-8 col-lg-9">
+                                @Html.TextBoxFor(model => model.PaymentType, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                         <div class="form-group">
+                             @Html.LabelFor(model => model.CreditCardNumber, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-2 characters-8">
+                                @Html.TextBoxFor(model => model.CreditCardNumber, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                             @Html.LabelFor(model => model.CreditCardExpirationMonth, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-8 col-md-8 col-lg-9">
+                                @Html.TextBoxFor(model => model.CreditCardExpirationMonth, new { @class = "form-control input-sm", @readonly = "" })
+                               
+							</div>
+						</div>
+
+                        <div class="form-group">
+                             @Html.LabelFor(model => model.CreditCardExpirationYear, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-8 col-md-8 col-lg-9">
+                                @Html.TextBoxFor(model => model.CreditCardExpirationYear, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                             @Html.LabelFor(model => model.CreditCardCVV, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+							<div class="col-sm-1">
+                                @Html.TextBoxFor(model => model.CreditCardCVV, new { @class = "form-control input-sm" , @readonly = ""})
+                               
+							</div>
+                            
+						</div>
+
+                       <div class="form-actions">
+							<button type="submit" class="btn btn-danger btn-sm">Delete</button> or 
+                            @Html.ActionLink("Cancel", "index", null, new { @class = "text-danger" })
+						</div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

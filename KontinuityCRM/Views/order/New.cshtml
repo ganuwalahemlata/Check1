@@ -1,0 +1,301 @@
+﻿@model KontinuityCRM.Models.Order
+
+@{
+    ViewBag.Title = "Order";
+    ViewBag.icon = "fa-shopping-cart";
+    var products = (IEnumerable<Product>)ViewBag.Products;
+}
+
+@section styles{
+    <style>
+        .field-validation-error, .validation-summary-errors li {
+            padding: 0 5px;
+            font-size: large;
+            color: red;
+        }
+    </style>
+}
+
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            @ViewBag.Title
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+                Place new order
+            </small>
+        </span>
+    </h1>
+</div>
+
+
+<div class="row">
+    <form method="post" class="form-horizontal" id="mform">
+        <div class="col-xs-12">
+            @Html.Partial("_OrderProducts", Model)
+
+            @* Shipping / Billing Information *@
+            <div class="">
+
+                @*<div class="widget-title">
+                        <span class="icon"><i class="fa fa-user"></i></span>
+                        <h5>Shipping / Billing Information</h5>
+                    </div>*@
+
+                <h3 class="row header smaller lighter purple">
+                    <span class="col-sm-6"> Shipping / Billing </span><!-- /.col -->
+                </h3>
+
+                @*<div class="widget-content nopadding">*@
+
+                @* ShippingFirstName *@
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ShippingFirstName, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.ShippingFirstName, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.ShippingFirstName)
+                        @Html.HiddenFor(model => model.BillingFirstName)
+                    </div>
+                </div>
+
+                @* ShippingLastName *@
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ShippingLastName, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.ShippingLastName, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.ShippingLastName)
+                        @Html.HiddenFor(model => model.BillingLastName)
+                    </div>
+                </div>
+
+                @* ShippingAddress1 *@
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ShippingAddress1, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.ShippingAddress1, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.ShippingAddress1)
+                        @Html.HiddenFor(model => model.BillingAddress1)
+                    </div>
+                </div>
+
+                @* ShippingAddress2 *@
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ShippingAddress2, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.ShippingAddress2, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.ShippingAddress2)
+                        @Html.HiddenFor(model => model.BillingAddress2)
+                    </div>
+                </div>
+
+                @* ShippingCity *@
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ShippingCity, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.ShippingCity, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.ShippingCity)
+                        @Html.HiddenFor(model => model.BillingCity)
+                    </div>
+                </div>
+
+                @* ShippingProvince *@
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ShippingProvince, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.ShippingProvince, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.ShippingProvince)
+                        @Html.HiddenFor(model => model.BillingProvince)
+                    </div>
+                </div>
+
+                @* ShippingPostalCode *@
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ShippingPostalCode, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.ShippingPostalCode, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.ShippingPostalCode)
+                        @Html.HiddenFor(model => model.BillingPostalCode)
+                    </div>
+                </div>
+
+                @* ShippingCountry *@
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ShippingCountry, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @*@Html.TextBoxFor(model => model.ShippingCountry, new { @class = "col-xs-12 col-sm-5" })*@
+                        <div class="col-xs-12 no-padding col-sm-5">
+                            @Html.DropDownListFor(model => model.ShippingCountry, new SelectList(ViewBag.Countries, "CountryAbbreviation", "Name"), "", new { @class = "form-control" })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.ShippingCountry)
+                        @Html.HiddenFor(model => model.BillingCountry)
+                    </div>
+                </div>
+
+                @* Phone *@
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Phone, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.Phone, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.Phone)
+                    </div>
+                </div>
+
+                @* Email *@
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Email, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.Email, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.Email)
+                    </div>
+                </div>
+
+
+
+                @*</div>*@
+
+            </div>
+
+            @* Payment Information *@
+            <div class="">
+
+                @*<div class="widget-title">
+                        <span class="icon"><i class="fa fa-money"></i></span>
+                        <h5>Payment Information</h5>
+                    </div>*@
+
+                <h3 class="row header smaller lighter purple">
+                    <span class="col-sm-6"> Payment </span><!-- /.col -->
+                </h3>
+
+                @*<div class="widget-content nopadding">*@
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.PaymentType, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        <div class="col-xs-12 no-padding col-sm-5">
+                            @Html.EnumDropdownListFor(model => model.PaymentType, new { @class = "form-control" })
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CreditCardNumber, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        <div class="col-xs-12 no-padding col-sm-5">
+                            @Html.HiddenFor(model => model.CreditCardNumber)
+                            @Html.TextBoxFor(model => model.CreditCardNumberX, new { @class = "form-control", @maxlength = 16 })
+                            @Html.ValidationMessageFor(model => model.CreditCardNumber)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Expiration Date", new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-5">
+                        <div class="row">
+                            <div class="col-sm-5 col-xs-8">
+                                @*@Html.EnumDropdownListFor(model => model.CreditCardExpirationMonth, new { @class = "form-control" })*@
+                                @Html.DropDownListFor(model => model.CreditCardExpirationMonth, EnumHelper<Month>.GetValue(DateTime.Today.Month).ToSelectIntList(), new { @class = "form-control" })
+                            </div>
+                            <div class="col-sm-4 col-xs-4">
+                                @Html.DropDownListFor(model => model.CreditCardExpirationYear, (IEnumerable<SelectListItem>)ViewBag.CreditCardExpirationYears, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CreditCardCVV, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.CreditCardCVV, new { @class = "", @size = 4 })
+                        @Html.ValidationMessageFor(model => model.CreditCardCVV)
+                    </div>
+                </div>
+
+                @*</div>*@
+
+            </div>
+
+            <div class="clearfix form-actions">
+                <div class="col-md-offset-3 col-md-9">
+                    <button type="submit" class="btn btn-primary btn-round">
+                        <i class="ace-icon fa fa-check"></i>
+                        Create
+                    </button>
+                    &nbsp; &nbsp; &nbsp;
+                    <a href="@Url.Action("index")" class="btn btn-white btn-default btn-round">
+                        <i class="ace-icon fa fa-times red2"></i>
+                        Cancel
+                    </a>
+                </div>
+            </div>
+
+
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+
+        (function () {
+
+            @*$('#CustomerAutocomplete').autocomplete({
+                source: '@Url.Action("CustomerAutocomplete", "Helper")',
+                messages: {
+                    noResults: '',
+                    results: function () { }
+                },
+                select: function (event, ui) {
+                    $("#CustomerId").val(ui.item ? ui.item.id : "0");
+                },
+                change: function (event, ui) {
+                    $("#CustomerId").val(ui.item ? ui.item.id : "0");
+                }
+            });*@
+           
+            $('#ShippingFirstName').on('input', function () {
+                $('#BillingFirstName').val($(this).val());
+            });
+
+            $('#ShippingLastName').on('input', function () {
+                $('#BillingLastName').val($(this).val());
+            });
+
+            $('#ShippingAddress1').on('input', function () {
+                $('#BillingAddress1').val($(this).val());
+            });
+
+            $('#ShippingAddress2').on('input', function () {
+                $('#BillingAddress2').val($(this).val());
+            });
+
+            $('#ShippingProvince').on('input', function () {
+                $('#BillingProvince').val($(this).val());
+            });
+
+            $('#ShippingCity').on('input', function () {
+                $('#BillingCity').val($(this).val());
+            });
+
+            $('#ShippingFirstName').on('input', function () {
+                $('#BillingFirstName').val($(this).val());
+            });
+
+            $('#ShippingPostalCode').on('input', function () {
+                $('#BillingPostalCode').val($(this).val());
+            });
+
+            $('#ShippingCountry').on('change', function () {
+                $('#BillingCountry').val($(this).val());
+            });
+
+        }())
+
+    </script>
+}
+
+

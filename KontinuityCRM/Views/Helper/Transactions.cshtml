@@ -1,0 +1,54 @@
+﻿@model IEnumerable<KontinuityCRM.Models.Transaction>
+
+@{
+    ViewBag.Title = "Transaction";
+    ViewBag.icon = "fa-folder";
+}
+
+<div id="breadcrumb">
+    <a href="@Url.Action("index", "home")" title="Go to Home" class="tip-bottom"><i class="fa fa-home"></i> Home</a>
+    <a href="#" class="current">Transaction</a>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+
+        <div class="widget-box">
+            <div class="widget-title">
+                <span class="icon">
+                    <i class="fa fa-folder"></i>
+                </span>
+                <h5>@ViewBag.Title</h5>
+            </div>
+            <div class="widget-content nopadding">
+
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <td>@Html.DisplayNameFor(model => model.Id)</td>
+                            <td>@Html.DisplayNameFor(model => model.OrderId)</td>
+                            <td>@Html.DisplayNameFor(model => model.Response)</td>
+                            <td>@Html.DisplayNameFor(model => model.Status)</td>
+                            <td>@Html.DisplayNameFor(model => model.TransactionId)</td>
+                            <td>@Html.DisplayNameFor(model => model.Type)</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                                <td>@Html.DisplayFor(modelItem => item.OrderId)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Response)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Status)</td>
+                                <td>@Html.DisplayFor(modelItem => item.TransactionId)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Type)</td>
+                                
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

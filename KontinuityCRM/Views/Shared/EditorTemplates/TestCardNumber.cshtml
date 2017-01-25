@@ -1,0 +1,9 @@
+﻿@model KontinuityCRM.Models.TestCardNumber
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Number, new { @class = "col-sm-3 control-label no-padding-right" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.Number, new { @class = "col-xs-10 col-sm-5", @placeholder = "Card Number" })
+        @Html.ValidationMessageFor(model => model.Number)
+    </div>
+</div>

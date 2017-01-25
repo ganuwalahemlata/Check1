@@ -1,0 +1,198 @@
+﻿@model KontinuityCRM.Models.Gateways.GatewayModel
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Name, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.Name, new { @class = "col-xs-12" })
+        @Html.ValidationMessageFor(model => model.Name)
+    </div>
+</div>
+
+
+@if (@Model.GetType().Name.ToLower() != "securetrading")
+{
+    <div class="form-group">
+        @Html.LabelFor(model => model.Type, new { @class = "col-sm-3 control-label" })
+        <div class="col-sm-9">
+            @Html.DropDownListFor(model => model.Type, ProcessorType.Sale.ToSelectList())
+        </div>
+    </div>
+}
+else
+{
+    <div class="form-group">
+        @Html.LabelFor(model => model.Type, new { @class = "col-sm-3 control-label" })
+        <div class="col-sm-9">
+            @Html.DropDownListFor(model => model.Type, ProcessorTypeSecureTrading.Sale.ToSelectList())                      
+        </div>
+    </div>
+
+}
+
+@* Capture on Shipment *@
+<div class="form-group">
+    @*@Html.LabelFor(model => model.ShipmentOnCapture, new { @class = "col-sm-3 control-label" })*@
+    <div class="col-sm-9 col-sm-offset-3">
+        @*@Html.EditorFor(model => model.ShipmentOnCapture, new { @class = "form-control input-sm" })*@
+
+        @*<input type='reset' />*@
+
+        @if (@Model.GetType().Name.ToLower() != "securetrading")
+        {
+
+            <input type="radio" name="capture" value="ShipmentOnCapture" class="capture" @(Model.ShipmentOnCapture ? "checked" : string.Empty) /> 
+            @Html.DisplayNameFor(model => model.ShipmentOnCapture)
+
+
+
+            <br />
+            <input type="radio" name="capture" value="CaptureOnShipment" class="capture" @(Model.CaptureOnShipment ? "checked" : string.Empty) /> 
+            @Html.DisplayNameFor(model => model.CaptureOnShipment)
+
+            @*<span class="btn btn-warning btn-sm popover-warning" data-rel="popover" data-placement="left" title="<i class='ace-icon fa fa-exclamation-triangle orange'></i> Left Warning" data-content="Warning! Best check yo self, you're not looking too good.">Left</span>*@
+            <div>
+                <strong>Warning!</strong> Products might get shipped without capture <br />
+            </div>
+
+            <input type="radio" name="capture" value="CaptureDelayHours" class="capture" @(Model.CaptureDelayHours.HasValue ? "checked" : string.Empty) /> 
+            @Html.DisplayNameFor(model => model.CaptureDelayHours)
+
+            @Html.TextBoxFor(model => model.CaptureDelayHours, new { @class = !Model.CaptureDelayHours.HasValue ? "hidden" : string.Empty })
+            @Html.ValidationMessageFor(model => model.CaptureDelayHours)
+        }
+        else
+        {
+                <input type="radio" name="capture" value="CaptureDelayHours" class="capture" @(Model.CaptureDelayHours.HasValue ? "checked" : string.Empty) />
+                <label>Capture Delay Days</label>
+
+                @Html.TextBoxFor(model => model.CaptureDelayHours, new { @class = !Model.CaptureDelayHours.HasValue ? "hidden" : string.Empty })
+                @Html.ValidationMessageFor(model => model.CaptureDelayHours)
+        }
+
+        <div>
+            <strong>Warning!</strong> Products might get shipped without capture <br />
+        </div>
+    </div>
+</div>
+
+
+@*<div class="form-group">
+    @Html.LabelFor(model => model.CaptureOnShipment, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+    <div class="col-sm-8 col-md-8 col-lg-9">
+        @Html.EditorFor(model => model.CaptureOnShipment, new { @class = "form-control input-sm" })
+    </div>
+</div>
+
+
+<div class="form-group">
+    @Html.LabelFor(model => model.CaptureDelayHours, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.CaptureDelayHours, new { @class = "col-xs-12" })
+        @Html.ValidationMessageFor(model => model.CaptureDelayHours)
+    </div>
+</div>*@
+<div class="form-group">
+    <label class="col-sm-3 control-label">Retry Processors</label>
+    <div class="col-sm-9">
+        <div class="col-sm-9 no-padding">
+            @Html.ListBoxFor(model => model.RetryProcessorIds, ViewBag.RetryProcessors as SelectList, new { @class = "form-control" })
+        </div>
+        <div class="col-sm-8" style="color: red;">
+            @Html.ValidationMessageFor(model => model.RetryProcessorIds)
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Descriptor, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.Descriptor, new { @class = "col-xs-12" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.CustomerServiceNumber, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.CustomerServiceNumber, new { @class = "col-xs-12" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.GlobalMonthlyCap, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.GlobalMonthlyCap, new { @class = "col-xs-12" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.TransactionFee, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.TransactionFee, new { @class = "col-xs-12" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ChargebackFee, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.ChargebackFee, new { @class = "col-xs-12" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ProcessingPercent, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.ProcessingPercent, new { @class = "col-xs-12" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ReversePercent, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.ReversePercent, new { @class = "col-xs-12" })
+    </div>
+</div>
+<div class="form-group">
+    @Html.LabelFor(model => model.ProcessorSpecificText, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.ProcessorSpecificText, new { @class = "col-xs-12" })
+    </div>
+</div>
+
+@Html.Script(
+@<script>
+
+    (function () {
+
+        $(".capture").click(function () {
+            $this = $(this);
+
+            if ($this.val() == "CaptureDelayHours") {
+                $("#CaptureDelayHours").toggleClass("hidden");
+            }
+            else
+                $("#CaptureDelayHours").addClass("hidden");
+            
+        });
+
+        var allRadios = document.getElementsByName('capture');
+        var booRadio;
+        var x = 0;
+        for (x = 0; x < allRadios.length; x++) {
+
+            allRadios[x].onclick = function () {
+                if (booRadio == this) {
+                    this.checked = false;
+                    booRadio = null;
+                } else {
+                    booRadio = this;
+                }
+            };
+        }
+
+    }());
+
+</script>
+)
+
+
+

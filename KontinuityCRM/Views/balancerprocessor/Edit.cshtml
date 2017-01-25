@@ -1,0 +1,88 @@
+﻿@model KontinuityCRM.Models.BalancerProcessor
+
+@{
+    ViewBag.Title = "BalancerProcessor Edit";
+    ViewBag.icon = "fa-book";
+}
+
+<div id="breadcrumb">
+	<a href="@Url.Action("index", "home")" title="Go to Home" class="tip-bottom"><i class="fa fa-home"></i> Home</a>
+    <a href="@Url.Action("index")">BalancerProcessor</a>
+	<a href="#" class="current">Edit</a>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <div class="widget-box">
+
+                <div class="widget-title">
+                    <span class="icon"><i class="fa fa-edit"></i></span>
+                    <h5>@ViewBag.Title</h5>
+                </div>
+
+                <div class="widget-content nopadding">
+
+                    <form method="post" class="form-horizontal">
+                    
+                        @Html.ValidationSummary(true)
+                        @Html.HiddenFor(model => model.BalancerProcessorId)
+                        
+                        @Html.HiddenFor(model => model.BalancerId)
+                        @Html.HiddenFor(model => model.Balancer.BalancerId)
+                        @Html.HiddenFor(model => model.Balancer.Name)
+                        
+                        @Html.HiddenFor(model => model.ProcessorId)
+                        @Html.HiddenFor(model => model.Processor.ProcessorId)
+                        @Html.HiddenFor(model => model.Processor.Name)
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Balancer, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-9 col-md-9 col-lg-10">
+                               @Html.TextBoxFor(model => model.Balancer.Name, new { @class = "form-control input-sm" , @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Processor, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-9 col-md-9 col-lg-10">
+                               @Html.TextBoxFor(model => model.Processor.Name, new { @class = "form-control input-sm" , @readonly = "" })
+							</div>
+						</div>
+
+                         <div class="form-group">
+                             <label class="col-sm-3 col-md-3 col-lg-2 control-label">Properties</label>
+							<div class="col-sm-9 col-md-9 col-lg-10">
+                                <label>@Html.CheckBoxFor(model => model.IsPreserved) @Html.DisplayNameFor(model => model.IsPreserved)</label>
+							</div>
+						</div>
+
+                        <div class="form-group">
+                             @Html.LabelFor(model => model.InitialLimit, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-9 col-md-9 col-lg-10">
+                                @Html.TextBoxFor(model => model.InitialLimit, new { @class = "form-control input-sm" })
+                                @Html.ValidationMessageFor(model => model.InitialLimit)
+							</div>
+						</div>
+
+                        <div class="form-group">
+                             @Html.LabelFor(model => model.Allocation, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-9 col-md-9 col-lg-10">
+                                @Html.TextBoxFor(model => model.Allocation, new { @class = "form-control input-sm" })
+                                @Html.ValidationMessageFor(model => model.Allocation)
+							</div>
+						</div>
+
+                         <div class="form-actions">
+							<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i> Save</button> or 
+                            @Html.ActionLink("Cancel", "index", null, new { @class = "text-danger" })
+						</div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

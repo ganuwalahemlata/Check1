@@ -1,0 +1,81 @@
+﻿@model KontinuityCRM.Models.RMAReason
+
+@{
+    ViewBag.Title = "RMA Reason";
+    ViewBag.icon = "fa-question";
+}
+
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            @ViewBag.Title
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+                Edit
+            </small>
+        </span>
+    </h1>
+</div>
+
+@*<div id="breadcrumb">
+    <a href="@Url.Action("index", "home")" title="Go to Home" class="tip-bottom"><i class="fa fa-home"></i> Home</a>
+    <a href="@Url.Action("index")">RMA Reasons</a>
+    <a href="#" class="current">Edit</a>
+</div>*@
+
+@*<div class="container-fluid">*@
+    <div class="row">
+        <div class="col-xs-12">
+
+            @using (Html.BeginForm())
+            {
+                <div class="form-horizontal">
+
+                    @Html.EditorForModel()
+
+                    @*<div class="form-actions">
+                        <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i> Save</button> or
+                        @Html.ActionLink("Cancel", "index", null, new { @class = "text-danger" })
+                    </div>*@
+
+                    <div class="form-actions clearfix">
+                        <div class="col-md-offset-3 col-md-9">
+                            <button type="submit" class="btn btn-primary btn-round">
+                                <i class="ace-icon fa fa-save"></i>
+                                Save
+                            </button>
+                            &nbsp; &nbsp; &nbsp;
+                            <a href="@Url.Action("index")" class="btn btn-white btn-default btn-round">
+                                <i class="ace-icon fa fa-times red2"></i>
+                                Cancel
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+            }
+
+            @*<div class="widget-box">
+
+                <div class="widget-title">
+                    <span class="icon"><i class="fa fa-edit"></i></span>
+                    <h5>@ViewBag.Title</h5>
+                </div>
+
+                <div class="widget-content nopadding">
+
+                    
+
+                </div>
+
+            </div>*@
+        </div>
+    </div>
+@*</div>*@
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+

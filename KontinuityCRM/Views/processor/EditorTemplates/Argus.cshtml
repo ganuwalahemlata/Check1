@@ -1,0 +1,46 @@
+﻿@model KontinuityCRM.Models.Gateways.Argus
+
+<div class="form-group">
+    @Html.LabelFor(model => model.SiteId, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.SiteId, new { @class = "form-control input-sm" })
+        @Html.ValidationMessageFor(model => model.SiteId)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.MerchantAccountId, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.MerchantAccountId, new { @class = "form-control input-sm" })
+        @Html.ValidationMessageFor(model => model.MerchantAccountId)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.DynamicProductId, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.DynamicProductId, new { @class = "form-control input-sm" })
+        @Html.ValidationMessageFor(model => model.DynamicProductId)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Currency, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.DropDownListFor(model => model.Currency, KontinuityCRM.Models.Gateways.Currency.USD.ToSelectList())
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Auth, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.EditorFor(model => model.Auth, new { @class = "form-control input-sm" })
+    </div>
+</div>
+
+@*<div class="form-group">
+    @Html.LabelFor(model => model.UseDeclineSalvage, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.EditorFor(model => model.UseDeclineSalvage, new { @class = "form-control input-sm" })
+    </div>
+</div>*@

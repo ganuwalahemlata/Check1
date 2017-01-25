@@ -1,0 +1,138 @@
+﻿@using KontinuityCRM.Models.ViewModels.Enum
+@model PagedList.IPagedList<KontinuityCRM.Models.ViewModels.TransactionReportModel>
+    @{
+        ViewBag.Title = "Prepaid Transaction Report";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    @section styles {
+        <link href="~/Content/assets/css/datepicker.css" rel="stylesheet" />
+    }
+    @using (Html.BeginForm())
+    {
+        <div class="page-header">
+            <h1 class="row no-padding">
+                <span class="col-sm-8 no-padding">
+                    @ViewBag.Title
+                </span>
+            </h1>
+        </div>
+
+        <form method="get" class="form-horizontal">
+            <div class="row">
+                <label class="control-label bolder blue col-sm-1"> View by </label>
+                <div class="row" style="float:left;width:50%;margin-bottom:10px">
+
+                    <div class="checkbox-inline">
+                        <label>
+                            <input name="ProcessorType" type="checkbox" class="ace" @(ViewBag.ProcessorType == true ? "checked" : string.Empty) value="True" />
+                            <span class="lbl"> Processor Type</span>
+                        </label>
+                    </div>
+                    <div class="checkbox-inline">
+                        <label>
+                            <input name="CardType" type="checkbox" class="ace" @(ViewBag.CardType == true ? "checked" : string.Empty) value="True" />
+                            <span class="lbl"> Card Type</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="float:right;width:50%;margin-bottom:10px">
+                @if (ViewBag.Decline == "checked" && Model.Count != 0)
+                {
+                    <input type="submit" name="processDeclineSelected" value="Execute Selected Transaction" class="btn btn-purple btn-round" style="float:right; margin-right:10px" />
+                }
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    @Html.Partial("_PageTop_PrepaidTransactionReport")
+                   
+                        <div style="overflow:scroll;width:100%;">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        @if (ViewBag.ProcessorType)
+                                    {
+                                    <th class="@ViewBag.ProcessorIdIcon">
+                                        @Html.ActionQueryLink("Processor Id", "PrepaidTransactionReport", new { sortOrder = ViewBag.ProcessorIdSortParm, ProcessorType = ViewBag.ProcessorType, CardType = ViewBag.CardType }, null, "page,display")
+                                    </th>
+                                    <th class="@ViewBag.ProcessorTypeIcon">
+                                        @Html.ActionQueryLink("Processor Type", "PrepaidTransactionReport", new { sortOrder = ViewBag.ProcessorTypeSortParm, ProcessorType = ViewBag.ProcessorType, CardType = ViewBag.CardType }, null, "page,display")
+                                    </th>
+                                    }
+                                        @if (ViewBag.CardType)
+                                    {
+                                    <th class="@ViewBag.CardTypeIcon">
+                                        @Html.ActionQueryLink("Card Type", "PrepaidTransactionReport", new { sortOrder = ViewBag.CardTypeSortParm, ProcessorType = ViewBag.ProcessorType, CardType = ViewBag.CardType}, null, "page,display")
+                                    </th>
+                                    }
+                                        <th >
+                                            @Html.ActionQueryLink("Approved", "PrepaidTransactionReport", new { sortOrder = ViewBag.CardTypeSortParm, ProcessorType = ViewBag.ProcessorType, CardType = ViewBag.CardType }, null, "page,display")
+                                        </th>
+                                        <th >
+                                            @Html.ActionQueryLink("Declined", "PrepaidTransactionReport", new { sortOrder = ViewBag.CardTypeSortParm, ProcessorType = ViewBag.ProcessorType, CardType = ViewBag.CardType }, null, "page,display")
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                {
+                                <tr>
+                                    @if (ViewBag.ProcessorType)
+                                        {
+                                        <td>
+                                            @item.ProcessorId.ToString()
+                                        </td>
+                                        <td>
+                                            @item.ProcessorType.ToString()
+                                        </td>
+                                        }
+                                    @if (ViewBag.CardType)
+                                        {
+                                        <td>
+                                            @item.CardType.ToString()
+                                        </td>
+                                        }
+                                    <td>
+                                        @Html.ActionLink(item.NoOfTransactionsApproved.ToString(), "viewPrepaidTransaction", new { ProcessorType = ViewBag.ProcessorType, CardType = ViewBag.CardType, ProcessorTypeVal = item.ProcessorType, CardTypeVal = item.CardType, status = "Approved" })
+                                    </td>
+                                    <td>
+                                        @Html.ActionLink(item.NoOfTransactionsDeclined.ToString(), "viewPrepaidTransaction", new { ProcessorType = ViewBag.ProcessorType, CardType = ViewBag.CardType, ProcessorTypeVal = item.ProcessorType, CardTypeVal = item.CardType, status = "Declined" })
+                                    </td>
+                                </tr>
+                                }
+                                </tbody>
+                            </table>
+                        </div>
+                       @* @Html.Partial("_PageBottomPrepaidTransactionReport", Model)*@
+                    <div class="row">
+                        <div class="col-sm-3 col-xs-3">
+                            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount - Total @Model.TotalItemCount
+                        </div>
+                        <div class="col-sm-9 col-xs-9">
+                            <div class="pull-right kpagination">
+                                @Html.PagedListPager(Model, page => Url.ActionQueryUrl("PrepaidTransactionReport", new { page, sortOrder = ViewBag.CurrentSort, ProcessorType = ViewBag.ProcessorType, CardType = ViewBag.CardType }, "display"))
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @section scripts {
+                <script src="~/Content/assets/js/date-time/bootstrap-datepicker.js"></script>
+                <script>
+
+            (function () {
+
+                $('.input-daterange').datepicker({ autoclose: true });
+
+                $('#Display').change(function () {
+                    var url = "@Html.Raw(Url.ActionQueryUrl("PrepaidTransactionReport", new { sortOrder = ViewBag.CurrentSort, display = "_kdpy_" }))";
+                    window.location.href = url.replace("_kdpy_", $(this).val());
+                });
+
+            }())
+
+                </script>
+            }
+        </form>
+      
+}

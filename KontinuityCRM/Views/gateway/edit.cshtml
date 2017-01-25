@@ -1,0 +1,92 @@
+﻿@model KontinuityCRM.Models.Gateway
+
+@{
+    ViewBag.Title = Model.Name;
+}
+
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            @ViewBag.Title
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+                Edit
+            </small>
+        </span>
+    </h1>
+</div>
+
+
+<div class="row">
+    <div class="col-xs-12">
+
+        <form method="post" class="form-horizontal">
+
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.Type)
+            @Html.HiddenFor(model => model.CreatedDate)
+
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, new { @class = "col-sm-3 control-label" })
+                <div class="col-sm-9">
+                    @Html.TextBoxFor(model => model.Name, new { @class = "col-xs-12 col-sm-5" })
+                    @Html.ValidationMessageFor(model => model.Name)
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Username, new { @class = "col-sm-3 control-label" })
+                <div class="col-sm-9">
+                    @Html.TextBoxFor(model => model.Username, new { @class = "col-xs-12 col-sm-5" })
+                    @Html.ValidationMessageFor(model => model.Username)
+                </div>
+            </div>
+            @if (@ViewBag.Type != "Stripe")
+            {
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Password, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.Password, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.Password)
+                    </div>
+                </div>
+            }
+            <div class="form-actions clearfix">
+                <div class="col-md-offset-3 col-md-9">
+                    <button type="submit" class="btn btn-primary btn-round">
+                        <i class="ace-icon fa fa-save"></i>
+                        Save
+                    </button>
+                    &nbsp; &nbsp; &nbsp;
+                    <a href="@Url.Action("index")" class="btn btn-white btn-default btn-round">
+                        <i class="ace-icon fa fa-times red2"></i>
+                        Cancel
+                    </a>
+                </div>
+            </div>
+
+        </form>
+
+        @*<div class="widget-box">
+
+                <div class="widget-title">
+                    <span class="icon"><i class="fa fa-edit"></i></span>
+                    <h5>@ViewBag.Title</h5>
+                </div>
+
+                <div class="widget-content nopadding">
+
+
+                </div>
+            </div>*@
+
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

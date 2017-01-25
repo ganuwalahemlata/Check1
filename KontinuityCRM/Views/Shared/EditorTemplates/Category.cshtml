@@ -1,0 +1,16 @@
+﻿@model KontinuityCRM.Models.Category
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Name, new { @class = "col-sm-3 control-label no-padding-right" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.Name, new { @class = "col-xs-10 col-sm-5", @placeholder = "Category Name" })
+        @Html.ValidationMessageFor(model => model.Name)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Description, new { @class = "col-sm-3 control-label no-padding-right" })
+    <div class="col-sm-9">
+        @Html.TextAreaFor(model => model.Description, new { @class = "col-xs-10 col-sm-10", @rows = "3" })
+    </div>
+</div>

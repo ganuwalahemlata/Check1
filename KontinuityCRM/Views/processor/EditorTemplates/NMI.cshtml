@@ -1,0 +1,191 @@
+﻿@model KontinuityCRM.Models.Gateways.NMI
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Currency, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+    <div class="col-sm-8 col-md-8 col-lg-9">
+        @Html.DropDownListFor(model => model.Currency, KontinuityCRM.Models.Gateways.Currency.USD.ToSelectList())
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.PostProcessorId, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+    <div class="col-sm-8 col-md-8 col-lg-9">
+        @Html.EditorFor(model => model.PostProcessorId, new { @class = "form-control input-sm" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.PostProductDescription, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+    <div class="col-sm-8 col-md-8 col-lg-9">
+        @Html.EditorFor(model => model.PostProductDescription, new { @class = "form-control input-sm" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.PostDescriptor, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+    <div class="col-sm-8 col-md-8 col-lg-9">
+        @Html.EditorFor(model => model.PostDescriptor, new { @class = "form-control input-sm" })
+    </div>
+</div>
+
+@*<div class="form-group">
+    @Html.LabelFor(model => model.CaptureOnShipment, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+    <div class="col-sm-8 col-md-8 col-lg-9">
+        @Html.EditorFor(model => model.CaptureOnShipment, new { @class = "form-control input-sm" })
+    </div>
+</div>*@
+
+<div class="form-group">
+    @Html.LabelFor(model => model.UsePreAuthorizationFilter, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+    <div class="col-sm-8 col-md-8 col-lg-9">
+        @Html.EditorFor(model => model.UsePreAuthorizationFilter, new { @class = "form-control input-sm" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.MDF1, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+    <div class="col-sm-8 col-md-8 col-lg-9">
+        @Html.TextBoxFor(model => model.MDF1, new { @class = "form-control input-sm" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.MDF2, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+    <div class="col-sm-8 col-md-8 col-lg-9">
+        @Html.TextBoxFor(model => model.MDF2, new { @class = "form-control input-sm" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.MDF3, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+    <div class="col-sm-8 col-md-8 col-lg-9">
+        @Html.TextBoxFor(model => model.MDF3, new { @class = "form-control input-sm" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.MDF4, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+    <div class="col-sm-8 col-md-8 col-lg-9">
+        @Html.TextBoxFor(model => model.MDF4, new { @class = "form-control input-sm" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.MDF5, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+    <div class="col-sm-8 col-md-8 col-lg-9">
+        @Html.TextBoxFor(model => model.MDF5, new { @class = "form-control input-sm" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.MDF6, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+    <div class="col-sm-8 col-md-8 col-lg-9">
+        @Html.TextBoxFor(model => model.MDF6, new { @class = "form-control input-sm" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.MDF7, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+    <div class="col-sm-8 col-md-8 col-lg-9">
+        @Html.TextBoxFor(model => model.MDF7, new { @class = "form-control input-sm" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.MDF8, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+    <div class="col-sm-8 col-md-8 col-lg-9">
+        @Html.TextBoxFor(model => model.MDF8, new { @class = "form-control input-sm" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.MDF9, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+    <div class="col-sm-8 col-md-8 col-lg-9">
+        @Html.TextBoxFor(model => model.MDF9, new { @class = "form-control input-sm" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.MDF10, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+    <div class="col-sm-8 col-md-8 col-lg-9">
+        @Html.TextBoxFor(model => model.MDF10, new { @class = "form-control input-sm" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.MDF11, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+    <div class="col-sm-8 col-md-8 col-lg-9">
+        @Html.TextBoxFor(model => model.MDF11, new { @class = "form-control input-sm" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.MDF12, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+    <div class="col-sm-8 col-md-8 col-lg-9">
+        @Html.TextBoxFor(model => model.MDF12, new { @class = "form-control input-sm" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.MDF13, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+    <div class="col-sm-8 col-md-8 col-lg-9">
+        @Html.TextBoxFor(model => model.MDF13, new { @class = "form-control input-sm" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.MDF14, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+    <div class="col-sm-8 col-md-8 col-lg-9">
+        @Html.TextBoxFor(model => model.MDF14, new { @class = "form-control input-sm" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.MDF15, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+    <div class="col-sm-8 col-md-8 col-lg-9">
+        @Html.TextBoxFor(model => model.MDF15, new { @class = "form-control input-sm" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.MDF16, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+    <div class="col-sm-8 col-md-8 col-lg-9">
+        @Html.TextBoxFor(model => model.MDF16, new { @class = "form-control input-sm" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.MDF17, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+    <div class="col-sm-8 col-md-8 col-lg-9">
+        @Html.TextBoxFor(model => model.MDF17, new { @class = "form-control input-sm" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.MDF18, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+    <div class="col-sm-8 col-md-8 col-lg-9">
+        @Html.TextBoxFor(model => model.MDF18, new { @class = "form-control input-sm" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.MDF19, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+    <div class="col-sm-8 col-md-8 col-lg-9">
+        @Html.TextBoxFor(model => model.MDF19, new { @class = "form-control input-sm" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.MDF20, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+    <div class="col-sm-8 col-md-8 col-lg-9">
+        @Html.TextBoxFor(model => model.MDF20, new { @class = "form-control input-sm" })
+    </div>
+</div>
+
+
+@*<div class="form-group">
+    @Html.LabelFor(model => model.UseDeclineSalvage, new { @class = "col-sm-4 col-md-4 col-lg-3 control-label" })
+    <div class="col-sm-8 col-md-8 col-lg-9">
+        @Html.EditorFor(model => model.UseDeclineSalvage, new { @class = "form-control input-sm" })
+    </div>
+</div>*@

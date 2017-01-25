@@ -1,0 +1,16 @@
+﻿@model KontinuityCRM.Models.Gateways.SecureTrading
+
+<div class="form-group">
+    @Html.LabelFor(model => model.SiteId, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.SiteId, new { @class = "form-control input-sm" })
+        @Html.ValidationMessageFor(model => model.SiteId)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Currency, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.DropDownListFor(model => model.Currency, KontinuityCRM.Models.Gateways.Currency.USD.ToSelectList())
+    </div>
+</div>

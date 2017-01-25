@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "Test";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row">
+    <form method="post" class="form-horizontal" id="mform">
+        <div class="col-xs-12">
+
+           
+
+               
+
+
+                <div class="form-group">
+                    @Html.Label("Select a product", new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        <div>
+                            <div class="col-xs-8 no-padding col-sm-5">
+                                <select id="products" class="form-control">
+                                    <option value=""></option>
+                                    @foreach (var item in ViewBag.Products)
+                                    {
+                                        <option value="@item.ProductId" data-sku="@item.SKU" class="hidden">@item.Name</option>
+                                    }
+                                </select>
+                            </div>
+                            <button type="button" class="btn btn-default btn-sm plusbtn" id="addproduct"><i class="fa fa-plus"></i> Add</button>
+                        </div>
+                    </div>
+                </div>
+
+           
+
+        </div>
+    </form>
+</div>
+

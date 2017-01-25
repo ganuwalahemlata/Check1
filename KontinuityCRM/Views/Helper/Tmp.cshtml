@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "Tmp";
+    int i = 0;
+}
+
+
+
+<div id="maincontent">
+    <div class="adminGrid">
+        <h2>tmp</h2>
+
+        <ul>
+            @foreach (var item in ViewBag.values)
+            {
+                <li>@i <span>@item</span> </li>
+                i++;
+            }
+        </ul>
+        <p>Total: @ViewBag.total</p>
+        @{
+            i = 0;    
+        }
+        <h2>tmp1</h2>
+        <ul>
+            @foreach (var item in ViewBag.values1)
+            {
+                
+                <li>@i <span>@item</span> </li>
+                i++;
+            }
+        </ul>
+        <p>Total: @ViewBag.total1</p>
+        @{
+            i = 0;    
+        }
+        <h2>tmp2</h2>
+        <ul>
+            @foreach (var item in ViewBag.values2)
+            {
+                
+                <li>@i <span>@item</span> </li>
+                i++;
+            }
+        </ul>
+        <p>Total: @ViewBag.total2</p>
+    </div>
+</div>

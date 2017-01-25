@@ -1,0 +1,650 @@
+﻿@using KontinuityCRM.Models.Enums
+@model KontinuityCRM.Models.ViewModels.ExportTemplateModel
+
+@{
+    ViewBag.Title = "create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles {
+
+    <link href="~/Content/assets/css/datepicker.css" rel="stylesheet" />
+    <style>
+        .field-validation-error, .validation-summary-errors li {
+            padding: 0 5px;
+            font-size: large;
+            color: red;
+        }
+    </style>
+
+}
+
+<h2>@ViewBag.Heading</h2>
+
+<div>
+    <form method="post" class="form-horizontal" name="tempForm" id="c_form">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="widget-box collapsed">
+
+                    <div class="widget-header widget-header-small">
+                        <h6 class="widget-title">
+                            <i class="ace-icon fa fa-sort"></i>
+                            Choose Fields For Export Template
+                        </h6>
+                        <div class="widget-toolbar">
+
+                            <a href="#" data-action="collapse">
+                                <i class="ace-icon fa fa-plus" data-icon-show="fa-plus" data-icon-hide="fa-minus"></i>
+                            </a>
+
+                        </div>
+                    </div>
+                    @* Search form *@
+                    <div class="widget-body">
+                        <div class="widget-main">
+
+
+
+                            <div class="row">
+
+                                <div class="col-sm-4 col-md-4">
+
+                                    <ul id="some-data" style="list-style-type: none">
+                                        @for (int i = 0; i < Model.ExportFields.Count(); i++)
+                                        {
+                                            <li id="@Model.ExportFields[i].Order">
+                                                <label>@Model.ExportFields[i].DisplayName</label>
+                                                @Html.CheckBoxFor(a => a.ExportFields[i].Value)
+                                                @Html.HiddenFor(a => a.ExportFields[i].Order, new { @class = "OrderClass" })
+                                                @Html.HiddenFor(a => a.ExportFields[i].Name)
+                                                @Html.HiddenFor(a => a.ExportFields[i].Id)
+                                            </li>
+                                        }
+                                    </ul>
+
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 col-md-4">
+
+                            </div>
+                            <input name="UserAction" id="UserAction" type="hidden" value="" />
+                            <input name="sortOrder" type="hidden" value="@ViewBag.CurrentSort" />
+
+                            @*<div class="form-actions">
+                                    <button type="button" class="btn btn-primary btn-sm" id="showresults">Save Filter</button>
+                                    <button type="button" class="btn btn-default btn-sm">Clear</button>
+                                    @Html.ActionLink("clear", "index", null, new { @class = "btn btn-default btn-sm" })
+                                </div>*@
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="space-8"></div>
+        @Html.ValidationSummary()
+        <div>
+            <div>
+                <h4>Choose Filters For Export Template</h4>
+            </div>
+            <div class="space-8"></div>
+
+
+            <div class="row">
+
+                <div class="col-sm-4 col-md-4">
+
+                    <div class="form-group">
+                        <label class="col-sm-6 col-md-6 col-lg-6 control-label">Template Name:</label>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            @Html.TextBoxFor(model => model.TemplateName, new { @class = "form-control input-sm" })
+                            @Html.HiddenFor(model => model.Id)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-6 col-md-6 col-lg-6 control-label">From:</label>
+
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            @Html.TextBoxFor(model => model.TemplateFields.fFromDate, new
+                                        {
+                                            @class = "datepicker form-control input-sm",
+                                            @Value = Model.TemplateFields.fFromDate.HasValue ? Model.TemplateFields.fFromDate.Value.ToString("MM/dd/yyyy") : ViewBag.DefaultFromDate
+                                        })
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-6 col-md-6 col-lg-6 control-label">To:</label>
+
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            @Html.TextBoxFor(model => model.TemplateFields.fToDate, new
+                                        {
+                                            @class = "datepicker form-control input-sm",
+                                            //@data_date = DateTime.Today.ToString("MM/dd/yyyy"),
+                                            @Value = Model.TemplateFields.fToDate.HasValue ? Model.TemplateFields.fToDate.Value.ToString("MM/dd/yyyy") : ViewBag.DefaultToDate
+                                        })
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-6 col-md-6 col-lg-6 control-label">Order ID:</label>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            @Html.TextBoxFor(model => model.TemplateFields.fOrderId, new { @class = "form-control input-sm" })
+                            <span><input id="cb_fOrderId" type="checkbox" class="demo" /></span>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-6 col-md-6 col-lg-6 control-label">Product ID:</label>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            @Html.TextBoxFor(model => model.TemplateFields.fProductId, new { @class = "form-control input-sm" })
+                            <span><input id="cb_fProductId" type="checkbox" /></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-6 col-md-6 col-lg-6 control-label">Affiliate ID:</label>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            @Html.TextBoxFor(model => model.TemplateFields.fAffiliateId, new { @class = "form-control input-sm" })
+                            <span><input id="cb_fAffiliateId" type="checkbox" /></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-6 col-md-6 col-lg-6 control-label">Sub ID:</label>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            @Html.TextBoxFor(model => model.TemplateFields.fSubId, new { @class = "form-control input-sm" })
+                            <span><input id="cb_fSubId" type="checkbox" /></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-6 col-md-6 col-lg-6 control-label">Shipped Status</label>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            @Html.DropDownListFor(model => model.TemplateFields.fShipped, (IEnumerable<SelectListItem>)ViewBag.ShippingOptions, "", new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-6 col-md-6 col-lg-6 control-label">Status:</label>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+
+                            @Html.DropDownListFor(model => model.TemplateFields.fStatus,
+                                (new List<SelectListItem>() { new SelectListItem { Text = "All", Value = "0" } })
+                                    .Concat(OrderStatus.Approved.ToSelectList()), new { @class = "form-control" })
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="col-sm-4 col-md-4">
+
+                    <div class="form-group">
+                        <label class="col-sm-6 col-md-6 col-lg-6 control-label">Transaction ID:</label>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            @Html.TextBoxFor(model => model.TemplateFields.fTransactionId, new { @class = "form-control input-sm" })
+                            <span><input id="cb_fTransactionId" type="checkbox" /></span>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-6 col-md-6 col-lg-6 control-label">Customer ID:</label>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            @Html.TextBoxFor(model => model.TemplateFields.fCustomerId, new { @class = "form-control input-sm" })
+                            <span><input id="cb_fCustomerId" type="checkbox" /></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-6 col-md-6 col-lg-6 control-label">First Name:</label>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            @Html.TextBoxFor(model => model.TemplateFields.fFirstname, new { @class = "form-control input-sm" })
+                            <span><input id="cb_fFirstname" type="checkbox" /></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-6 col-md-6 col-lg-6 control-label">Last Name:</label>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            @Html.TextBoxFor(model => model.TemplateFields.fLastname, new { @class = "form-control input-sm" })
+                            <span><input id="cb_fLastname" type="checkbox" /></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-6 col-md-6 col-lg-6 control-label">Email:</label>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            @Html.TextBoxFor(model => model.TemplateFields.fEmail, new { @class = "form-control input-sm" })
+                            <span><input id="cb_fEmail" type="checkbox" /></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-6 col-md-6 col-lg-6 control-label">Address:</label>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            @Html.TextBoxFor(model => model.TemplateFields.fAddress, new { @class = "form-control input-sm" })
+                            <span><input id="cb_fAddress" type="checkbox" /></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-6 col-md-6 col-lg-6 control-label">Address 2:</label>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            @Html.TextBoxFor(model => model.TemplateFields.fAddress2, new { @class = "form-control input-sm" })
+                            <span><input id="cb_fAddress2" type="checkbox" /></span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-sm-4 col-md-4">
+
+                    <div class="form-group">
+                        <label class="col-sm-6 col-md-6 col-lg-6 control-label">City:</label>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            @Html.TextBoxFor(model => model.TemplateFields.fCity, new { @class = "form-control input-sm" })
+                            <span><input id="cb_fCity" type="checkbox" /></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-6 col-md-6 col-lg-6 control-label">ZIP:</label>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            @Html.TextBoxFor(model => model.TemplateFields.fZIP, new { @class = "form-control input-sm" })
+                            <span><input id="cb_fZip" type="checkbox" /></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-6 col-md-6 col-lg-6 control-label">Phone:</label>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            @Html.TextBoxFor(model => model.TemplateFields.fPhone, new { @class = "form-control input-sm" })
+                            <span><input id="cb_fPhone" type="checkbox" /></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-6 col-md-6 col-lg-6 control-label">State:</label>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            @Html.TextBoxFor(model => model.TemplateFields.fState, new { @class = "form-control input-sm" })
+                            <span><input id="cb_fState" type="checkbox" /></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-6 col-md-6 col-lg-6 control-label">Country:</label>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            @*@Html.TextBoxFor(model => model.TemplateFields.fCountry, new { @class = "form-control input-sm" })*@
+                            @Html.DropDownListFor(model => model.TemplateFields.fCountry, new SelectList(ViewBag.Countries, "CountryAbbreviation", "Name"), "", new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-6 col-md-6 col-lg-6 control-label">IP:</label>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            @Html.TextBoxFor(model => model.TemplateFields.fIP, new { @class = "form-control input-sm" })
+                            <span><input id="cb_fIP" type="checkbox" /></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-6 col-md-6 col-lg-6 control-label">RMA #:</label>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                            @Html.TextBoxFor(model => model.TemplateFields.fRMA, new { @class = "form-control input-sm" })
+                            <span><input id="cb_fRMA" type="checkbox" /></span>
+                        </div>
+                    </div>
+
+
+                    <div class="hidden" id="fhidden">
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <input name="UserAction" id="UserAction" type="hidden" value="" />
+            <input name="sortOrder" type="hidden" value="@ViewBag.CurrentSort" />
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary btn-sm" id="showresults">Save Template</button>
+                @*@Html.ActionLink("Save Template", "save", new { os= Model}, new { @class = "btn btn-default btn-sm" })*@
+            </div>
+
+
+        </div>
+    </form>
+</div>
+@section Scripts {
+    <script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+    <script src="~/Content/assets/js/ace/ace.widget-box.js"></script>
+    <script src="~/Scripts/jquery-2.1.3.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.10.3.min.js"></script>
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+        $(function () {
+
+            $("#checkall").change(function () {
+                $(this).parents('table').find('tr th:first-child input:checkbox').prop('checked', $(this).prop("checked"));
+            });
+            $('#some-data').sortable({
+                update: function (event, ui) {
+
+                    var updatedModel = $(this).sortable('toArray').toString();
+                    var orderslist = $('.OrderClass');
+                    $.each(orderslist, function (index, value) {
+                        orderslist.eq(index).val(index + 1);
+                    })
+                }
+            });
+            validateFilters();
+            // console.log( $('#TemplateFields_fLastname').val().length);
+            //if ($('#TemplateFields_fCity').val().length > 0) {
+            //    $('#cb_fCity').prop('checked', true);
+            //}
+            //else {
+            //    $('#TemplateFields_fCity').attr('disabled', true);
+            //}
+
+            //$('#TemplateFields_fOrderId').attr('disabled', true);
+            //$('#TemplateFields_fProductId').attr('disabled', true);
+            //$('#TemplateFields_fAffiliateId').attr('disabled', true);
+            //$('#TemplateFields_fSubId').attr('disabled', true);
+            //$('#TemplateFields_fShippedStatus').attr('disabled', true);
+            //$('#TemplateFields_fTransactionId').attr('disabled', true);
+            //$('#TemplateFields_fCustomerId').attr('disabled', true);
+            //$('#TemplateFields_fFirstname').attr('disabled', true);
+            //$('#TemplateFields_fLastname').attr('disabled', true);
+            //$('#TemplateFields_fEmail').attr('disabled', true);
+            //$('#TemplateFields_fAddress').attr('disabled', true);
+            //$('#TemplateFields_fAddress2').attr('disabled', true);
+            //$('#TemplateFields_fPhone').attr('disabled', true);
+            //$('#TemplateFields_fRMA').attr('disabled', true);
+            //$('#TemplateFields_fState').attr('disabled', true);
+            //$('#TemplateFields_fIP').attr('disabled', true);
+            //$('#TemplateFields_fZIP').attr('disabled', true);
+
+            $(".datepicker").datepicker({
+                autoclose: true,
+                todayHighlight: true
+            });
+
+            $('#Display').change(function () {
+
+                var url = "@Html.Raw(Url.ActionQueryUrl("index", new { display = "_kdply_" }))";
+
+                window.location.href = url.replace("_kdply_", $(this).val());
+
+            });
+
+
+
+            $("#statusfilter input:radio").click(function () {
+                //$('#searchform').append(this).submit();
+
+                //var $fhidden = $('#TemplateFields_fhidden');
+                // clean the user action
+                $("#UserAction").attr("value", "");
+
+                // set the status
+                $("#TemplateFields_fStatus").val(this.value).closest("form").submit();
+
+                //$fhidden.append(this).closest('form').submit();
+            });
+
+            $("#showresults").click(function () {
+                $('#TemplateFields_fhidden').html("")
+                    //.append($("#statusfilter input:radio:checked")) //;
+                    .parents('form').submit();
+            });
+
+            $(".action-button").on('click', function () {
+                var $checkboxes = $('tbody').find('tr th:first-child input:checkbox:checked');
+                if ($checkboxes.length === 0) {
+                    return;
+                }
+                var $radioboxes = $("#statusfilter input:radio:checked");
+                var action = $(this).data("useraction");
+                $("#UserAction").attr("value", action);
+
+                var $fhidden = $('#TemplateFields_fhidden');
+                $fhidden.empty();
+
+                $checkboxes.each(function (index, elem) {
+                    //console.log(elem);
+                    $fhidden.append('<input name="oid" value="' + this.value + '"/>');
+                });
+
+                $fhidden
+                    //.append($checkboxes) // if added this way it removes the checkboxes
+                    //.append($radioboxes)
+                    //.append('<input value="' + action + '" name="UserAction" type="hidden">')
+                     .closest('form')
+                     .submit();
+            });
+
+
+
+        }());
+
+
+        //from Submit
+        //$('#createform').on('submit', function () {
+
+
+
+        //});
+        $('#cb_fCity').on('change', function () {
+            if ($(this).is(':checked')) {
+                $('#TemplateFields_fCity').attr('disabled', false);
+            }
+            else {
+                $('#TemplateFields_fCity').val("");
+                $('#TemplateFields_fCity').attr('disabled', true);
+            }
+        });
+
+        $('#cb_fOrderId').on('change', function () {
+            if ($(this).is(':checked')) {
+                $('#TemplateFields_fOrderId').attr('disabled', false);
+            }
+            else {
+                $('#TemplateFields_fOrderId').val("");
+                $('#TemplateFields_fOrderId').attr('disabled', true);
+            }
+        });
+        $('#cb_fProductId').on('change', function () {
+            if ($(this).is(':checked')) {
+                $('#TemplateFields_fProductId').attr('disabled', false);
+            }
+            else {
+                $('#TemplateFields_fProductId').val("");
+                $('#TemplateFields_fProductId').attr('disabled', true);
+            }
+        });
+        $('#cb_fAffiliateId').on('change', function () {
+            if ($(this).is(':checked')) {
+                $('#TemplateFields_fAffiliateId').attr('disabled', false);
+            }
+            else {
+                $('#TemplateFields_fAffiliateId').val("");
+                $('#TemplateFields_fAffiliateId').attr('disabled', true);
+            }
+        });
+        $('#cb_fSubId').on('change', function () {
+            if ($(this).is(':checked')) {
+                $('#TemplateFields_fSubId').attr('disabled', false);
+            }
+            else {
+                $('#TemplateFields_fSubId').val("");
+                $('#TemplateFields_fSubId').attr('disabled', true);
+            }
+        });
+        $('#cb_fTransactionId').on('change', function () {
+            if ($(this).is(':checked')) {
+                $('#TemplateFields_fTransactionId').attr('disabled', false);
+            }
+            else {
+                $('#TemplateFields_fTransactionId').val("");
+                $('#TemplateFields_fTransactionId').attr('disabled', true);
+            }
+        });
+        $('#cb_fCustomerId').on('change', function () {
+            if ($(this).is(':checked')) {
+                $('#TemplateFields_fCustomerId').attr('disabled', false);
+            }
+            else {
+                $('#TemplateFields_fCustomerId').val("");
+                $('#TemplateFields_fCustomerId').attr('disabled', true);
+            }
+        });
+
+        $('#cb_fFirstname').on('change', function () {
+            if ($(this).is(':checked')) {
+                $('#TemplateFields_fFirstname').attr('disabled', false);
+            }
+            else {
+                $('#TemplateFields_fFirstname').val("");
+                $('#TemplateFields_fFirstname').attr('disabled', true);
+            }
+        });
+        $('#cb_fAddress').on('change', function () {
+            if ($(this).is(':checked')) {
+                $('#TemplateFields_fAddress').attr('disabled', false);
+            }
+            else {
+                $('#TemplateFields_fAddress').val("");
+                $('#TemplateFields_fAddress').attr('disabled', true);
+            }
+        });
+        $('#cb_fAddress2').on('change', function () {
+            if ($(this).is(':checked')) {
+                $('#TemplateFields_fAddress2').attr('disabled', false);
+            }
+            else {
+                $('#TemplateFields_fAddress2').val("");
+                $('#TemplateFields_fAddress2').attr('disabled', true);
+            }
+        });
+
+        $('#cb_fZip').on('change', function () {
+            if ($(this).is(':checked')) {
+                $('#TemplateFields_fZIP').attr('disabled', false);
+            }
+            else {
+                $('#TemplateFields_fZIP').val("");
+                $('#TemplateFields_fZIP').attr('disabled', true);
+            }
+
+        });
+
+        $('#cb_fPhone').on('change', function () {
+            if ($(this).is(':checked')) {
+                $('#TemplateFields_fPhone').attr('disabled', false);
+            }
+            else {
+                $('#TemplateFields_fPhone').val("");
+                $('#TemplateFields_fPhone').attr('disabled', true);
+            }
+        });
+        $('#cb_fState').on('change', function () {
+            if ($(this).is(':checked')) {
+                $('#TemplateFields_fState').attr('disabled', false);
+            }
+            else {
+                $('#TemplateFields_fState').val("");
+                $('#TemplateFields_fState').attr('disabled', true);
+            }
+        });
+        $('#cb_fIP').on('change', function () {
+            if ($(this).is(':checked')) {
+                $('#TemplateFields_fIP').attr('disabled', false);
+            }
+            else {
+                $('#TemplateFields_fIP').val("");
+                $('#TemplateFields_fIP').attr('disabled', true);
+            }
+        });
+        $('#cb_fRMA').on('change', function () {
+            if ($(this).is(':checked')) {
+                $('#TemplateFields_fRMA').attr('disabled', false);
+            }
+            else {
+                $('#TemplateFields_fRMA').val("");
+                $('#TemplateFields_fRMA').attr('disabled', true);
+            }
+        });
+
+        $('#cb_fEmail').on('change', function () {
+            if ($(this).is(':checked')) {
+                $('#TemplateFields_fEmail').attr('disabled', false);
+            }
+            else {
+                $('#TemplateFields_fEmail').val("");
+                $('#TemplateFields_fEmail').attr('disabled', true);
+            }
+        });
+
+        $('#cb_fLastname').on('change', function () {
+            if ($(this).is(':checked')) {
+                $('#TemplateFields_fLastname').attr('disabled', false);
+            }
+            else {
+                $('#TemplateFields_fLastname').val("");
+                $('#TemplateFields_fLastname').attr('disabled', true);
+            }
+        });
+
+
+        function validateFilters() {
+
+            if ($('#TemplateFields_fCity').val().length > 0) {
+                $('#cb_fCity').prop('checked', true);
+            }
+            else {
+                $('#TemplateFields_fCity').attr('disabled', true);
+            }
+
+            if ($('#TemplateFields_fOrderId').val().length > 0) {
+                $('#cb_fOrderId').prop('checked', true);
+            }
+            else {
+                $('#TemplateFields_fOrderId').attr('disabled', true);
+            }
+            if ($('#TemplateFields_fProductId').val().length > 0) {
+                $('#cb_fProductId').prop('checked', true);
+            }
+            else {
+                $('#TemplateFields_fProductId').attr('disabled', true);
+            }
+
+
+            $('#TemplateFields_fAffiliateId').val().length > 0 ? $('#fAffiliateId').prop('checked', true) : $('#TemplateFields_fAffiliateId').attr('disabled', true);
+            $('#TemplateFields_fSubId').val().length > 0 ? $('#cb_fSubId').prop('checked', true) : $('#TemplateFields_fSubId').attr('disabled', true);
+            //$('#TemplateFields_fShippedStatus').val().length > 0 ? $('#cb_fShippedStatus').prop('checked', true) : $('#TemplateFields_fShippedStatus').attr('disabled', true);
+            $('#TemplateFields_fTransactionId').val().length > 0 ? $('#cb_fTransactionId').prop('checked', true) : $('#TemplateFields_fTransactionId').attr('disabled', true);
+            $('#TemplateFields_fCustomerId').val().length > 0 ? $('#cb_fCustomerId').prop('checked', true) : $('#TemplateFields_fCustomerId').attr('disabled', true);
+            $('#TemplateFields_fFirstname').val().length > 0 ? $('#cb_fFirstname').prop('checked', true) : $('#TemplateFields_fFirstname').attr('disabled', true);
+            $('#TemplateFields_fLastname').val().length > 0 ? $('#cb_fLastname').prop('checked', true) : $('#TemplateFields_fLastname').attr('disabled', true);
+            $('#TemplateFields_fEmail').val().length > 0 ? $('#cb_fEmail').prop('checked', true) : $('#TemplateFields_fEmail').attr('disabled', true);
+            $('#TemplateFields_fAddress').val().length > 0 ? $('#cb_fAddress').prop('checked', true) : $('#TemplateFields_fAddress').attr('disabled', true);
+            $('#TemplateFields_fAddress2').val().length > 0 ? $('#cb_fAddress2').prop('checked', true) : $('#TemplateFields_fAddress2').attr('disabled', true);
+            $('#TemplateFields_fPhone').val().length > 0 ? $('#cb_fPhone').prop('checked', true) : $('#TemplateFields_fPhone').attr('disabled', true);
+            $('#TemplateFields_fRMA').val().length > 0 ? $('#cb_fRMA').prop('checked', true) : $('#TemplateFields_fRMA').attr('disabled', true);
+            $('#TemplateFields_fState').val().length > 0 ? $('#cb_fState').prop('checked', true) : $('#TemplateFields_fState').attr('disabled', true);
+            $('#TemplateFields_fIP').val().length > 0 ? $('#cb_fIP').prop('checked', true) : $('#TemplateFields_fIP').attr('disabled', true);
+            $('#TemplateFields_fZIP').val().length > 0 ? $('#cb_fZIP').prop('checked', true) : $('#TemplateFields_fZIP').attr('disabled', true);
+
+
+        }
+    </script>
+}
+

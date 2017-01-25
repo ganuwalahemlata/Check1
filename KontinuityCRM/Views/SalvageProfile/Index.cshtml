@@ -1,0 +1,74 @@
+﻿@model PagedList.IPagedList<KontinuityCRM.Models.SalvageProfile>
+
+@{
+    ViewBag.Title = "Salvage Profiles";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            @ViewBag.Title
+        </span>
+        <span class="col-sm-4">
+            <span class="pull-right inline">
+                <a href="@Url.Action("create")" class="btn btn-primary btn-round @Html.RenderHidden(new[] { "SALVAGEPROFILE_create" }) ">
+                    <i class="ace-icon fa fa-plus"></i>
+                    Create
+                </a>
+            </span>
+        </span>
+    </h1>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+
+        @Html.Partial("_PageTop")
+
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th class="@ViewBag.IdOrderIcon">
+                        @Html.ActionQueryLink("Id", "index", new { sortOrder = ViewBag.IdSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.DeclineTypeOrderIcon">
+                        @Html.ActionQueryLink("Decline Type", "index", new { sortOrder = ViewBag.DeclineTypeSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.NameOrderIcon">
+                        @Html.ActionQueryLink("Name", "index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.BillTypeOrderIcon">
+                        @Html.ActionQueryLink("Profile Type", "index", new { sortOrder = ViewBag.BillTypeSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.LowerPriceOrderIcon">
+                        @Html.ActionQueryLink("Low Price", "index", new { sortOrder = ViewBag.LowerPriceSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                        <td>@Html.DisplayFor(modelItem => item.DeclineType.Name)</td>                  
+                        <td>@Html.DisplayFor(modelItem => item.Name)</td> 
+                        <td>@item.BillType.DisplayValue()</td>                  
+                        <td>@Html.DisplayFor(modelItem => item.LowerPrice)</td>                                         
+                        <td>
+                            @Html.ActionLink("Edit", "edit", new { id = item.Id }, new { @class = @Html.RenderHidden("edit") })
+                            <span class='@Html.RenderHidden(new[] { "SALVAGEPROFILE_edit", "SALVAGEPROFILE_delete" }, forceAll: true)'>|</span>
+                            @Html.ActionLink("Delete", "delete", new { id = item.Id }, new { @class = @Html.RenderHidden("delete") })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @Html.Partial("_PageBottom", Model)
+
+    </div>
+</div>
+
+

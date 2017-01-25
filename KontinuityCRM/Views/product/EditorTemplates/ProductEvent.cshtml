@@ -1,0 +1,27 @@
+﻿@model KontinuityCRM.Models.ProductEvent
+
+<tr>
+    <td>
+        @Html.DisplayFor(m => m.Event.Type)
+    </td>
+    <td>
+        @Html.DisplayFor(m => m.Event.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(m => m.Event.Template.Name)
+    </td>
+    <td>smtp</td>
+    <td>
+        <button class="btn btn-dark-green btn-xs rlink" 
+            data-id="@Model.EventId" 
+            data-name="@Model.Event.Name" 
+            data-type="@Model.Event.Type" 
+            data-template="@Model.Event.Template.Name">
+            <i class="fa fa-trash-o"></i> 
+            Remove
+        </button>
+        @Html.HiddenFor(m => m.EventId)
+        @Html.HiddenFor(m => m.ProductId)
+        @*@Html.HiddenFor(m => m.ProductId)*@
+    </td>
+</tr>

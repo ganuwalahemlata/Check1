@@ -1,0 +1,68 @@
+﻿@model PagedList.IPagedList<TrackerEnabledDbContext.Common.Models.AuditLog>
+
+@{
+    ViewBag.Title = "Audit Logs";
+}
+
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            @ViewBag.Title
+        </span>
+    </h1>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        @Html.Partial("_PageTop")
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th class="@ViewBag.idOrderIcon">
+                        @Html.ActionQueryLink("Id", "index", new { sortOrder = ViewBag.IdSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.tablenameOrderIcon">
+                        @Html.ActionQueryLink("Object", "index", new { sortOrder = ViewBag.TableNameSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.recordidOrderIcon">
+                        @Html.ActionQueryLink("RecordId", "index", new { sortOrder = ViewBag.RecordIdSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.usernameOrderIcon">
+                        @Html.ActionQueryLink("UserName", "index", new { sortOrder = ViewBag.UserNameSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.timeOrderIcon">
+                        @Html.ActionQueryLink("Time", "index", new { sortOrder = ViewBag.TimeSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.actionOrderIcon">
+                        @Html.ActionQueryLink("Action", "index", new { sortOrder = ViewBag.ActionSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    @*<th>Id</th>
+                        <th>Object</th>
+                        <th>@Html.DisplayNameFor(model => model.RecordId)</th>
+                        <th>@Html.DisplayNameFor(model => model.UserName)</th>
+                        <th>Time</th>
+                        <th>Action</th>*@
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                        {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.AuditLogId)</td>
+                            <td>@Html.DisplayFor(modelItem => item.TableName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.RecordId)</td>
+                            <td>@Html.DisplayFor(modelItem => item.UserName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.EventDateUTC)</td>
+                            <td>@item.EventType.DisplayValue()</td>
+                            <td>
+                                @Html.ActionLink("Details", "details", new { id = item.AuditLogId }, new { @class = @Html.RenderHidden("details") }) @*|*@
+                                @*@Html.ActionLink("Delete", "delete", new { id = item.AuditLogId })*@
+                            </td>
+                        </tr>
+                        }
+            </tbody>
+        </table>
+        @Html.Partial("_PageBottom", Model)
+    </div>
+</div>

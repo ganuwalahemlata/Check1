@@ -1,0 +1,79 @@
+﻿@{
+    ViewBag.Title = "Process RMA";
+}
+
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            @ViewBag.Title
+        </span>
+    </h1>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+
+        @using (Html.BeginForm("Index", "processrma", FormMethod.Post))
+        {
+            <div class="form-horizontal">
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">RMA Number's</label>
+                    <div class="col-sm-9">
+                        @Html.TextArea("RMANumbers", new { @class = "col-xs-12 col-sm-6" })
+
+                        <div class="error-container col-sm-5" style="color:red">
+                            @ViewBag.Error
+                        </div>
+                    </div>
+
+                    <label class="col-sm-9 col-sm-offset-3">RMA Number's should be comma separated</label>
+                </div>
+                @*@Html.EditorForModel()*@
+
+                <div class="clearfix form-actions">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button type="submit" class="btn btn-primary btn-round">
+                            <i class="ace-icon fa fa-check"></i>
+                            Process
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+        }
+
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        RMA number
+                    </th>
+                    <th>
+                        Action Performed
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ViewBag.SummaryList as List<KontinuityCRM.Models.ViewModels.RMAProcessReasonsViewModel>)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.RMANumber)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Reason)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

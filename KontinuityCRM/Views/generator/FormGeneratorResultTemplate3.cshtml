@@ -1,0 +1,101 @@
+﻿@model KontinuityCRM.Models.ViewModels.FormGenerationModel1
+
+@{
+
+    <link href="@Url.ContentAbsUrl("~/Content/bootstrap.min.css")" rel="stylesheet">
+
+}
+<html>
+<head></head>
+    <title>Page 1</title>
+    <body>
+        <form accept-charset='ISO-8859-1' role="form" class="form-horizontal" method="post" id="generator-form" name="generator-form">
+            <div id="form-rootwizard">
+                <ul class="hidden"></ul>
+                <div class="tab-content">
+
+                    <div class="row">
+                        <div style="width: 98%;padding: 24px;">
+                            <div class="panel panel-primary" style="width:65%;float:left">
+                                <div class="panel-heading">Products</div>
+                                <div class="panel-body">
+                                    @if (Model.Products.Count > 1)
+                                    {
+                                        <div class="form-group col-sm-12">
+                                            @{
+                                                foreach (var product in Model.Products)
+                                                {
+                                                    <div class="radio">
+                                                        <label> <input type="radio" name="ProductId" id="ProductId-@product.ProductId" value="@product.ProductId" data-value="@product.ProductId" required> @product.Name </label>
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                                }
+
+                                    <div class="form-group col-sm-10">
+                                        <label class="control-label">Product Name : </label>
+                                        <label class="control-label">Product 1</label>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="panel panel-primary" style="width:30%;float:right">
+                                <div class="panel-heading accordion-style1">Payment Information</div>
+                                <div class="panel-body">
+                                    <div class="form-group col-sm-10">
+                                        <label for=@Model.Customers.FirstName class="control-label">Credit Card Number</label>
+                                        <input type="Text" class="form-control" id=@Model.Customers.FirstName name=@Model.Customers.FirstName />
+                                    </div>
+                                    <div style="clear:both"></div>
+                                    <div class="form-group col-sm-10">
+                                        <label for=@Model.Customers.LastName class="control-label">CVV</label>
+                                        <input type="Text" class="form-control" id=@Model.Customers.LastName name=@Model.Customers.LastName />
+                                    </div>
+                                    <div style="clear:both"></div>
+                                    <div class="form-group col-sm-10">
+                                        <label for=@Model.Customers.Address1 class="control-label">CVV</label>
+                                        <input type="date" class="form-control" id=@Model.Customers.Address1 name=@Model.Customers.Address1 />
+                                    </div>
+
+                                    <div class="col-sm-1"></div>
+                                </div>
+                            </div>
+
+                            <div style="clear:both"></div>
+                            <input type="submit" class="btn btn-app btn-primary" style="float: right;" />
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="alert alert-danger prospect-error hidden">There was an error creating the prospect...</div>
+            <div class="alert alert-danger order-error hidden">There was an error processing the request...</div>
+            <div class="alert alert-success hidden">The order was created successfully...</div>
+            <div class="progress hidden generated-progress">
+                <div class="progress-bar progress-bar-info
+                    progress-bar-striped active"
+                     style="width: 100%">
+                </div>
+            </div>
+            <input type="hidden" name="PartialId" id="PartialId" value='0' />
+            @{            }
+
+            }
+        </form>
+
+@{
+
+    <script src="@Url.ContentAbsUrl("~/Scripts/jquery-2.1.3.min.js")"></script>
+            <script src="@Url.ContentAbsUrl("~/Scripts/bootstrap.min.js")"></script>
+            <script src="@Url.ContentAbsUrl("~/Scripts/form2js.js")"></script>
+            <script src="@Url.ContentAbsUrl("~/Scripts/json2.js")"></script>
+            <script src="@Url.ContentAbsUrl("~/Scripts/jquery.bootstrap.wizard.min.js")"></script>
+            <script src="@Url.ContentAbsUrl("~/Scripts/validator.min.js")"></script>
+
+}
+<script src="@Url.ContentAbsUrl("~/Scripts/jquery.creditCardValidator.js")"></script>
+ </body>
+
+</html>

@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewBag.Title = "Logs";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="tabbable">
+    <ul class="nav nav-tabs" id="myTab">
+        <li class="active">
+            <a data-toggle="tab" href="#home">
+                <i class="green ace-icon fa fa-home bigger-120"></i>
+                Home
+            </a>
+        </li>
+
+        <li>
+            <a data-toggle="tab" href="#messages">
+                Messages
+                <span class="badge badge-danger">4</span>
+            </a>
+        </li>
+
+        
+    </ul>
+
+    <div class="tab-content">
+        <div id="home" class="tab-pane fade in active">
+            <p>Raw denim you probably haven't heard of them jean shorts Austin.</p>
+        </div>
+
+        <div id="messages" class="tab-pane fade">
+            <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid.</p>
+        </div>
+        
+    </div>
+</div>
+

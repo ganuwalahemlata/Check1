@@ -1,0 +1,9 @@
+﻿@model KontinuityCRM.Models.Gateways.Stripe
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Currency, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.DropDownListFor(model => model.Currency, KontinuityCRM.Models.Gateways.Currency.USD.ToSelectList())
+    </div>
+</div>
+

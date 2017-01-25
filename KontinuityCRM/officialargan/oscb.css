@@ -1,0 +1,20 @@
+@media only screen and (max-width: 320px), screen and (max-device-width: 720px) and (orientation:portrait), screen and (max-device-width: 1280px) and (orientation:landscape) {
+	@font-face {
+	    font-family: 'open_sans_condensedbold';
+	    src: url('/fonts/OpenSans-CondBold-webfont.svg#open_sans_condensedbold') format('svg');
+	    font-weight: normal;
+	    font-style: normal;
+	}
+}
+
+@font-face {
+    font-family: 'open_sans_condensedbold';
+    src: url('/fonts/OpenSans-CondBold-webfont.eot');
+    src: url('/fonts/OpenSans-CondBold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/fonts/OpenSans-CondBold-webfont.woff') format('woff'),
+         url('/fonts/OpenSans-CondBold-webfont.ttf') format('truetype'),
+         url('/fonts/OpenSans-CondBold-webfont.svg#open_sans_condensedbold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}

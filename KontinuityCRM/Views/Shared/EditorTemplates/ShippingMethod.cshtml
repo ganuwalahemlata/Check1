@@ -1,0 +1,43 @@
+﻿@model KontinuityCRM.Models.ShippingMethod
+
+<div class="form-group">
+        @Html.LabelFor(model => model.Name, new { @class = "col-sm-3 control-label" })
+	<div class="col-sm-9">
+        @Html.TextBoxFor(model => model.Name, new { @class = "col-xs-12 col-sm-5" })
+        @Html.ValidationMessageFor(model => model.Name)
+    </div>
+</div>
+
+<div class="form-group">
+        @Html.LabelFor(model => model.Price, new { @class = "col-sm-3 control-label" })
+	<div class="col-sm-9">
+        @Html.TextBoxFor(model => model.Price, new { @class = "col-xs-3 col-sm-1" })
+        @Html.ValidationMessageFor(model => model.Price)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.RecurringPrice, new { @class = "col-sm-3 control-label" })
+	<div class="col-sm-9">
+        @Html.TextBoxFor(model => model.RecurringPrice, new { @class = "col-xs-3 col-sm-1" })
+        @Html.ValidationMessageFor(model => model.RecurringPrice)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ShippingCategory, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        <div class="col-xs-12 col-sm-5 nopadding no-padding">
+            @Html.DropDownListFor(model => model.ShippingCategoryId, new SelectList(ViewBag.ShippingCategories, "Id", "Name"),
+           new { @class = "chosen form-control" })
+            @Html.ValidationMessageFor(model => model.ShippingCategoryId)
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+        @Html.LabelFor(model => model.Description, new { @class = "col-sm-3 control-label" })
+	<div class="col-sm-9">
+        @Html.TextAreaFor(model => model.Description, new { @class = "col-xs-12 col-sm-10", @rows = "3" })
+	</div>
+</div>

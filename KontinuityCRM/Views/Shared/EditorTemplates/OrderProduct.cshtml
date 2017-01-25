@@ -1,0 +1,242 @@
+﻿@using KontinuityCRM.Models.Enums
+@model KontinuityCRM.Models.OrderProduct
+
+<li>
+    @Html.HiddenFor(model => model.ProductId)
+    @Html.HiddenFor(model => model.OrderId)
+    @Html.HiddenFor(model => model.Shipped)
+    @Html.HiddenFor(model => model.Price)
+    @Html.HiddenFor(model => model.Tax)
+    @Html.HiddenFor(model => model.Cost)
+    @Html.HiddenFor(model => model.FulfillmentDate)
+    @Html.HiddenFor(model => model.FulfillmentProviderResponse)
+    @Html.HiddenFor(model => model.ReAttempts)
+    @Html.HiddenFor(model => model.ChildOrderId)
+
+    @{
+        var recurring = Model.NextDate.HasValue;
+    }
+    <div class="form-group">
+        @Html.LabelFor(model => model.Product.Name, new { @class = "col-sm-3 control-label no-padding-right" })
+        <div class="col-sm-9">
+            <span class="readonlydetail">
+                @Html.DisplayFor(model => model.Product.Name)
+            </span>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Shipped, new { @class = "col-sm-3 control-label no-padding-right" })
+        <div class="col-sm-9">
+            <span class="readonlydetail">
+                @Html.Label(Model.Shipped == null || Model.Shipped == false ? "No": "Yes")
+            </span>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Currency, new { @class = "col-sm-3 control-label no-padding-right" })
+        <div class="col-sm-9">
+            <span class="readonlydetail">
+                @Html.DisplayFor(model => model.Currency)
+            </span>
+        </div>
+    </div>
+    
+    <div class="form-group">
+        @Html.LabelFor(model => model.Tax, new { @class = "col-sm-3 control-label no-padding-right" })
+        <div class="col-sm-9">
+            <span class="readonlydetail">
+                @Html.DisplayFor(model => model.Tax)
+            </span>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Cost, new { @class = "col-sm-3 control-label no-padding-right" })
+        <div class="col-sm-9">
+            <span class="readonlydetail">
+                @Html.DisplayFor(model => model.Cost)
+            </span>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.SKU, new { @class = "col-sm-3 control-label no-padding-right" })
+        <div class="col-sm-9">
+            <span class="readonlydetail">
+                @Html.DisplayFor(model => model.SKU)
+            </span>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Price, new { @class = "col-sm-3 control-label no-padding-right" })
+        <div class="col-sm-9">
+            @Html.TextBoxFor(model => model.Price, new { @class = "col-xs-6 col-sm-3" })
+            @Html.ValidationMessageFor(model => model.Price)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Quantity, new { @class = "col-sm-3 control-label no-padding-right" })
+        <div class="col-sm-9">
+            @Html.TextBoxFor(model => model.Quantity, new { @class = "col-xs-6 col-sm-3" })
+            @Html.ValidationMessageFor(model => model.Quantity)
+        </div>
+    </div>
+
+    @if (Model.NextDate.HasValue || (Model.ChildOrder != null && Model.ChildOrder.Status == OrderStatus.Void))
+    {
+
+        <div class="form-group">
+            @Html.Label("Recurring", new { @class = "col-sm-3 control-label no-padding-right" })
+            <div class="col-sm-9">
+                @Html.RadioButtonFor(model => model.Recurring, true)
+                Yes
+                @Html.RadioButtonFor(model => model.Recurring, false) No
+                <small> &nbsp; ( Stop the recurring after the next successful billing )</small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Next Recurring Date", new { @class = "col-sm-3 control-label no-padding-right" })
+            <div class="col-sm-9">
+
+                @Html.TextBoxFor(model => model.NextDate, new
+                {
+                    @class = "datepicker", /* input-sm form-control */
+                    @Value = Model.NextDate.HasValue ? Model.NextDate.Value.ToString("MM/dd/yyyy") : string.Empty
+                })
+                <div class="clearfix"></div>
+                @Html.ActionLink("Force Rebill Now", "rebill", new { id = Model.OrderId, pid = Model.ProductId }, new { @class = "btn btn-sm btn-primary" })
+                @*@Html.ActionQueryLink("Force Rebill Now", "index", new { pid = Model.ProductId, UserAction = UserAction.rebill, oid = Model.OrderId }, new { @class = "btn btn-xs btn-primary" })*@
+
+            </div>
+        </div>
+
+       <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right">Next Rebill Price</label>
+            <div class="col-sm-9">
+                <input type="text" disabled="disabled" value="@(Model.NextProduct != null ? Model.NextProduct.Price.ToString(): "")" />
+            </div>
+        </div>
+
+        if (Model.ProductId == Model.NextProductId)
+        {
+            <div class="subscription">
+
+                <div class="form-group">
+                    @Html.Label("Subscription Type", new { @class = "col-sm-3 control-label no-padding-right" })
+                    <div class="col-sm-9">
+                        <div class="col-xs-12 col-sm-5 nopadding no-padding">
+                            @Html.EnumDropdownListFor(model => model.BillType, new { @class = "billtype form-control" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Subscription Value", new { @class = "col-sm-3 control-label no-padding-right" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.BillValue, new { @class = "inputbillvalueform " + (Model.BillType != BillType.ByDay ? string.Empty : "hidden") })
+                        <div class="col-xs-12 col-sm-5 nopadding no-padding selectbillvalueform @(Model.BillType == BillType.ByDay ? string.Empty : "hidden")">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    @Html.DropDownList("billday", KontinuityCRMHelper.GetBillDay(Model.BillType == BillType.ByDay ? Model.BillValue.Value : 10).ToSelectIntList(), new { @class = "billday form-control" })
+                                </div>
+                                <div class="col-sm-6">
+                                    @Html.DropDownList("dayofweek", KontinuityCRMHelper.GetDateOfWeek(Model.BillType == BillType.ByDay ? Model.BillValue.Value : 0).ToSelectIntList(), new { @class = "dayofweek form-control" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        }
+        else
+        {
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right">Rebill Type</label>
+                <div class="col-sm-9">
+                    <input type="text" disabled="disabled" value="@(Model.BillType.HasValue ? Model.BillType.Value.ToString() : "")" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.BillValue, new { @class = "col-sm-3 control-label no-padding-right" })
+                <div class="col-sm-9">
+                    @Html.TextBoxFor(model => model.BillValue)
+                    @Html.ValidationMessageFor(model => model.BillValue)
+                </div>
+            </div>
+        }
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.RebillDiscount, new { @class = "col-sm-3 control-label no-padding-right" })
+            <div class="col-sm-9">
+                @Html.TextBoxFor(model => model.RebillDiscount)
+                @Html.ValidationMessageFor(model => model.RebillDiscount)
+                <div class="info">Discount on next recurring product, not including shipping price</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.NextProduct, new { @class = "col-sm-3 control-label no-padding-right" })
+            <div class="col-sm-9">
+                <div class="col-xs-12 col-sm-5 nopadding no-padding">
+                    @Html.DropDownGroupListFor(model => model.NextProductId, ((IEnumerable<Product>)ViewBag.Products)  //((IEnumerable<Product>)ViewData["Products"])
+                                .OrderBy(p => p.Category.Name)
+                                .ThenBy(p => p.Name)
+                                .Select(p => new GroupedSelectListItem
+                                {
+                                    GroupKey = p.CategoryId.ToString(),
+                                    GroupName = p.Category.Name,
+                                    Text = string.Format("{0} ({1})", p.Name, p.ProductId),
+                                    Value = p.ProductId.ToString(),
+                                    Selected = p.ProductId == Model.NextProductId,
+
+                                }), new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ReAttempts, new { @class = "col-sm-3 control-label no-padding-right" })
+            <div class="col-sm-9">
+                <span class="readonlydetail">
+                    @Html.DisplayFor(model => model.ReAttempts)
+                </span>
+            </div>
+        </div>
+
+    }
+    else
+    {
+        @Html.HiddenFor(model => model.Recurring)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Recurring, new { @class = "col-sm-3 control-label no-padding-right" })
+            <div class="col-sm-9">
+                <span class="readonlydetail">
+                    No
+                    @*@if (Model.ChildOrder.Status == OrderStatus.Void)
+                    {
+                            <div class="col-sm-9">
+                                @Html.RadioButtonFor(model => model.Recurring, true)
+                                Yes
+                                @Html.RadioButtonFor(model => model.Recurring, false) No
+                                <small> &nbsp; ( Stop the recurring after the next successful billing )</small>
+                            </div>
+                      
+                    }*@
+                    @if (Model.ChildOrderId.HasValue)
+                    {
+                        <span>Order rebilled. Id: @Model.ChildOrderId.ToString() </span>
+                    }
+                    else if (Model.Order.Status != OrderStatus.Deleted && Model.Order.Status != OrderStatus.Declined && !Model.Order.IsTest)
+                    {
+                        // enable start recurring
+                        @Html.ActionLink("Start Recurring", "start", new { pid = Model.ProductId, id = Model.OrderId }, new { @class = "btn btn-xs btn-primary" })
+                        @*@Html.ActionQueryLink("Start Recurring", "index", new { pid = Model.ProductId, UserAction = UserAction.start, oid = Model.OrderId }, new { @class = "btn btn-xs btn-primary" })*@
+                    }
+                </span>
+            </div>
+        </div>
+    }
+
+</li>

@@ -1,0 +1,383 @@
+﻿@model DotNet.Highcharts.Highcharts
+@{
+    ViewBag.Title = "Dashboard";
+    ViewBag.icon = "fa-dashboard";
+}
+@section Styles{
+    <link href="~/Content/jquery.gridster.css" rel="stylesheet" />
+    <style>
+        .modal-body, h3 {
+            cursor: pointer;
+        }
+         .modal-content h4.w-item:hover {
+
+            color: blue;
+            font-weight:bold;
+        }
+    </style>
+
+}
+<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Dashboard Widgets</h4>
+                <p>Click to add from following widgets</p>
+            </div>
+            <div class="modal-body">
+                <h4 id="1" class="w-item">Rebill Report</h4>
+                <h4 id="2" class="w-item">Schedule Rebill Report</h4>
+                <h4 id="3" class="w-item">Profit Analysis Report</h4>
+                <h4 id="4" class="w-item">Customer Lifetime Value Report</h4>
+                <div>
+                    <label>Specify Date Range To Limit CLV</label>
+                    <br />
+                    <label class="control-label">From:</label>
+
+                    <div class="">
+                        <input type="date" class="datepicker form-control input-sm" />
+                    </div>
+
+
+                    <label class="control-label">To:</label>
+
+                    <div class="">
+                        <input type="date" class="datepicker form-control input-sm" />
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="row">
+    <div class="space-14"></div>
+    <div class="col-sm-5 col-sm-offset-4">
+
+        <a href="@Url.Action("index", "product")" class="btn btn-app btn-default @Html.RenderHidden(new[] { "PRODUCT_index" })">
+            <i class="ace-icon fa fa-barcode bigger-230"></i>
+            Products
+        </a>
+        &nbsp;&nbsp;&nbsp;
+        <a href="@Url.Action("index", "order", new { id = UrlParameter.Optional })" class="btn btn-app btn-primary @Html.RenderHidden(new[] { "ORDER_index" })">
+            <i class=" ace-icon fa fa-shopping-cart bigger-230">
+            </i>
+            Orders
+        </a>
+        &nbsp;&nbsp;&nbsp;
+        <a href="@Url.Action("index", "customer")" class="btn btn-app btn-success @Html.RenderHidden(new[] { "CUSTOMER_index" })">
+            <i class="ace-icon fa fa-group bigger-230"></i>
+            Customers
+        </a>
+        &nbsp;&nbsp;&nbsp;
+
+        <a data-toggle="modal" data-target="#myModal" href="javascript:void(0);" class="btn btn-app btn-success add-widget  @Html.RenderHidden(new[] { "PRODUCT_index" })">
+            <i class="ace-icon fa fa-gears bigger-230"></i>
+            Widgets
+        </a>
+
+
+    </div>
+
+
+</div>
+<div class="space-8"></div>
+<div style="color: black;">
+    <div class="gridster ready">
+        <ul class="widget-list" id="widget-items">
+
+
+            @*<li data-id="1" data-row="1" data-col="1" data-sizex="5" data-sizey="5">
+
+                    <i class="glyphicon glyphicon-remove close" data-close="1"></i>
+                    @(Model)
+                </li>*@
+
+            @*<li data-id="2" data-row="1" data-col="2" data-sizex="4" data-sizey="2">
+                    <i class="glyphicon glyphicon-remove close" data-close="2"></i>
+                    <div id="container1"></div>
+                    <span class="gs-resize-handle gs-resize-handle-both"></span>
+                </li>*@
+            @*<li data-row="3" data-col="1" data-sizex="1" data-sizey="1"></li>
+
+                <li data-row="1" data-col="2" data-sizex="2" data-sizey="1"></li>
+                <li data-row="2" data-col="2" data-sizex="2" data-sizey="2"></li>
+
+                <li data-row="1" data-col="4" data-sizex="1" data-sizey="1"></li>
+                <li data-row="2" data-col="4" data-sizex="2" data-sizey="1"></li>
+                <li data-row="3" data-col="4" data-sizex="1" data-sizey="1"></li>
+
+                <li data-row="1" data-col="5" data-sizex="1" data-sizey="1"></li>
+                <li data-row="3" data-col="5" data-sizex="1" data-sizey="1"></li>*@
+
+            @*<li data-id="3" data-row="2" data-col="6" data-sizex="4" data-sizey="2">
+                    <i class="glyphicon glyphicon-remove close" data-close="3"></i>
+                </li>*@
+
+            @*<li data-id="4" data-row="3" data-col="1" data-sizex="3" data-sizey="3">
+                    <i class="glyphicon glyphicon-remove close" data-close="4"></i>
+                </li>*@
+        </ul>
+    </div>
+</div>
+
+<div class="row">
+    @*<div class="center-block" style="width:90%;">
+           @(Model)
+        </div>*@
+
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/jquery-ui-1.10.3.min.js"></script>
+    <script src="~/Scripts/Gridster-Dashboards/jquery.collision.js"></script>
+    <script src="~/Scripts/Gridster-Dashboards/jquery.coords.js"></script>
+    <script src="~/Scripts/Gridster-Dashboards/jquery.draggable.js"></script>
+    <script src="~/Scripts/Gridster-Dashboards/jquery.gridster.js"></script>
+    <script src="~/Scripts/Gridster-Dashboards/jquery.gridster.extras.js"></script>
+    <script src="~/Scripts/Gridster-Dashboards/utils.js"></script>
+    <script src="~/Scripts/Highcharts-4.0.1/js/highcharts.js"></script>
+    <script src="~/Scripts/Highcharts-4.0.1/js/modules/funnel.js"></script>
+    <script type="text/javascript">
+
+        $(function () { //DOM Ready
+            var gridster = "",
+
+             value = 0;
+            gridster = $(".gridster ul").gridster({
+                widget_margins: [10, 10],
+                widget_base_dimensions: [100, 100],
+                draggable: {
+                    stop: function (event, ui) {
+                        var widgetsPositions = [],
+                            elements = $('li.gs-w');
+
+                        for (var i = 0; i < elements.length; i++) {
+                            var obj = new widget();
+                            obj.Id = elements[i].id.split('_')[0];
+                            obj.Col_Position = $('#' + obj.Id + '_w').attr("data-col");
+                            obj.Row_Position = $('#' + obj.Id + '_w').attr("data-row");
+                            widgetsPositions.push(obj);
+                        }
+
+                        $.ajax({
+                            url: "@Url.Action("UpdateAllWidgets", "Home")",
+                            type: "Post",
+                            contentType: "application/json",
+                            data: JSON.stringify({ widgets: widgetsPositions }),
+                            success: function () {
+
+                            }
+
+                        })
+
+
+                    }
+                }
+            }).data('gridster');
+
+
+            $(".gs_w").hover(function () {
+                var id = $(this).attr("data-id");
+                //show close button on hover
+                $("ul").find("[data-close='" + id + "']").show();
+                //show modifie button on hover
+                $("." + id).show();
+            });
+            $(".gs_w").mouseleave(function () {
+                var id = $(this).attr("data-id");
+                //hide close button on hover
+                $("ul").find("[data-close='" + id + "']").hide();
+                //hide close button on hover
+                $("." + id).hide();
+            });
+
+            $(".close").on('click', function () {
+                var id = $(this).attr("data-close");
+                console.log(id);
+                //$("ul").find("[data-id='" + id + "']").remove();
+                gridster.remove_widget($("ul").find("[data-id='" + id + "']"));
+            });
+
+
+
+            renderAvailableWidgets();
+
+
+            $('.add-widget').click(function () {
+
+                // openDialog();
+                //  renderWidget();
+
+            });
+
+            $('body').on('click', 'modal-class, h4', function (event) {
+
+                //Create Widget Object
+                var widgetObj = JSON.stringify({
+                    Type: event.target.id,
+                    isReportingWidget: true,
+                    Row_Position: 1,
+                    Col_Position: 1
+
+                });
+                renderWidget(widgetObj, event.target.id);
+            });
+
+            $('body').on("click", ".gridster ul > li .close", function (event) {
+                gridster.remove_widget($(this).closest('li'));
+                removeWidget(event.target.id);
+            });
+
+            function createChart(widget, chart) {
+
+                $('#' + widget).highcharts({
+                    chart: {
+                        type: chart.ChartType
+                    },
+                    title: {
+                        text: chart.ChartTitle
+                    },
+                    xAxis: {
+                        categories: chart.XAxis
+                    },
+                    yAxis: {
+                        title: {
+                            text: chart.YTitle
+                        }
+                    },
+                    series: [{
+                        name: chart.SeriesName,
+                        data: chart.YAxis
+                    }]
+                });
+            }
+
+            function createWidget(id, col, row) {
+
+                var widget = "container";
+                value += $("#widget-items").children("li").length;
+                if (value)
+                    widget = widget + value;
+                var html = '<li id=' + id + '_w>' +
+                           ' <i id=' + id + ' class="glyphicon glyphicon-remove close"></i>' +
+                           '<div id=' + widget + '> </div>' +
+                           '</li>';
+                gridster.add_widget.apply(gridster, [html, 4, 4, col, row]);
+                return widget;
+
+            }
+
+            function renderWidget(obj, id) {
+                if (id == 2 || id == 3)
+                    return;
+
+                $.ajax({
+
+                    url: "@Url.Action("AddReportingWidget", "Home")",
+                    type: "Post",
+                    contentType: "application/json",
+                    data: obj,
+                    success: function (data) {
+                        var Id = data.id;
+                        $.ajax({
+                            url: "@Url.Action("Reports", "Home")",
+                            type: "Get",
+                            contentType: "application/json",
+                            data: { reportType: id },
+
+                            success: function (data) {
+                                var widgetId = createWidget(Id);
+                                createChart(widgetId, data.chart);
+                                //update widget position
+                                var element = $('#' + Id).parent('li.gs-w');
+                                $.ajax({
+                                    url: "@Url.Action("UpdateWidgetPosition", "Home")",
+                                    type: "Get",
+                                    contentType: "application/json",
+                                    data: { widgetId: Id, col_pos: element.attr("data-col"), row_pos: element.attr("data-row") },
+                                    success: function () {
+
+                                    }
+
+                                })
+
+
+                            },
+                            error: function (err) {
+                            },
+                            complete: function () {
+
+                            }
+                        });
+                    }
+                });
+
+            }
+            function renderAvailableWidgets() {
+
+
+
+                $.ajax({
+                    url: "@Url.Action("GetAvailableWidgets", "Home")",
+                    type: "Get",
+                    contentType: "application/json",
+
+                    success: function (data) {
+                        for (var i = 0; i < data.data.length; i++) {
+
+                            var widgetId = createWidget(data.data[i].id, data.data[i].Col_Pos, data.data[i].Row_Pos);
+                            createChart(widgetId, data.data[i]);
+                        }
+                    },
+                    error: function (err) {
+                    },
+                    complete: function () {
+
+                    }
+                });
+
+            }
+
+
+            function removeWidget(id) {
+
+                $.ajax({
+                    url: "@Url.Action("RemoveWidget", "Home")",
+                    type: "Get",
+                    contentType: "application/json",
+                    data: { widgetId: id },
+
+                    success: function (data) {
+
+                    },
+                    error: function (err) {
+                    },
+                    complete: function () {
+
+                    }
+                });
+            }
+
+            function widget() {
+                return {
+                    Id: 0,
+                    Col_Position: 0,
+                    Row_Position: 0
+                }
+            }
+
+        });
+
+    </script>
+}
+
+

@@ -1,0 +1,133 @@
+﻿@model KontinuityCRM.Models.AutoResponders.iContact
+
+<div class="form-group">
+    @Html.LabelFor(model => model.UserName, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.UserName, new { @class = "col-xs-12 col-sm-5" })
+        @Html.ValidationMessageFor(model => model.UserName)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ApiPassword, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.ApiPassword, new { @class = "col-xs-12 col-sm-5" })
+        @Html.ValidationMessageFor(model => model.ApiPassword)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ApiKey, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.ApiKey, new { @class = "col-xs-12 col-sm-5" })
+        @Html.ValidationMessageFor(model => model.ApiKey)
+    </div>
+</div>
+
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ClientFolder, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.ClientFolder, new { @class = "col-xs-12 col-sm-5" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.Label("Custom Field 1", new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+       
+        <div class="form-group">
+            <div class="col col-sm-6">
+                <label class="control-label">Name</label>
+                @Html.TextBoxFor(model => model.CustomField1Name, new { @class = "form-control" })
+            </div>
+        
+            <div class="col col-sm-6">
+                <label class="control-label">Value/Token</label>
+                @Html.TextBoxFor(model => model.CustomField1Value, new { @class = "form-control" })
+            </div>
+        </div>
+       
+        
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.Label("Custom Field 2", new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+
+        <div class="form-group">
+            <div class="col col-sm-6">
+                <label class="control-label">Name</label>
+                @Html.TextBoxFor(model => model.CustomField2Name, new { @class = "form-control" })
+            </div>
+
+            <div class="col col-sm-6">
+                <label class="control-label">Value/Token</label>
+                @Html.TextBoxFor(model => model.CustomField2Value, new { @class = "form-control" })
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.Label("Custom Field 3", new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+
+        <div class="form-group">
+            <div class="col col-sm-6">
+                <label class="control-label">Name</label>
+                @Html.TextBoxFor(model => model.CustomField3Name, new { @class = "form-control" })
+            </div>
+
+            <div class="col col-sm-6">
+                <label class="control-label">Value/Token</label>
+                @Html.TextBoxFor(model => model.CustomField3Value, new { @class = "form-control" })
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.Label("Custom Field 4", new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+
+        <div class="form-group">
+            <div class="col col-sm-6">
+                <label class="control-label">Name</label>
+                @Html.TextBoxFor(model => model.CustomField4Name, new { @class = "form-control" })
+            </div>
+
+            <div class="col col-sm-6">
+                <label class="control-label">Value/Token</label>
+                @Html.TextBoxFor(model => model.CustomField4Value, new { @class = "form-control" })
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.Label("Custom Field 5", new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+
+        <div class="form-group">
+            <div class="col col-sm-6">
+                <label class="control-label">Name</label>
+                @Html.TextBoxFor(model => model.CustomField5Name, new { @class = "form-control" })
+            </div>
+
+            <div class="col col-sm-6">
+                <label class="control-label">Value/Token</label>
+                @Html.TextBoxFor(model => model.CustomField5Value, new { @class = "form-control" })
+            </div>
+        </div>
+
+
+    </div>
+</div>

@@ -1,0 +1,79 @@
+﻿@model PagedList.IPagedList<KontinuityCRM.Models.Category>
+
+
+@{
+    ViewBag.Title = "Categories";
+    ViewBag.icon = "fa-folder";    
+}
+
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            @ViewBag.Title
+        </span>
+        <span class="col-sm-4">
+            <span class="pull-right inline">
+                <a href="@Url.Action("create")" class="btn btn-primary btn-round @Html.RenderHidden(new []{"CATEGORY_create"}) ">
+                    <i class="ace-icon fa fa-plus"></i> 
+                    Create
+                </a>
+            </span>
+        </span>
+    </h1>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+
+        @Html.Partial("_PageTop")    
+          
+        <table class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th class="@ViewBag.idOrderIcon">
+                            @Html.ActionQueryLink("Id", "index", new { sortOrder = ViewBag.IdSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                        </th>
+                        <th class="@ViewBag.nameOrderIcon">
+                            @Html.ActionQueryLink("Name", "index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                        </th>
+                        <th class="@ViewBag.productsOrderIcon">
+                            @Html.ActionQueryLink("Total Products", "index", new { sortOrder = ViewBag.ProductsSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                        </th>
+                        <th class="@ViewBag.descriptionOrderIcon">
+                            @Html.ActionQueryLink("Description", "index", new { sortOrder = ViewBag.DescriptionSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                            <td>
+                                @if (item.Products.Any())
+                                {
+                                    @Html.ActionLink(item.Products.Count().ToString(), "index", "product", new { CategoryId = item.Id }, null)
+                                }
+                                else
+                                { 
+                                    @*@:0*@
+                                
+                                }
+                            </td>
+                            <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                            <td>
+                                @Html.ActionLink("Edit", "edit", new { id = item.Id }, new { @class = @Html.RenderHidden("edit") }) 
+                                <span class='@Html.RenderHidden(new[] { "CATEGORY_edit", "CATEGORY_delete" },forceAll:true)'>|</span>
+                                @Html.ActionLink("Delete", "delete", new { id = item.Id }, new { @class = @Html.RenderHidden("delete") })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+       
+        @Html.Partial("_PageBottom", Model)    
+       
+    </div>
+</div>

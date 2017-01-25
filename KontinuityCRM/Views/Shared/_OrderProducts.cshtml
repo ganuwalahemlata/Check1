@@ -1,0 +1,193 @@
+﻿@model KontinuityCRM.Models.Order
+
+@{
+    Html.AddStyle(Url.Content("~/Content/css/select2.min.css"));
+}
+
+<script>
+    function formatCurrency(value) {
+        return "$" + value.toFixed(2);
+    }
+</script>
+<div>
+    <h3 class="row header smaller lighter purple">
+        <span class="col-sm-6"> Products </span><!-- /.col -->
+    </h3>
+
+    @Html.ValidationSummary()
+
+    <div class="form-group">
+        @Html.Label("Choose products", new { @class = "col-sm-3 control-label" })
+        <div class="col-sm-9">
+            <div class="form-group">
+                <select id="select-product" class="chosen-select" style="width:50%; height: 10px;" data-bind="options: availableProducts, optionsText: 'Name', optionsValue: 'Id', value: selectedProductId" data-placeholder=""></select> @*, select2:{}, optionsCaption: ' '*@
+                @*<input type="text" id="select-product" class="col-xs-12 col-sm-5 typeahead scrollable" data-bind="value: selectProduct" />*@
+                @*<input data-bind="autoComplete: availableProducts, value: selectedProductId, optionsText: 'Name', optionsValue: 'Id', autoCompleteOptions: {autoFocus: false}" />*@
+                <button type="button" class="btn btn-default btn-sm plusbtn" id="addproduct" data-bind='click: addLine'>
+                    <i class="fa fa-plus"></i>
+                    Add
+                </button>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-12" style="margin-top: 20px;">
+            @* Products table *@
+            <table class="table" id="ptable">
+                <thead>
+                    <tr>
+                        @*<th width='25%'>Category</th>*@
+                        <th width='25%'>Product</th>
+                        <th class='price' width='15%'>Price</th>
+                        <th class='quantity' width='10%'>Quantity</th>
+                        <th class='price' width='15%'>Subtotal</th>                        
+                        <th class='tax' width='15%'>Tax</th>                        
+                        <th width='10%'> </th>
+                    </tr>
+                </thead>
+                <tbody  id="TableBody" data-bind='foreach: lines'>                    
+                    <tr>
+                        <td>
+                            <span data-bind='text: name'> </span>
+                            <input type="hidden" name="orderproducts.Index" data-bind="value: id" />
+                            @*<input type="hidden" data-bind="value: id, attr: { name: 'OrderProducts[' + id + '].ProductId' }">*@
+                            <input type="hidden" data-bind='value: id, attr: { name: "OrderProducts[" + id + "].ProductId" }'>
+                        </td>
+                        <td class='price'>
+                            <input type="text" onchange="javascript:calculateTax()" data-bind='value: price, valueUpdate: "afterkeydown", attr : { name: "OrderProducts[" + id + "].Price" }' />
+                        </td>
+                        <td class='quantity'>
+                            <input type="text" onchange="javascript:calculateTax()" data-bind='value: quantity, valueUpdate: "afterkeydown", attr: { name: "OrderProducts[" + id + "].Quantity" }' />
+                        </td>
+                        <td class='subtotal'>
+                            <input type="hidden" data-bind='value: subtotal, attr: { name: "OrderProducts[" + id + "].Subtotal" }'>
+                            <span data-bind='text: formatCurrency(subtotal())'> </span>
+                        </td>  
+                        <td class='tax'>
+                            $0.00
+                        </td>                      
+                        <td>
+                            <a href='#' data-bind='click: $parent.removeLine'>Remove</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p class='grandTotal'>
+                Total value: <span data-bind='text: formatCurrency(grandTotal())'> </span>
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@{
+    Html.AddJavaScript(Url.Content("~/Scripts/knockout-3.2.0.js"));
+    Html.AddJavaScript(Url.Content("~/Scripts/select2.min.js"));
+}
+@*<script src="~/Scripts/knockout-3.2.0.js"></script>
+    <script src="~/Scripts/select2.min.js"></script>*@
+
+@Html.Script(
+    @<script type="text/javascript">
+
+    (function () {
+        $('.chosen-select').select2({ allowClear: true }); // {allow_single_deselect:true}
+
+        ko.bindingHandlers.select2 = {
+            init: function(element, valueAccessor) {
+                var options = ko.toJS(valueAccessor()) || {};
+                setTimeout(function() {
+                    $(element).select2(options);
+                }, 0);
+            }
+        };
+
+        var CartLine = function (product) {
+            var self = this;
+
+            self.name = product.Name;
+            self.price = ko.observable(product.Price);
+            self.id = product.Id;
+                                    
+            //self.name = name;
+            //self.id = id;
+            //self.price = ko.observable(price);
+
+            self.quantity = ko.observable(1);
+
+            self.subtotal = ko.pureComputed(function () {
+                //return self.product() ? self.product().price * parseInt("0" + self.quantity(), 10) : 0;
+                return parseInt("0" + self.quantity(), 10) * parseFloat("0" + self.price(), 10);               
+            });
+            calculateTax();
+        };
+
+        var yourJavaScriptArray = @Html.Raw(Json.Encode(ViewBag.ProductArray));
+
+        var Cart = function () {
+            // Stores an array of lines, and from these, can work out the grandTotal
+            var self = this;
+            self.lines = ko.observableArray(); // Put one line in by default [new CartLine()]
+            self.grandTotal = ko.pureComputed(function () {
+                var total = 0;
+                $.each(self.lines(), function () { total += this.subtotal() })
+                return total;
+                calculateTax();
+            });
+
+            self.availableProducts = ko.observableArray(yourJavaScriptArray);
+
+            self.selectedProductId = ko.observable();
+
+            // Operations
+            self.addLine = function () {
+				if($('#TableBody').children().length == 0){
+					$.get('/order/GetPaymentTypes?ProductId='+$('#select-product :selected').val(),function(response){
+						var htmlToAdd="";
+						$.each(response,function(index,item){
+
+							htmlToAdd+="<option value='"+item.PaymentTypeId+"'>"+item.Name+"</option>";
+						});
+						$('#PaymentTypeId').html(htmlToAdd);
+					});
+				}
+				
+                if (self.availableProducts().length > 0 && self.selectedProductId() > 0) {
+                    self.lines.push(new CartLine(self.getProduct()));
+                    self.availableProducts.remove(self.getProduct());
+                    calculateTax();
+                    
+                }
+                else{
+                    $(".chosen-select").select2('val', '');
+                    calculateTax();
+                }
+            };
+
+            self.getProduct = ko.computed(function () {
+                var product = ko.utils.arrayFirst(self.availableProducts(), function (prof) {
+                    return prof.Id == self.selectedProductId();
+                });
+                return product || {};
+                calculateTax();
+            });
+
+            self.removeLine = function (line) {
+                self.lines.remove(line)
+                self.availableProducts.push({ "Id": line.id, "Name": line.name, "Price": line.price() });
+                calculateTax();
+
+            };
+
+        };
+
+        ko.applyBindings(new Cart());
+
+        //$('.chosen-select').chosen({ allow_single_deselect: false });
+
+    }())
+
+    </script>
+)

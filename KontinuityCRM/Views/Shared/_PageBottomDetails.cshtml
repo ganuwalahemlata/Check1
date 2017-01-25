@@ -1,0 +1,24 @@
+﻿@model PagedList.IPagedList
+@using PagedList.Mvc;
+
+@*Total: @ViewBag.Count*@
+
+<div class="row">
+
+    <div class="col-sm-3 col-xs-3">
+
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount - Total @Model.TotalItemCount
+
+    </div>
+
+    <div class="col-sm-9 col-xs-9">
+
+        <div class="pull-right kpagination">
+
+            @Html.PagedListPager(Model, page => Url.ActionQueryUrl("Details", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }, "SearchString,display"))
+
+        </div>
+
+    </div>
+
+</div>

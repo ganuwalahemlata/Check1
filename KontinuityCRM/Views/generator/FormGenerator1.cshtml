@@ -1,0 +1,300 @@
+﻿@model KontinuityCRM.Models.ViewModels.FormGenerationModel
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet">
+    <title>title</title>
+</head>
+<body>
+    <div class="col-md-10 col-md-offset-2">
+        <form accept-charset='ISO-8859-1' role="form" class="form-horizontal" method="post" id="generator-form" name="generator-form">
+            <div id="rootwizard">
+                <ul class="hidden">
+                    <li><a href="#tab1" data-toggle="tab">First</a></li>
+                    <li><a href="#tab2" data-toggle="tab">Second</a></li>
+                    <li><a href="#tab3" data-toggle="tab">Third</a></li>
+                    <li><a href="#tab4" data-toggle="tab">Forth</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane" id="tab1">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">General</h3>
+                            </div>
+                            <div style="height: 35em; padding: 5px">
+                                <div class="form-group row">
+                                    <label for="UseProspect" class="col-sm-3 control-label">Use Prospect?</label>
+                                    <div class="col-sm-9">
+                                        <input type="checkbox" class="input-group" id="UseProspect" name="UseProspect" onchange=" showTotalPages(); ">
+                                    </div>
+                                </div>
+                                <div class="form-group row total-pages">
+                                    <label for="TotalPages" class="col-sm-3 control-label">How many pages?</label>
+                                    <div class="col-sm-9">
+                                        <input type="number" class="form-control" id="TotalPages" name="TotalPages" pattern="[0-9]*" value="1" min="1" onchange=" setMaxPageValue() " />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                    </div>
+                    <div class="tab-pane" id="tab2">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">User data</h3>
+                            </div>
+                            <div style="height: 35em">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Field</th>
+                                            <th>Included</th>
+                                            <th>Appears on page</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><label for="FirstName" class="control-label ">First Name</label></td>
+                                            <td><input type="checkbox" class="input-group" id="FirstName" name="FirstName"></td>
+                                            <td><input type="number" class="input-group page-index" id="PageFirstName" name="PageFirstName" pattern="[0-9]*" value="1" min="1" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="LastName" class="control-label ">Last Name</label></td>
+                                            <td><input type="checkbox" class="input-group" id="LastName" name="LastName"></td>
+                                            <td><input type="number" class="input-group page-index" id="PageLastName" name="PageLastName" pattern="[0-9]*" value="1" min="1" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="Address" class="control-label ">Address</label></td>
+                                            <td><input type="checkbox" class="input-group" id="Address" name="Address"></td>
+                                            <td><input type="number" class="input-group page-index" id="PageAddress" name="PageAddress" pattern="[0-9]*" value="1" min="1" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="Address2" class="control-label ">Address2</label></td>
+                                            <td><input type="checkbox" class="input-group" id="Address2" name="Address2"></td>
+                                            <td><input type="number" class="input-group page-index" id="PageAddress2" name="PageAddress2" pattern="[0-9]*" value="1" min="1" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="City" class="control-label ">City</label></td>
+                                            <td><input type="checkbox" class="input-group" id="City" name="City"></td>
+                                            <td><input type="number" class="input-group page-index" id="PageCity" name="PageCity" pattern="[0-9]*" value="1" min="1" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="State" class="control-label ">State</label></td>
+                                            <td><input type="checkbox" class="input-group" id="State" name="State"></td>
+                                            <td><input type="number" class="input-group page-index" id="PageState" name="PageState" pattern="[0-9]*" value="1" min="1" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="Country" class="control-label ">Country</label></td>
+                                            <td><input type="checkbox" class="input-group" id="Country" name="Country"></td>
+                                            <td><input type="number" class="input-group page-index" id="PageCountry" name="PageCountry" pattern="[0-9]*" value="1" min="1" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="Zip" class="control-label ">ZIP</label></td>
+                                            <td><input type="checkbox" class="input-group" id="Zip" name="Zip"></td>
+                                            <td><input type="number" class="input-group page-index" id="PageZip" name="PageZip" pattern="[0-9]*" value="1" min="1" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="Email" class="control-label ">Email</label></td>
+                                            <td><input type="checkbox" class="input-group disabled" id="Email" name="Email" checked="checked" readonly disabled value="on"></td>
+                                            <td><input type="number" class="input-group page-index" id="PageEmail" name="PageEmail" pattern="[0-9]*" value="1" min="1" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="Phone" class="control-label ">Phone</label></td>
+                                            <td><input type="checkbox" class="input-group disabled" id="Phone" name="Phone" checked="checked" readonly disabled value="on"></td>
+                                            <td><input type="number" class="input-group page-index" id="PagePhone" name="PagePhone" pattern="[0-9]*" value="1" min="1" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <hr />
+                    </div>
+                    <div class="tab-pane" id="tab3">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Credit Card &amp; Billing Info</h3>
+                            </div>
+                            <div style="height: 35em">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Field</th>
+                                            <th>Included</th>
+                                            <th>Appears on page</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><label for="CreditCard" class="control-label ">Credit Card Number</label></td>
+                                            <td><input type="checkbox" class="input-group" id="CreditCard" name="CreditCard"></td>
+                                            <td><input type="number" class="input-group page-index" id="PageCreditCard" name="PageCreditCard" pattern="[0-9]*" value="2" min="2" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="CCExpiryDate" class="control-label ">CC Expiration Date</label></td>
+                                            <td><input type="checkbox" class="input-group" id="CCExpiryDate" name="CCExpiryDate"></td>
+                                            <td><input type="number" class="input-group page-index" id="PageCCExpiryDate" name="PageCCExpiryDate" pattern="[0-9]*" value="2" min="2" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="CCCVV" class="control-label ">CC CVV</label></td>
+                                            <td><input type="checkbox" class="input-group" id="CCCVV" name="CCCVV"></td>
+                                            <td><input type="number" class="input-group page-index" id="PageCCCVV" name="PageCCCVV" pattern="[0-9]*" value="2" min="2" /></td>
+                                        </tr>
+                                        @*<tr>
+                                            <td><label for="BillingFirstName" class="control-label ">Billing First Name</label></td>
+                                            <td><input type="checkbox" class="input-group" id="BillingFirstName" name="BillingFirstName"></td>
+                                            <td><input type="number" class="input-group page-index" id="PageBillingFirstName" name="PageBillingFirstName" pattern="[0-9]*" value="1" min="1" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="BillingLastName" class="control-label ">Billing Last Name</label></td>
+                                            <td><input type="checkbox" class="input-group" id="BillingLastName" name="BillingLastName"></td>
+                                            <td><input type="number" class="input-group page-index" id="PageBillingLastName" name="PageBillingLastName" pattern="[0-9]*" value="1" min="1" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="BillingAddress" class="control-label">Billing Address</label></td>
+                                            <td><input type="checkbox" class="input-group" id="BillingAddress" name="BillingAddress"></td>
+                                            <td><input type="number" class="input-group page-index" id="PageBillingAddress" name="PageBillingAddress" pattern="[0-9]*" value="1" min="1" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="BillingCity" class="control-label ">Billing City</label></td>
+                                            <td><input type="checkbox" class="input-group" id="BillingCity" name="BillingCity"></td>
+                                            <td><input type="number" class="input-group page-index" id="PageBillingCity" name="PageBillingCity" pattern="[0-9]*" value="1" min="1" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="BillingState" class="control-label ">Billing State</label></td>
+                                            <td><input type="checkbox" class="input-group" id="BillingState" name="BillingState"></td>
+                                            <td><input type="number" class="input-group page-index" id="PageBillingState" name="PageBillingState" pattern="[0-9]*" value="1" min="1" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="BillingZip" class="control-label ">Billing ZIP</label></td>
+                                            <td><input type="checkbox" class="input-group" id="BillingZip" name="BillingZip"></td>
+                                            <td><input type="number" class="input-group page-index" id="PageBillingZip" name="PageBillingZip" pattern="[0-9]*" value="1" min="1" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="BillingCountry" class="control-label ">Billing Country</label></td>
+                                            <td><input type="checkbox" class="input-group" id="BillingCountry" name="BillingCountry"></td>
+                                            <td><input type="number" class="input-group page-index" id="PageBillingCountry" name="PageBillingCountry" pattern="[0-9]*" value="1" min="1" /></td>
+                                        </tr>*@
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <hr />
+                    </div>
+                    <div class="tab-pane" id="tab4">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Final result</h3>
+                            </div>
+                            <div style="height: 35em">
+                                <ul id="myTab" class="nav nav-tabs">
+                                    <li class="active"> <a href="#tab-generated-form" data-toggle="tab"> Generated Form </a> </li>
+                                    <li><a href="#tab-html-code" data-toggle="tab">HTML Code</a></li>
+                                </ul>
+                                <div id="myTabContent" class="tab-content">
+                                    <div class="tab-pane fade in active" id="tab-generated-form">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title">This is the HTML sample generated</h3>
+                                            </div>
+                                            <div id="formResult" style="padding: 5px">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="tab-html-code">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title">Copy this code into your site</h3>
+                                            </div>
+                                            <pre class="prettyprint" id="formResultPreview" style="max-height: 30em">
+                                            </pre>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                    </div>
+                    <ul class="pager wizard">
+                        <li class="previous first" style="display: none;"><a href="#">First</a></li>
+                        <li class="previous"><a href="#" style="border: 0px;border-radius: 0px;"><div class="btn btn-sm btn-primary">Previous</div></a></li>
+                        <li class="next last" style="display: none;"><a href="#">Last</a></li>
+                        <li class="next"><a href="#" style="border: 0px;border-radius: 0px;"><div class="btn btn-sm btn-primary">Next</div></a></li>
+                    </ul>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script src="~/Scripts/jquery-2.1.3.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/form2js.js"></script>
+    <script src="~/Scripts/jquery.toObject.js"></script>
+    <script src="~/Scripts/json2.js"></script>
+    <script src="~/Scripts/jquery.bootstrap.wizard.min.js"></script>
+    <script src="~/Scripts/prettify.js"></script>
+    <script type="text/javascript">
+        var shown = false;
+        $(document).ready(function () {
+            var that = this;
+
+            $("#rootwizard").bootstrapWizard(
+                {
+                    tabClass: "nav nav-pills",
+                    shown: false,
+                    onNext: nextWizard,
+                    onPrevious: prevWizard
+                }
+            );
+            setMaxPageValue();
+        });
+
+        function prevWizard(tab, navigation, index) {
+            shown = false;
+        }
+
+        function nextWizard(tab, navigation, index) {
+            if (index == 3 && !shown) {
+                var data = form2js("generator-form", ".", false, function (node) {
+                    /* for (var i = 0; i < node.length; i++) {
+                         if (node[i] && node[i].type == "checkbox")
+                             node[i].value = node[i].value == "on";
+                     }*/
+                }, false, true);
+
+                $.post('@Url.Action("FormGenerator","Test")', data)
+                    .done(function (result) {
+                        shown = true;
+                        $("#rootwizard").bootstrapWizard({
+                            tabClass: "nav nav-pills",
+                            onNext: nextWizard,
+                            onPrevious: prevWizard
+                        });
+                        $("#rootwizard").bootstrapWizard("show", 3);
+                        $("#formResult").html(result.Widget);
+                        $("#formResultPreview").html(result.Html);
+                        console.log(data);
+                    })
+                    .fail(function () {
+                        shown = false;
+                    });
+                return false;
+            }
+            //                        alert(index);
+        }
+
+        function setMaxPageValue() {
+            $(".page-index").attr("max", $("#TotalPages").val());
+        }
+        function showTotalPages() {
+            if ($("#UseProspect")[0].checked)
+                $(".total-pages").removeClass("hidden");
+            else
+                $(".total-pages").addClass("hidden");
+
+        }
+    </script>
+</body>
+</html>

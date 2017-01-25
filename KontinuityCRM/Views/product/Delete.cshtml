@@ -1,0 +1,222 @@
+﻿@model KontinuityCRM.Models.Product
+
+@{
+    ViewBag.Title = "Product Delete";
+    ViewBag.icon = "fa-tags";
+}
+
+<div id="breadcrumb">
+	<a href="@Url.Action("index", "home")" title="Go to Home" class="tip-bottom"><i class="fa fa-home"></i> Home</a>
+	<a href="@Url.Action("index")">Products</a>
+	<a href="#" class="current">Delete</a>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <div class="widget-box">
+
+                <div class="widget-title">
+                    <span class="icon"><i class="fa fa-trash-o"></i></span>
+                    <h5>@ViewBag.Title</h5>
+                </div>
+
+                <div class="widget-content nopadding">
+
+                    <form method="post" class="form-horizontal">
+                    
+                        @Html.HiddenFor(model => model.ProductId)
+
+                        <div class="form-group">
+                             @Html.LabelFor(model => model.Name, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-2 col-md-2">
+                                @Html.TextBoxFor(model => model.Name, new { @class = "form-control input-sm" , @readonly = ""  })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                             @Html.LabelFor(model => model.SKU, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-1">
+                                @Html.TextBoxFor(model => model.SKU, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Price, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-1">
+                                @Html.TextBoxFor(model => model.Price, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Cost, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-1">
+                                @Html.TextBoxFor(model => model.Cost, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Weight, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-1">
+                                @Html.TextBoxFor(model => model.Weight, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ShipValue, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-1">
+                                @Html.TextBoxFor(model => model.ShipValue, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Currency, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-9 col-md-9 col-lg-10">
+                                @Html.TextBoxFor(model => model.Currency, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 col-md-3 col-lg-2 control-label">Properties</label>
+							<div class="col-sm-9 col-md-9 col-lg-10">
+								<label class="disabled">@Html.CheckBoxFor(model => model.IsShippable, new { @disabled = "disabled" }) @Html.DisplayNameFor(model => model.IsShippable)</label>
+                                <label class="disabled">@Html.CheckBoxFor(model => model.IsTaxable, new { @disabled = "disabled" }) @Html.DisplayNameFor(model => model.IsTaxable)</label>
+                                <label class="disabled">@Html.CheckBoxFor(model => model.IsSignatureConfirmation, new { @disabled = "disabled" }) @Html.DisplayNameFor(model => model.IsSignatureConfirmation)</label>
+                                <label class="disabled">@Html.CheckBoxFor(model => model.IsDeliveryConfirmation, new { @disabled = "disabled" }) @Html.DisplayNameFor(model => model.IsDeliveryConfirmation)</label>
+                                <label id="ss1" class="disabled">@Html.CheckBoxFor(model => model.IsSubscription, new { @disabled = "disabled" }) @Html.DisplayNameFor(model => model.IsSubscription)</label>
+							</div>
+						</div>
+                        
+                       @* <div id="subcriptionform">
+
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.RecurringProductId, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+                                <div class="col-sm-9 col-md-9 col-lg-10">
+                                    @Html.TextBoxFor(model => model.RecurringProductId, new { @class = "form-control input-sm", @readonly = "" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.BillType, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+                                <div class="col-sm-9 col-md-9 col-lg-10">
+                                    @Html.TextBoxFor(model => model.BillType, new { @class = "form-control input-sm", @readonly = "" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                
+                                <label class="col-sm-3 col-md-3 col-lg-2 control-label" id="billvaluelabel">Days to next billing</label>
+                                <div id="inputbillvalueform">
+                                    <div class="col-sm-9 col-md-9 col-lg-10">
+                                        @Html.TextBoxFor(model => model.BillValue, new { @class = "form-control input-sm", @readonly = "" })
+                                    </div>
+                                </div>
+                                <div id="selectbillvalueform">
+                                    <div class="col-sm-9 col-md-9 col-lg-10">
+                                        <select name="week" disabled>
+                                            <option value="First">First</option>
+                                            <option value="Second">Second</option>
+                                            <option value="Third">Third</option>
+                                            <option value="Fourth">Fourth</option>
+                                            <option value="Last">Last</option>
+                                        </select>
+
+                                        <select name="weekday" disabled>
+                                            <option value="Sunday">Sunday</option>
+                                            <option value="Monday">Monday</option>
+                                            <option value="Tuesday">Tuesday</option>
+                                            <option value="Wednesday">Wednesday</option>
+                                            <option value="Thursday">Thursday</option>
+                                            <option value="Friday">Friday</option>
+                                            <option value="Saturday">Saturday</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>*@
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.FulfillmentProvider, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-9 col-md-9 col-lg-10">
+                               @Html.TextBoxFor(model => model.FulfillmentProvider.Name, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Description, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-9 col-md-9 col-lg-10">
+                                @Html.TextAreaFor(model => model.Description, new { @class = "form-control", @rows = "3", @readonly = "" })
+							</div>
+						</div>
+
+                         <div class="form-actions">
+							<button type="submit" class="btn btn-danger btn-sm">Delete</button> or 
+                            @Html.ActionLink("Cancel", "index", null, new { @class = "text-danger" })
+						</div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+   
+    <script type="text/javascript">
+
+        //$(document).ready(function () {
+
+        //    isSubscription();
+        //    billType($("#BillType").val());
+
+            
+        //});
+
+        //function isSubscription() {
+
+        //    var pdiv = $("#ss1 > div").first();
+        //    if (pdiv.hasClass("checked")) {
+        //        $("#subcriptionform").show();
+        //    }
+        //    else {
+        //        $("#subcriptionform").hide();
+        //    }
+        //}
+
+        //function billType(valueSelected) {
+        //    var inputbillvalueform = $('#inputbillvalueform');
+
+        //    switch (valueSelected) {
+        //        case 'ByCycle':
+        //            $('#billvaluelabel').text("Days to next billing");
+        //            $('#BillValue').attr('data-original-title', "Subscription will be billed every N days");
+        //            if (!inputbillvalueform.is(":visible")) {
+        //                $('#selectbillvalueform').hide();
+        //                inputbillvalueform.show();
+        //            }
+        //            break;
+        //        case 'ByDate':
+        //            $('#billvaluelabel').text("Billing date");
+        //            $('#BillValue').attr('data-original-title', "Subscription will be billed on the Nth day of every month");
+        //            if (!inputbillvalueform.is(":visible")) {
+        //                $('#selectbillvalueform').hide();
+        //                inputbillvalueform.show();
+        //            }
+        //            break;
+        //        case 'ByDay':
+        //            $('#billvaluelabel').text("Billing Day");
+        //            if (inputbillvalueform.is(":visible")) {
+        //                inputbillvalueform.hide();
+        //                $('#selectbillvalueform').show();
+        //            }
+        //            break;
+        //    }
+        //}
+
+    </script>
+}

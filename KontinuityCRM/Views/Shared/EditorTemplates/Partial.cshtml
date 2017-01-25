@@ -1,0 +1,112 @@
+﻿@model KontinuityCRM.Models.Partial
+
+<div class="form-group">
+    @Html.LabelFor(model => model.FirstName, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.FirstName, new { @class = "col-xs-12 col-sm-5" })
+         @Html.ValidationMessageFor(model => model.FirstName)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.LastName, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.LastName, new { @class = "col-xs-12 col-sm-5" })
+         @Html.ValidationMessageFor(model => model.LastName)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Address1, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.Address1, new { @class = "col-xs-12 col-sm-5" })
+        @Html.ValidationMessageFor(model => model.Address1)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Address2, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.Address2, new { @class = "col-xs-12 col-sm-5" })
+        @Html.ValidationMessageFor(model => model.Address2)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.City, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.City, new { @class = "col-xs-12 col-sm-5" })
+        @Html.ValidationMessageFor(model => model.City)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.PostalCode, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.PostalCode, new { @class = "col-xs-12 col-sm-5" })
+        @Html.ValidationMessageFor(model => model.PostalCode)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Province, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.Province, new { @class = "col-xs-12 col-sm-5" })
+         @Html.ValidationMessageFor(model => model.Province)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Country, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        <div class="col-xs-12 col-sm-5 nopadding no-padding">
+            @Html.DropDownListFor(model => model.Country, new SelectList(ViewBag.Countries, "CountryAbbreviation", "Name"), " Select Country", new { @class = "chosen-deselect chosen form-control" })
+        </div>
+
+        @*@Html.TextBoxFor(model => model.Country, new { @class = "col-xs-12 col-sm-5" })
+        @Html.ValidationMessageFor(model => model.Country)*@
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Email, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.Email, new { @class = "col-xs-12 col-sm-5" })
+        @Html.ValidationMessageFor(model => model.Email)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Phone, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.Phone, new { @class = "col-xs-12 col-sm-5" })
+        @Html.ValidationMessageFor(model => model.Phone)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.AffiliateId, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.AffiliateId, new { @class = "col-xs-3 col-sm-1" })
+        @Html.ValidationMessageFor(model => model.AffiliateId)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.SubId, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.SubId, new { @class = "col-xs-3 col-sm-1" })
+        @Html.ValidationMessageFor(model => model.SubId)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Product, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        <div class="col-xs-12 col-sm-5 nopadding no-padding">
+            @Html.DropDownListFor(model => model.ProductId, new SelectList(ViewBag.Products, "ProductId", "Name"), "Select Product",  new { @class = "chosen-deselect chosen form-control" })
+            @Html.ValidationMessageFor(model => model.ProductId)
+            <span class="help-block text-left">To access autoresponder settings</span>
+        </div>
+    </div>
+</div>

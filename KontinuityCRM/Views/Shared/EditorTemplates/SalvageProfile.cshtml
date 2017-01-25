@@ -1,0 +1,220 @@
+﻿@model KontinuityCRM.Models.SalvageProfile
+
+<div class="form-group">
+    @Html.LabelFor(model => model.DeclineType, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        <div class="col-xs-12 col-sm-5 nopadding no-padding">
+            @Html.DropDownListFor(model => model.DeclineTypeId
+            , new SelectList(ViewBag.DeclineTypes, "Id", "Name")
+           , new { @class = "chosen form-control" })
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.NextSalvageProfile, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        <div class="col-xs-12 col-sm-5 nopadding no-padding">
+            @Html.DropDownListFor(model => model.NextSalvageProfile
+                     , new SelectList(ViewBag.SalvageProfiles, "Id", "Name"), "--Empty Profile--"
+           , new { @class = "chosen form-control" })
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Name, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.Name, new { @class = "col-xs-12 col-sm-5" })
+        @Html.ValidationMessageFor(model => model.Name)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.BillType, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.EnumDropdownListFor(model => model.BillType, new { @class = "chosen" })
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="col-sm-3 control-label" id="billvaluelabel"></label>
+
+    <div class="col-sm-9">
+        <div id="inputbillvalueform">
+            @Html.TextBoxFor(model => model.BillValue, new { @class = "tip-bottom col-xs-4 col-sm-2", @title = "Subscription will be billed every N days" })
+            @Html.ValidationMessageFor(model => model.BillValue)
+        </div>
+
+        <div id="selectbillvalueform" style="display: none;">
+            @Html.DropDownList("billday", KontinuityCRMHelper.GetBillDay(Model == null ? 1 : Model.BillValue).ToSelectList())
+            @Html.DropDownList("dayofweek", KontinuityCRMHelper.GetDateOfWeek(Model == null ? 0 : Model.BillValue).ToSelectList())
+
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.CancelAfter, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.CancelAfter, new { @class = "col-xs-4 col-sm-2" })
+        @Html.ValidationMessageFor(model => model.CancelAfter)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.PrepaidIncrement, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.PrepaidIncrement, new { @class = "col-xs-4 col-sm-2" })
+        @Html.ValidationMessageFor(model => model.PrepaidIncrement)
+    </div>
+</div>
+<div id="Discount">
+    <div class="form-group">
+        @Html.LabelFor(model => model.EnableDiscount, htmlAttributes: new { @class = "control-label col-sm-3" })
+        <div class="col-sm-9">
+            @Html.CheckBoxFor(model => model.EnableDiscount)
+        </div>
+    </div>
+</div>
+<div id="DiscountOffer" class="@(Model != null && Model.EnableDiscount ? string.Empty : "hidden")">
+    <div class="form-group">
+        @Html.LabelFor(model => model.AfterDecline, htmlAttributes: new { @class = "control-label col-sm-3" })
+        <div class="col-sm-9">
+            @Html.CheckBoxFor(model => model.AfterDecline)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.AfterApprove, htmlAttributes: new { @class = "control-label col-sm-3" })
+        <div class="col-sm-9">
+            @Html.CheckBoxFor(model => model.AfterApprove)
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.LowerPrice, htmlAttributes: new { @class = "control-label col-sm-3" })
+    <div class="col-sm-9">
+        @Html.EditorFor(model => model.LowerPrice)
+    </div>
+</div>
+
+<div id="lowprice" class="@(Model != null && Model.LowerPrice ? string.Empty : "hidden")">
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label">Lower By</label>
+        <div class="col-sm-9">
+            <div class="col-xs-12 col-sm-5 nopadding no-padding">
+                @Html.DropDownList("lowerby", new SelectList(new List<SelectListItem> { new SelectListItem() { Text = "Amount", Value = "1" }, new SelectListItem() { Text = "Percent", Value = "2" } }, "Value", "Text"))
+            </div>
+        </div>
+
+    </div>
+    <div class="form-group @(Model != null && Model.LowerAmount.HasValue ? string.Empty : "hidden")" id="lowAmount">
+        @Html.LabelFor(model => model.LowerAmount, new { @class = "col-sm-3 control-label" })
+        <div class="col-sm-9">
+            @Html.TextBoxFor(model => model.LowerAmount, new { @class = "col-xs-4 col-sm-2" })
+            @Html.ValidationMessageFor(model => model.LowerAmount)
+        </div>
+    </div>
+    <div class="form-group @(Model != null && Model.LowerPercentage.HasValue ? string.Empty : "hidden")" id="lowPer">
+        @Html.LabelFor(model => model.LowerPercentage, new { @class = "col-sm-3 control-label" })
+        <div class="col-sm-9">
+            @Html.TextBoxFor(model => model.LowerPercentage, new { @class = "col-xs-4 col-sm-2" })
+            @Html.ValidationMessageFor(model => model.LowerPercentage)
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.LowerPriceAfter, new { @class = "col-sm-3 control-label" })
+        <div class="col-sm-9">
+            @Html.TextBoxFor(model => model.LowerPriceAfter, new { @class = "col-xs-4 col-sm-2" })
+            @Html.ValidationMessageFor(model => model.LowerPriceAfter)
+        </div>
+    </div>
+
+</div>
+
+@Html.Script(
+    @<script type="text/javascript">
+
+        (function () {
+            if (!$('#lowprice').hasClass('hidden')) {
+
+                if (!$('#lowPer').hasClass('hidden')) {
+                    $('#lowerby').val("2")
+                }
+
+                if (!$('#lowAmount').hasClass('hidden')) {
+                    $('#lowerby').val("1")
+                }
+
+                if ($('#lowAmount').hasClass('hidden') && $('#lowPer').hasClass('hidden'))
+                    $('#lowAmount').toggleClass("hidden")
+            }
+
+            $("#LowerPrice").change(function () {
+                $('#lowAmount').toggleClass("hidden");
+                $("#lowprice").toggleClass("hidden");
+            });
+
+            $('#EnableDiscount').change(function () {
+                $('#DiscountOffer').toggleClass('hidden');
+            });
+            $('#lowerby').change(function () {
+                if (this.value == 1) {
+                    $('#lowAmount').removeClass('hidden');
+                    $('#LowerAmount').val("");
+                    $('#lowAmount').show();
+                    $('#LowerPercentage').val("");
+                    $('#lowPer').hide();
+                }
+                else {
+                    $('#lowPer').removeClass('hidden');
+                    $('#LowerPercentage').val("");
+                    $('#lowPer').show();
+                    $('#LowerAmount').val("");
+                    $('#lowAmount').hide();
+                }
+            });
+            billType($("#BillType").val()); // call to the function
+            $("#BillType").change(function () {
+                billType(this.value);
+            });
+
+            function billType(valueSelected) {
+                var inputbillvalueform = $('#inputbillvalueform');
+
+                switch (valueSelected) {
+                    case 'ByCycle':
+                        $('#billvaluelabel').text("Days to next billing");
+                        $('#BillValue').attr('data-original-title', "Subscription will be billed every N days");
+                        $('#BillValue').val("");
+                        if (!inputbillvalueform.is(":visible")) {
+                            $('#selectbillvalueform').hide();
+                            inputbillvalueform.show();
+                        }
+                        break;
+                    case 'ByDate':
+                        $('#billvaluelabel').text("Billing Date");
+                        $('#BillValue').attr('data-original-title', "Subscription will be billed on the Nth day of every month");
+                        $('#BillValue').val("");
+                        if (!inputbillvalueform.is(":visible")) {
+                            $('#selectbillvalueform').hide();
+                            inputbillvalueform.show();
+                        }
+                        break;
+                    case 'ByDay':
+                        $('#billvaluelabel').text("Billing Day");
+                        if (inputbillvalueform.is(":visible")) {
+                            inputbillvalueform.hide();
+                            $('#selectbillvalueform').show();
+                        }
+                        $('#BillValue').val("1");
+                        break;
+                }
+            }
+
+        }());
+
+    </script>
+                                            )

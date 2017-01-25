@@ -1,0 +1,72 @@
+﻿@model KontinuityCRM.Models.Customer
+
+@{
+    ViewBag.Title = "Customer";
+    ViewBag.icon = "fa-group";
+}
+
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            @ViewBag.Title
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+                Create
+            </small>
+        </span>
+    </h1>
+</div>
+
+@*<div id="breadcrumb">
+	<a href="@Url.Action("index", "home")" title="Go to Home" class="tip-bottom"><i class="fa fa-home"></i> Home</a>
+	<a href="@Url.Action("index")">Customers</a>
+	<a href="#" class="current">Create</a>
+</div>*@
+
+@*<div class="container-fluid">*@
+    <div class="row">
+        <div class="col-xs-12">
+
+            <form method="post" class="form-horizontal">
+
+                @Html.ValidationSummary(true)
+
+                @Html.EditorForModel()
+
+                <div class="clearfix form-actions">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button type="submit" class="btn btn-primary btn-round">
+                            <i class="ace-icon fa fa-check"></i>
+                            Create
+                        </button>
+
+                        &nbsp; &nbsp; &nbsp;
+                        <a href="@Url.Action("index")" class="btn btn-white btn-default btn-round">
+                            <i class="ace-icon fa fa-times red2"></i>
+                            Cancel
+                        </a>
+                    </div>
+                </div>
+
+            </form>
+
+            @*<div class="widget-box">
+
+                <div class="widget-title">
+                    <span class="icon"><i class="fa fa-plus"></i></span>
+                    <h5>@ViewBag.Title</h5>
+                </div>
+
+                <div class="widget-content nopadding">
+
+                    
+                </div>
+            </div>*@
+
+        </div>
+    </div>
+@*</div>*@
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

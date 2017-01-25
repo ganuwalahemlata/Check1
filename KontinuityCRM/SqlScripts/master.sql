@@ -1,0 +1,6 @@
+﻿USE [Kontinuitycrm]
+GO
+
+
+
+

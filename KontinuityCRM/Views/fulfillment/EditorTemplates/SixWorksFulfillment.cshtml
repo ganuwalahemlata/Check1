@@ -1,0 +1,32 @@
+﻿@model KontinuityCRM.Models.Fulfillments.SixWorksFulfillment
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ApiKey, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.ApiKey, new { @class = "col-xs-12 col-sm-5" })
+        @Html.ValidationMessageFor(model => model.ApiKey)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.RecieveTrackingId, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.EditorFor(model => model.RecieveTrackingId)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Delay, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.Delay, new { @class = "col-xs-12 col-sm-5" })
+        @Html.ValidationMessageFor(model => model.Delay)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.SixWorkSubDomains, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.SixWorkSubDomains, new { @class = "col-xs-12 col-sm-5" })
+        @Html.ValidationMessageFor(model => model.SixWorkSubDomains)
+    </div>
+</div>

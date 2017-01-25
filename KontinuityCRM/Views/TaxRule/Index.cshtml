@@ -1,0 +1,76 @@
+﻿@model PagedList.IPagedList<KontinuityCRM.Models.TaxRule>
+
+@{
+    var taxProfile = (TaxProfile)ViewBag.TaxProfile;
+    ViewBag.Title = taxProfile.Name + " Rules";
+}
+
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            @ViewBag.Title
+        </span>
+        <span class="col-sm-4">
+            <span class="pull-right inline">
+                <a href="@Url.Action("create", new { id = taxProfile.Id })" class="btn btn-primary btn-round @Html.RenderHidden("create")">
+                    <i class="ace-icon fa fa-plus"></i>
+                    Create
+                </a>
+            </span>
+        </span>
+    </h1>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        @Html.Partial("_PageTop")
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th class="@ViewBag.IdOrderIcon">
+                        @Html.ActionQueryLink("Id", "index", new { sortOrder = ViewBag.IdSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.CountryOrderIcon">
+                        @Html.ActionQueryLink("Country", "index", new { sortOrder = ViewBag.CountrySortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.CityOrderIcon">
+                        @Html.ActionQueryLink("City", "index", new { sortOrder = ViewBag.CitySortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.ProvinceOrderIcon">
+                        @Html.ActionQueryLink("Province", "index", new { sortOrder = ViewBag.ProvinceSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.PostalCodeOrderIcon">
+                        @Html.ActionQueryLink("PostalCode", "index", new { sortOrder = ViewBag.PostalCodeSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.TaxOrderIcon">
+                        @Html.ActionQueryLink("Tax", "index", new { sortOrder = ViewBag.TaxSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Country.Name)</td>
+                        <td>@Html.DisplayFor(modelItem => item.City)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Province)</td>
+                        <td>@Html.DisplayFor(modelItem => item.PostalCode)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Tax)</td>
+                        <td>
+                            @Html.ActionLink("Edit", "edit", new { id = item.Id }, new { @class = @Html.RenderHidden("edit") })
+                            <span class='@Html.RenderHidden("delete")'>|</span>
+                            @Html.ActionLink("Delete", "delete", new { id = item.Id }, new { @class = @Html.RenderHidden("delete") })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @Html.Partial("_PageBottom", Model)
+    </div>
+</div>
+
+
+
+

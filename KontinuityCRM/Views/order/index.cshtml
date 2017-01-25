@@ -1,0 +1,687 @@
+﻿@using KontinuityCRM.Models.Enums
+@model KontinuityCRM.Models.OrderSearch
+
+@{
+    ViewBag.Title = "Orders";
+    ViewBag.icon = "fa-shopping-cart";
+    var checks = Model.UserAction != UserAction.filter;
+    var orderdetails = Model.UserAction == UserAction.detail;
+
+    if (orderdetails)
+    {
+        ViewBag.Title = "Order Details";
+    }
+}
+
+@section Styles {
+    <link href="~/Content/assets/css/datepicker.css" rel="stylesheet" />
+}
+
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            @ViewBag.Title
+        </span>
+        <span class="col-sm-4">
+            <span class="pull-right inline">
+                <a href="@Url.Action("create")" class="btn btn-primary btn-round @Html.RenderHidden("create")">
+                    <i class="ace-icon fa fa-plus"></i>
+                    Create
+                </a>
+            </span>
+        </span>
+    </h1>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+
+        @* Order Search *@
+        <div class="widget-box collapsed">
+
+            <div class="widget-header widget-header-small">
+                <h6 class="widget-title">
+                    <i class="ace-icon fa fa-sort"></i>
+                    Search Order
+                </h6>
+
+                <div class="widget-toolbar">
+
+                    <a href="#" data-action="collapse">
+                        <i class="ace-icon fa fa-plus" data-icon-show="fa-plus" data-icon-hide="fa-minus"></i>
+                    </a>
+
+                </div>
+            </div>
+
+            @* Search form *@
+            <div class="widget-body">
+                <div class="widget-main">
+
+                    <form method="get" class="form-horizontal" id="searchform" action="@Url.Action("index")">
+
+                        <div class="row">
+
+                            <div class="col-sm-4 col-md-4">
+
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-md-6 col-lg-6 control-label">From:</label>
+
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        @Html.TextBoxFor(model => model.fFromDate, new
+                                   {
+                                       @class = "datepicker form-control input-sm",
+                                       @Value = Model.fFromDate.HasValue ? Model.fFromDate.Value.ToString("MM/dd/yyyy") : ViewBag.DefaultFromDate
+                                   })
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-md-6 col-lg-6 control-label">To:</label>
+
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        @Html.TextBoxFor(model => model.fToDate, new
+                                   {
+                                       @class = "datepicker form-control input-sm",
+                                       //@data_date = DateTime.Today.ToString("MM/dd/yyyy"),
+                                       @Value = Model.fToDate.HasValue ? Model.fToDate.Value.ToString("MM/dd/yyyy") : ViewBag.DefaultToDate
+                                   })
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-md-6 col-lg-6 control-label">Order ID:</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        @Html.TextBoxFor(model => model.fOrderId, new { @class = "form-control input-sm" })
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-md-6 col-lg-6 control-label">Product ID:</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        @Html.TextBoxFor(model => model.fProductId, new { @class = "form-control input-sm" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-md-6 col-lg-6 control-label">Affiliate ID:</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        @Html.TextBoxFor(model => model.fAffiliateId, new { @class = "form-control input-sm" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-md-6 col-lg-6 control-label">Sub ID:</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        @Html.TextBoxFor(model => model.fSubId, new { @class = "form-control input-sm" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-md-6 col-lg-6 control-label">Shipped Status</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        @Html.DropDownListFor(model => model.fShipped, (IEnumerable<SelectListItem>)ViewBag.ShippingOptions, "", new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-md-6 col-lg-6 control-label">Status:</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+
+                                        @Html.DropDownListFor(model => model.fStatus,
+                                            (new List<SelectListItem>() { new SelectListItem { Text = "All", Value = "0" } })
+                                                .Concat(OrderStatus.Approved.ToSelectList()), new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-md-6 col-lg-6 control-label">Recurring:</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        @Html.DropDownListFor(model => model.Recurring, new List<SelectListItem> { new SelectListItem { Text = "All", Value = "All" }, new SelectListItem { Text = "Active", Value = "Active" }, new SelectListItem { Text = "Not Active", Value = "NotActive" } }, new { @class = "form-control input-sm" })
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-sm-4 col-md-4">
+
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-md-6 col-lg-6 control-label">Transaction ID:</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        @Html.TextBoxFor(model => model.fTransactionId, new { @class = "form-control input-sm" })
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-md-6 col-lg-6 control-label">Customer ID:</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        @Html.TextBoxFor(model => model.fCustomerId, new { @class = "form-control input-sm" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-md-6 col-lg-6 control-label">First Name:</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        @Html.TextBoxFor(model => model.fFirstname, new { @class = "form-control input-sm" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-md-6 col-lg-6 control-label">Last Name:</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        @Html.TextBoxFor(model => model.fLastname, new { @class = "form-control input-sm" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-md-6 col-lg-6 control-label">Email:</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        @Html.TextBoxFor(model => model.fEmail, new { @class = "form-control input-sm" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-md-6 col-lg-6 control-label">Address:</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        @Html.TextBoxFor(model => model.fAddress, new { @class = "form-control input-sm" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-md-6 col-lg-6 control-label">Address 2:</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        @Html.TextBoxFor(model => model.fAddress2, new { @class = "form-control input-sm" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-md-6 col-lg-6 control-label"> First 6 of Credit Card :</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        @Html.TextBoxFor(model => model.fBIN, new { @class = "form-control input-sm" })
+                                    </div>
+                                </div>
+                              
+
+                            </div>
+
+                            <div class="col-sm-4 col-md-4">
+
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-md-6 col-lg-6 control-label">City:</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        @Html.TextBoxFor(model => model.fCity, new { @class = "form-control input-sm" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-md-6 col-lg-6 control-label">ZIP:</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        @Html.TextBoxFor(model => model.fZIP, new { @class = "form-control input-sm" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-md-6 col-lg-6 control-label">Phone:</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        @Html.TextBoxFor(model => model.fPhone, new { @class = "form-control input-sm" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-md-6 col-lg-6 control-label">State:</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        @Html.TextBoxFor(model => model.fState, new { @class = "form-control input-sm" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-md-6 col-lg-6 control-label">Country:</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        @*@Html.TextBoxFor(model => model.fCountry, new { @class = "form-control input-sm" })*@
+                                        @Html.DropDownListFor(model => model.fCountry, new SelectList(ViewBag.Countries, "CountryAbbreviation", "Name"), "", new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-md-6 col-lg-6 control-label">IP:</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        @Html.TextBoxFor(model => model.fIP, new { @class = "form-control input-sm" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-md-6 col-lg-6 control-label">RMA #:</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        @Html.TextBoxFor(model => model.fRMA, new { @class = "form-control input-sm" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-md-6 col-lg-6 control-label">Last 4 of Credit Card</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        @Html.TextBoxFor(model => model.fLastFour, new { @class = "form-control input-sm" })
+
+                                    </div>
+                                </div>
+
+                                <div class="hidden" id="fhidden">
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <input name="UserAction" id="UserAction" type="hidden" value="" />
+                        <input name="sortOrder" type="hidden" value="@ViewBag.CurrentSort" />
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-primary btn-sm" id="showresults">Show Results</button>
+                            @* <button type="button" class="btn btn-default btn-sm">Clear</button>*@
+                            @Html.ActionLink("clear", "index", null, new { @class = "btn btn-default btn-sm" })
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <div class="space-8"></div>
+
+        <button class="btn btn-default btn-sm action-button @Html.RenderHidden(new []{SecurityRole.OrderBatch.ToString()})" data-useraction="@UserAction.batch">
+            <i class="fa fa-pencil-square-o"></i>
+            Batch
+        </button>
+
+        <button class="btn btn-success btn-sm action-button @Html.RenderHidden(new []{SecurityRole.OrderRebill.ToString()})" data-useraction="@UserAction.rebill">
+            <i class="fa fa-refresh"></i>
+            Rebill
+        </button>
+
+        <button class="btn btn-info2 btn-sm action-button @Html.RenderHidden(new []{SecurityRole.OrderStart.ToString()})" data-useraction="@UserAction.start">
+            <i class="fa fa-play"></i>
+            Start
+        </button>
+
+        <button class="btn btn-warning btn-sm action-button @Html.RenderHidden(new []{SecurityRole.OrderStop.ToString()})" data-useraction="@UserAction.stop">
+            <i class="fa fa-stop"></i>
+            Stop
+        </button>
+
+        <button class="btn btn-purple btn-sm action-button @Html.RenderHidden(new []{SecurityRole.OrderExport.ToString()})" data-useraction="@UserAction.export">
+            <i class="fa fa-download"></i>
+            Export
+        </button>
+
+        <button class="btn btn-danger btn-sm action-button @Html.RenderHidden(new []{SecurityRole.OrderDelete.ToString()})" data-useraction="@UserAction.delete">
+            <i class="fa fa-trash-o"></i>
+            Delete
+        </button>
+
+        <div class="results">
+
+            <div class="row">
+
+                <div class="col-sm-11 col-xs-11">
+
+                    <div id="statusfilter" @* data-toggle="buttons"  *@ class="btn-group statusfilter">
+                        @foreach (OrderStatus item in Enum.GetValues(typeof(OrderStatus)))
+                        {
+                            <label class="btn btn-sm btn-white">
+                                @Html.RadioButtonFor(model => model.fStatus, item == OrderStatus.All ? 0 : item, item == Model.fStatus ? new { @class = "active" } : null)
+                                @(EnumHelper<OrderStatus>.GetDisplayValue(item))
+                            </label>
+                        }
+                    </div>
+
+                </div>
+                <div class="col-sm-1 col-xs-1">
+                    <div class="statusfilter">
+                        @Html.DropDownList("Display", new SelectList(new List<int>() { 10, 25, 50, 100, 500, 1000 }, ViewBag.Display), new { @class = "pull-right" })
+                    </div>
+                </div>
+
+            </div>
+
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+
+                    <tr>
+                        <th class="checkall"><input type="checkbox" id="checkall" /></th>
+
+                        <th class="@ViewBag.idOrderIcon">
+                            @Html.ActionQueryLink("Id", "index", new { sortOrder = ViewBag.IdSortParm }, null, "display,page")
+                        </th>
+                        <th class="@ViewBag.statusOrderIcon">
+                            @Html.ActionQueryLink("Status", "index", new { sortOrder = ViewBag.StatusSortParm }, null, "display,page")
+                        </th>
+                        <th class="@ViewBag.dateOrderIcon">
+                            @Html.ActionQueryLink("Date", "index", new { sortOrder = ViewBag.DateSortParm }, null, "display,page")
+                        </th>
+                        <th class="@ViewBag.nameOrderIcon">
+                            @Html.ActionQueryLink("Customer Name", "index", new { sortOrder = ViewBag.NameSortParm }, null, "display,page")
+                        </th>
+                        <th class="@ViewBag.emailOrderIcon">
+                            @Html.ActionQueryLink("Customer Email", "index", new { sortOrder = ViewBag.EmailSortParm }, null, "display,page")
+                        </th>
+                        <th>
+                            Products
+                        </th>
+                        <th class="@ViewBag.totalOrderIcon">
+                            @Html.ActionQueryLink("Total", "index", new { sortOrder = ViewBag.TotalSortParm }, null, "display,page")
+                        </th>
+                        <th class="@ViewBag.qtyOrderIcon">
+                            @Html.ActionQueryLink("Qty", "index", new { sortOrder = ViewBag.QtySortParm }, null, "display,page")
+                        </th>
+                        <th class="@ViewBag.shippingmethodOrderIcon">
+                            @Html.ActionQueryLink("Shipping Method", "index", new { sortOrder = ViewBag.ShippingMethodSortParm }, null, "display,page")
+                        </th>
+                        <th>
+                            Next recurring product
+                        </th>
+                        <th>
+                            Next recurring date
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model.Orders)
+                    {
+                        <tr>
+                            <th><input type="checkbox" value="@order.OrderId" name="oid" /></th> @*@( checks ? "checked" : string.Empty)*@
+                            <td>
+                                @Html.ActionLink(order.OrderId.ToString(), "details", new { id = order.OrderId })
+                                @*@Html.ActionQueryLink(order.OrderId.ToString(), "index", new { oid = order.OrderId, UserAction = UserAction.detail }, new { @class = "" }, "display,page")*@
+                                @*@Html.DisplayFor(modelItem => order.OrderId)*@
+                            </td>
+                            <td>
+                                @Html.ActionLink(order.Status.DisplayValue(), "details", new { id = order.OrderId })
+                            </td>
+                            <td>
+                                @Html.ActionLink(order.Created.ToString("g"), "details", new { id = order.OrderId })
+                            </td>
+                            <td>
+                                @Html.ActionLink(order.Customer.FullName, "view", "customer", new { id = order.CustomerId }, new { })
+                                @*@@Html.ActionLink(order.Customer.FullName, "details", new { id = order.OrderId })*@
+                                @*@Html.ActionQueryLink(order.Customer.FullName, "index", new { oid = order.OrderId, UserAction = UserAction.detail }, new { @class = "" }, "display,page")*@
+                                @*@Html.DisplayFor(modelItem => order.Customer.FirstName)*@
+                                @*@Html.DisplayFor(modelItem => order.Customer.LastName)*@
+                            </td>
+                            <td>
+                                @Html.ActionLink(order.Email, "view", "customer", new { id = order.CustomerId }, new { })
+                                @*@Html.ActionLink(order.Email, "details", new { id = order.OrderId })*@
+                                @*@Html.ActionQueryLink(order.Email, "index", new { oid = order.OrderId, UserAction = UserAction.detail }, new { @class = "" }, "display,page")*@
+                                @*@Html.DisplayFor(modelItem => order.Customer.Email)*@
+                            </td>
+                            <td>
+                                @foreach (var p in order.OrderProducts.Where(o => o.OrderId == order.OrderId))
+                                {
+                                    <div>@p.Product.Name (@p.ProductId) x @p.Quantity @(!string.IsNullOrWhiteSpace(p.SKU) ? "(Variant: " + @p.SKU + ")" : "")</div>
+                                }
+                            </td>
+                            <td>
+                                $ @order.Total.ToString("F")
+                            </td>
+                            <td>
+                                @* Quantity (money) *@
+                                @Html.DisplayFor(modelItem => order.Quantity)
+                            </td>
+                            <td>
+                                @*@Html.DisplayFor(modelItem => order.ShippingMethod.Name)*@
+                                @string.Format("{0} ({1}) ${2}", order.ShippingMethod.Name, order.ShippingMethod.Id, order.ShippingMethod.Price)
+                            </td>
+                            <td>
+                                @foreach (var item in order.OrderProducts)
+                                {
+                                    if(item.NextProduct != null)
+                                    {
+                                        @item.NextProduct.Name
+                                    }
+                                }
+                            </td>
+                            <td>
+                                @foreach (var item in order.OrderProducts)
+                                {
+                                    if(item.NextDate != null)
+                                    {
+                                        @item.NextDate
+                                    }
+                                }
+                            </td>
+
+                        </tr>
+                        @*if (Model.UserAction == UserAction.detail)
+                            {
+                                <tr>
+                                    <td colspan="9">
+                                        @Html.Partial("_orderdetails", order)
+                                    </td>
+                                </tr>
+                            }*@
+                    }
+                    @if (Model.UserAction == UserAction.batch)
+                    {
+                        <tr>
+                            <td colspan="9">
+                                @Html.Partial("_OrderBatchEdit", new OrderBatch())
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+            @Html.Partial("_PageBottom", Model.Orders)
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+    @if (checks)
+    {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
+    <script src="~/Content/assets/js/ace/ace.widget-box.js"></script>
+    <script>
+
+        $(function () {
+
+            $("#checkall").change(function () {
+                $(this).parents('table').find('tr th:first-child input:checkbox').prop('checked', $(this).prop("checked"));
+            });
+
+            @if (checks)
+	    {
+            <text>
+            $("#checkall").trigger("click");
+            </text>
+	    }
+
+            $(".datepicker").datepicker({
+                autoclose: true,
+                todayHighlight: true
+            });
+
+            $('#Display').change(function () {
+
+                var url = "@Html.Raw(Url.ActionQueryUrl("index", new { display = "_kdply_" }))";
+
+                window.location.href = url.replace("_kdply_", $(this).val());
+
+            });
+
+            $('body').on('keyup keypress', function (e) {
+                var keyCode = e.keyCode || e.which;
+                if (keyCode === 13) {
+                    $("#showresults").trigger("click");
+                }
+            });
+
+            @*$('#searchform').on("submit", function (e) {
+
+            $(this).find("input").each(function (index, obj) {
+                var $obj = $(obj);
+                if ($obj.val() == "" || $obj.val() === undefined) { // remove all empty values
+                    $obj.remove();
+                }
+                // remove the default values
+                if ($obj.attr("name") == "fFromDate" && $obj.val() == "@ViewBag.DefaultFromDate") {
+                    $obj.remove();
+                }
+                if ($obj.attr("name") == "fToDate" && $obj.val() == "@ViewBag.DefaultToDate") {
+                    $obj.remove();
+                }
+                if ($obj.attr("name") == "fStatus" && $obj.val() == "@OrderStatus.Approved") {
+                    $obj.remove();
+                }
+            });
+
+            //e.preventDefault();
+        });*@
+
+            $("#statusfilter input:radio").click(function () {
+                //$('#searchform').append(this).submit();
+
+                //var $fhidden = $('#fhidden');
+                // clean the user action
+                $("#UserAction").attr("value", "");
+
+                // set the status
+                $("#fStatus").val(this.value).closest("form").submit();
+
+                //$fhidden.append(this).closest('form').submit();
+            });
+
+            $("#showresults").click(function () {
+                $('#fhidden').html("")
+                    //.append($("#statusfilter input:radio:checked")) //;
+                    .parents('form').submit();
+            });
+
+            $(".action-button").on('click', function () {
+                var $checkboxes = $('tbody').find('tr th:first-child input:checkbox:checked');
+                if ($checkboxes.length === 0) {
+                    return;
+                }
+                var $radioboxes = $("#statusfilter input:radio:checked");
+                var action = $(this).data("useraction");
+                $("#UserAction").attr("value", action);
+
+                var $fhidden = $('#fhidden');
+                $fhidden.empty();
+
+                $checkboxes.each(function (index, elem) {
+                    //console.log(elem);
+                    $fhidden.append('<input name="oid" value="' + this.value + '"/>');
+                });
+
+                $fhidden
+                    //.append($checkboxes) // if added this way it removes the checkboxes
+                    //.append($radioboxes)
+                    //.append('<input value="' + action + '" name="UserAction" type="hidden">')
+                     .closest('form')
+                     .submit();
+            });
+
+
+            @if (orderdetails)
+    {
+        <text>
+            $(".billtype").change(function () {
+                var billtype = $(this).val();
+
+                var inputval = $(this).closest(".subscription").find(".inputbillvalueform");
+                var selectval = $(this).closest(".subscription").find(".selectbillvalueform");
+
+                if ('ByDay' == billtype) {
+                    inputval.toggleClass("hidden");
+                    selectval.toggleClass("hidden");
+
+                    var billday = $(this).closest(".subscription").find(".billday").val();
+                    var dayofweek = $(this).closest(".subscription").find(".dayofweek").val();
+
+                    inputval.val(billday + dayofweek);
+
+                }
+                else {
+                    selectval.addClass("hidden");
+
+                    @*if ('@Model.BillType' == 'ByDay') {
+                inputval.val(5);
+            }*@
+
+                    if (inputval.val() > 30) {
+                        inputval.val(7);
+                    }
+
+                    inputval.removeClass("hidden");
+                }
+
+            });
+
+            $(".billday").change(function () {
+                var value = $(this).val();
+
+                var inputval = $(this).closest(".subscription").find("input");
+                var dayofweek = $(this).closest(".subscription").find(".dayofweek").val();
+
+                inputval.val(value + dayofweek);
+
+            });
+
+            $(".dayofweek").change(function () {
+                var value = $(this).val();
+
+                var inputval = $(this).closest(".subscription").find("input");
+                var billday = $(this).closest(".subscription").find(".billday").val();
+
+                inputval.val(billday + value);
+
+            });
+            </text>
+    }
+
+        }());
+
+    </script>
+
+
+    @*<script>
+
+            $(function () {
+                var Model = function () {
+                    var self = this;
+                    self.lookupCollection = ko.observableArray();
+                    self.loadData();
+                };
+
+                Model.prototype = {
+
+                    loadData: function () {
+                        var self = this;
+                        var url = "/api/orders";
+
+                        $.ajax({
+                            type: "GET",
+                            url: url,
+                            data: "fdf",
+                            dataType: "json",
+                            success: function (data) {
+                                self.lookupCollection(data);
+                            }
+
+                        });
+
+                    }
+
+                };
+
+                var model = new Model();
+                ko.applyBindings(model);
+            });
+
+
+        </script>*@
+}

@@ -1,0 +1,84 @@
+﻿@model KontinuityCRM.Models.OrderProduct
+
+@{
+    ViewBag.Title = "OrderProduct Delete";
+    ViewBag.icon = "fa-shopping-cart";
+}
+
+<div id="breadcrumb">
+	<a href="@Url.Action("index", "home")" title="Go to Home" class="tip-bottom"><i class="fa fa-home"></i> Home</a>
+    <a href="@Url.Action("index")">OrderProducts</a>
+	<a href="#" class="current">Delete</a>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <div class="widget-box">
+
+                <div class="widget-title">
+                    <span class="icon"><i class="fa fa-trash-o"></i></span>
+                    <h5>@ViewBag.Title</h5>
+                </div>
+
+                <div class="widget-content nopadding">
+
+                    <form method="post" class="form-horizontal">
+                    
+                        @Html.HiddenFor(model => model.OrderProductId)
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Order, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-9 col-md-9 col-lg-10">
+                               @Html.TextBoxFor(model => model.Order.ShippingFirstName, new { @class = "form-control input-sm" , @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Product, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-9 col-md-9 col-lg-10">
+                               @Html.TextBoxFor(model => model.Product.Name, new { @class = "form-control input-sm" , @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                             @Html.LabelFor(model => model.Quantity, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-9 col-md-9 col-lg-10">
+                                @Html.TextBoxFor(model => model.Quantity, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                             @Html.LabelFor(model => model.Price, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-9 col-md-9 col-lg-10">
+                                @Html.TextBoxFor(model => model.Price, new { @class = "form-control input-sm" , @readonly = ""})
+							</div>
+						</div>
+
+                        <div class="form-group">
+                             @Html.LabelFor(model => model.Tax, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-9 col-md-9 col-lg-10">
+                                @Html.TextBoxFor(model => model.Tax, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                             @Html.LabelFor(model => model.Total, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-9 col-md-9 col-lg-10">
+                                @Html.TextBoxFor(model => model.Total, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                          <div class="form-actions">
+							<button type="submit" class="btn btn-danger btn-sm">Delete</button> or 
+                            @Html.ActionLink("Cancel", "index", null, new { @class = "text-danger" })
+						</div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

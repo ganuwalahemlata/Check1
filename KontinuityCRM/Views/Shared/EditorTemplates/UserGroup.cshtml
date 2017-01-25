@@ -1,0 +1,78 @@
+﻿@model KontinuityCRM.Models.UserGroup
+
+
+    <div class="widget-box">
+
+        <div class="widget-header">
+            <h5 class="widget-title">Settings</h5>
+            <div class="widget-toolbar">
+                <a href="#" data-action="collapse">
+                    <i class="ace-icon fa fa-chevron-up"></i>
+                </a>
+            </div>
+        </div>
+
+
+        @*<div class="widget-title">
+                <span class="icon"><i class="fa fa-plus"></i></span>
+                <h5>@ViewBag.Title</h5>
+            </div>*@
+
+        <div class="widget-body">
+            <div class="widget-main">
+                @Html.ValidationSummary(true)
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.Name, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.Name)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.Description, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.Description)
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="space-8"></div>
+
+    <div class="widget-box" id="permissionsbox">
+
+        @*<div class="widget-title">
+                <span class="icon"><i class="fa fa-lock"></i></span>
+                <h5>Permissions</h5>
+            </div>*@
+
+        <div class="widget-header">
+            <h5 class="widget-title">Permissions</h5>
+            <div class="widget-toolbar">
+                <a href="#" data-action="collapse">
+                    <i class="ace-icon fa fa-chevron-up"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="widget-body">
+            <div class="widget-main">
+                <div class="row" id="pck">
+                    <div class="">
+                        @Html.CheckboxListForGroupRoles("role", Model)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+

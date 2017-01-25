@@ -1,0 +1,92 @@
+﻿@model KontinuityCRM.Models.ViewModels.ExportTemplateListModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            @ViewBag.Heading
+        </span>
+        <span class="col-sm-4">
+            <span class="pull-right inline">
+                <a href="@Url.Action("create")" class="btn btn-primary btn-round @Html.RenderHidden("create")">
+                    <i class="ace-icon fa fa-plus"></i>
+                    Create
+                </a>
+            </span>
+        </span>
+    </h1>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        <div class="space-8"></div>
+        @Html.Partial("_PageTop")
+
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th class="@ViewBag.idOrderIcon">
+                        @Html.ActionQueryLink("Id", "index", new { sortOrder = ViewBag.IdSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.usernameOrderIcon">
+                        @Html.ActionQueryLink("Template Name", "index", new { sortOrder = ViewBag.UserNameSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ExportTemplates)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                        <td>
+                            @Html.ActionLink("Export", "ExportOrders", new
+                                   {
+                                       id = item.Id
+
+                                   }, new { @class = @Html.RenderHidden("edit") })
+                            <span class='@Html.RenderHidden("delete")'>|</span>
+                            @Html.ActionLink("Edit", "edit", new { id = item.Id }, new { @class = @Html.RenderHidden("edit") })
+                            <span class='@Html.RenderHidden("delete")'>|</span>
+                            @Html.ActionLink("Delete", "delete", new { id = item.Id }, new { @class = @Html.RenderHidden("delete") + " DeleteUser" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+
+
+
+
+</div>
+@section Scripts {
+
+    <script>
+
+        $(function () {
+            $('.DeleteUser').click(function () {
+                $.post($(this).attr('href'), function () {
+                    location.reload();
+                });
+                return false;
+            });
+        })
+
+        $('#export').on('click', function () {
+
+            $.ajax(function () {
+
+
+
+            })
+        });
+    </script>
+}
+

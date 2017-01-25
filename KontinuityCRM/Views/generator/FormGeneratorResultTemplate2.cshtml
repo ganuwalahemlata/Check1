@@ -1,0 +1,114 @@
+﻿@model KontinuityCRM.Models.ViewModels.FormGenerationModel1
+@{
+    <link href="@Url.ContentAbsUrl("~/Content/bootstrap.min.css")" rel="stylesheet">
+}
+<html>
+<head></head>
+    <title>Page 1</title>
+    <body>
+        <form>
+            <div id="form-rootwizard">
+                <ul class="hidden"></ul>
+                <div class="tab-content">
+
+                    <div class="row">
+                        <div style="width: 98%;padding: 24px;">
+
+                            <div class="panel panel-primary">
+                                <div class="panel-heading accordion-style1">Customer Information</div>
+                                <div class="panel-body">
+
+                                    <div class="form-group col-sm-5">
+                                        <label for=@Model.Customers.FirstName class="control-label">First Name</label>
+                                        <input type="Text" class="form-control" id=@Model.Customers.FirstName name=@Model.Customers.FirstName />
+                                    </div>
+                                    <div class="form-group col-sm-5">
+                                        <label for=@Model.Customers.LastName class="control-label">LastName</label>
+                                        <input type="Text" class="form-control" id=@Model.Customers.LastName" name=@Model.Customers.LastName />
+                                    </div>
+
+                                    <div class="form-group col-sm-5">
+                                        <label for=@Model.Customers.Address1 class="control-label">Address1</label>
+                                        <input type="Text" class="form-control" id=@Model.Customers.Address1" name=@Model.Customers.Address1 />
+                                    </div>
+
+                                    <div class="form-group col-sm-5">
+                                        <label for=@Model.Customers.Address2 class="control-label">Address2</label>
+                                        <input type="Text" class="form-control" id=@Model.Customers.Address2" name=@Model.Customers.Address2 />
+                                    </div>
+
+                                    <div class="form-group col-sm-5">
+                                        <label for=@Model.Customers.City class="control-label">City</label>
+                                        <input type="Text" class="form-control" id=@Model.Customers.City" name=@Model.Customers.City />
+                                    </div>
+
+                                    <div class="form-group col-sm-5">
+                                        <label for=@Model.Customers.State class="control-label">State</label>
+                                        <input type="Text" class="form-control" id=@Model.Customers.State" name=@Model.Customers.State />
+                                    </div>
+
+                                    <div class="form-group col-sm-5">
+                                        <label for=@Model.Customers.Country class="control-label">Country</label>
+                                        <input type="Text" class="form-control" id=@Model.Customers.Country" name=@Model.Customers.Country />
+                                    </div>
+
+                                    <div class="form-group col-sm-5">
+                                        <label for=@Model.Customers.PostalCode class="control-label">Postal Code</label>
+                                        <input type="Text" class="form-control" id=@Model.Customers.PostalCode" name=@Model.Customers.PostalCode />
+                                    </div>
+
+                                    <div class="form-group col-sm-5">
+                                        <label for=@Model.Customers.Email class="control-label">Email</label>
+                                        <input type="Text" class="form-control" id=@Model.Customers.Email" name=@Model.Customers.Email />
+                                    </div>
+
+                                    <div class="form-group col-sm-5">
+                                        <label for=@Model.Customers.Phone class="control-label">Phone</label>
+                                        <input type="Text" class="form-control" id=@Model.Customers.Phone" name=@Model.Customers.Phone />
+                                    </div>
+
+                                    <div class="col-sm-1"></div>
+
+                                </div>
+                            </div>
+                            <div style="clear:both"></div>
+                            <input type="Submit" value="Next" class="btn btn-app btn-primary" style="float: right;" />
+
+                        </div>
+
+
+                    </div>
+
+
+
+                </div>
+            </div>
+            <div class="alert alert-danger prospect-error hidden">There was an error creating the prospect...</div>
+            <div class="alert alert-danger order-error hidden">There was an error processing the request...</div>
+            <div class="alert alert-success hidden">The order was created successfully...</div>
+            <div class="progress hidden generated-progress">
+                <div class="progress-bar progress-bar-info
+                    progress-bar-striped active"
+                     style="width: 100%">
+                </div>
+            </div>
+            <input type="hidden" name="PartialId" id="PartialId" value='0' />
+
+        </form>
+    </body>
+
+</html>
+@{
+
+    <script src="@Url.ContentAbsUrl("~/Scripts/jquery-2.1.3.min.js")"></script>
+    <script src="@Url.ContentAbsUrl("~/Scripts/bootstrap.min.js")"></script>
+    <script src="@Url.ContentAbsUrl("~/Scripts/form2js.js")"></script>
+    <script src="@Url.ContentAbsUrl("~/Scripts/json2.js")"></script>
+    <script src="@Url.ContentAbsUrl("~/Scripts/jquery.bootstrap.wizard.min.js")"></script>
+    <script src="@Url.ContentAbsUrl("~/Scripts/validator.min.js")"></script>
+
+}
+<script src="@Url.ContentAbsUrl("~/Scripts/jquery.creditCardValidator.js")"></script>
+  </body>
+
+</html>

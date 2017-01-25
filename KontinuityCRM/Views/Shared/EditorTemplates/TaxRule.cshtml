@@ -1,0 +1,171 @@
+﻿@model KontinuityCRM.Models.TaxRule
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Country, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        <div class="col-xs-12 col-sm-5 nopadding no-padding">
+            @Html.DropDownListFor(model => model.CountryId, new SelectList(ViewBag.Countries, "Id", "Name"), "", new { @class = "chosen-select form-control", @data_placeholder="Choose a Country..." })
+            @Html.ValidationMessageFor(model => model.CountryId)
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Province, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9" id="stateDiv">
+        <div class="row">
+            <div class="col-xs-12 col-sm-5 no-padding-right">
+                @Html.DropDownListFor(model => model.Province, new List<SelectListItem>(), new { @class = "chosen-select form-control hidden" })
+            </div>
+        </div>
+        @Html.TextBoxFor(model => model.Province, new { @class = "col-xs-12 col-sm-5" })
+        @Html.ValidationMessageFor(model => model.Province)
+        
+    </div>  
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.City, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9" id="cityDiv">
+        <div class="row">
+            <div class="col-xs-12 col-sm-5 no-padding-right">
+                @Html.DropDownListFor(model => model.City, new List<SelectListItem>(), new { @class = "chosen-select form-control hidden" })
+            </div>
+        </div>
+        @Html.TextBoxFor(model => model.City, new { @class = "col-xs-12 col-sm-5" })
+        @Html.ValidationMessageFor(model => model.City)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.PostalCode, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.PostalCode, new { @class = "col-xs-12 col-sm-5" })
+        @Html.ValidationMessageFor(model => model.PostalCode)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Tax, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.Tax, new { @class = "col-xs-12 col-sm-5" })
+        @Html.ValidationMessageFor(model => model.Tax)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ApplyToShipping, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        <div class="radio inline">
+            <label>
+                @Html.RadioButtonFor(model => model.ApplyToShipping, true, new { @class = "ace", @checked = (ViewData["CreateView"] != null ? "checked" : string.Empty) })
+                <span class="lbl"> Yes</span>
+
+            </label>
+        </div>
+        <div class="radio inline">
+            <label>
+                @Html.RadioButtonFor(model => model.ApplyToShipping, false, new { @class = "ace" })
+                <span class="lbl"> No</span>
+            </label>
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ShippingAddress, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        <div class="radio inline">
+            <label>
+                @Html.RadioButtonFor(model => model.ShippingAddress, true, new { @class = "ace", @checked = (ViewData["CreateView"] != null ? "checked" : string.Empty) })
+                <span class="lbl"> Shipping</span>
+
+            </label>
+        </div>
+        <div class="radio inline">
+            <label>
+                @Html.RadioButtonFor(model => model.ShippingAddress, false, new { @class = "ace" })
+                <span class="lbl"> Billing</span>
+            </label>
+        </div>
+    </div>
+</div>
+
+@Html.Script(
+
+    @<script type="text/javascript">
+
+        (function () {
+
+            //if (!ace.vars['touch']) {
+            //    $('.chosen-select').chosen({ allow_single_deselect: true });
+            //}
+
+            var countryId = null;
+
+            $('#CountryId').change(function () {
+
+                countryId = $('#CountryId').val();
+                $.getJSON('/helper/states/' + countryId, null, function (data) {
+
+                    var $combo = $('#stateDiv select');
+                    var $input = $('#stateDiv input');
+
+                    if (data.length > 0) {
+
+                        $combo.find('option').remove();
+                        $combo.append($("<option />").val("").text(""));
+                        $.each(data, function (i, item) {
+                            $combo.append($("<option />").val(item).text(item));
+                        });
+
+                        $combo.removeClass("hidden"); //.chosen({ allow_single_deselect: true });
+                        $input.addClass("hidden");
+
+                        $combo.trigger("change");
+                    }
+                    else {
+                        $combo.addClass("hidden");
+                        $input.removeClass("hidden");
+                    }
+
+
+                });
+            });
+
+            $('#stateDiv select').change(function () {
+
+                var province = $(this).val();
+                $.getJSON('/helper/cities?countryId=' + countryId + '&province=' + province, null, function (data) {
+
+                    var $combo = $('#cityDiv select');
+                    var $input = $('#cityDiv input');
+
+                    if (data.length > 0) {
+
+                        $combo.find('option').remove();
+                        $combo.append($("<option />").val("").text(""));
+                        $.each(data, function (i, item) {
+                            $combo.append($("<option />").val(item).text(item));
+                        });
+
+                        $combo.removeClass("hidden"); //.chosen({ allow_single_deselect: true });
+                        $input.addClass("hidden");
+                    }
+                    else {
+                        $combo.addClass("hidden");
+                        $input.removeClass("hidden");
+                    }
+
+
+                });
+
+
+            });
+
+        }())
+
+    </script>
+)
+
+

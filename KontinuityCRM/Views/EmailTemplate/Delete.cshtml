@@ -1,0 +1,99 @@
+﻿@model KontinuityCRM.Models.Email
+
+@{
+    ViewBag.Title = "Email Delete";
+    ViewBag.icon = "fa-envelop-o";
+}
+
+<div id="breadcrumb">
+	<a href="@Url.Action("index", "home")" title="Go to Home" class="tip-bottom"><i class="fa fa-home"></i> Home</a>
+	<a href="@Url.Action("index")">Emails</a>
+	<a href="#" class="current">Delete</a>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <div class="widget-box">
+
+                <div class="widget-title">
+                    <span class="icon"><i class="fa fa-trash-o"></i></span>
+                    <h5>@ViewBag.Title</h5>
+                </div>
+
+                <div class="widget-content nopadding">
+
+                    <form method="post" class="form-horizontal">
+                    
+                        @Html.HiddenFor(model => model.EmailId)
+
+                        <div class="form-group">
+                             @Html.LabelFor(model => model.Name, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-9 col-md-9 col-lg-10">
+                                @Html.TextBoxFor(model => model.Name, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                             @Html.LabelFor(model => model.To, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-9 col-md-9 col-lg-10">
+                                @Html.TextBoxFor(model => model.To, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.From, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-9 col-md-9 col-lg-10">
+                                @Html.TextBoxFor(model => model.From, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Attachment, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-9 col-md-9 col-lg-10">
+                                @Html.TextBoxFor(model => model.Attachment, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.EmailType, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-9 col-md-9 col-lg-10">
+                                @Html.TextBoxFor(model => model.EmailType, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Subject, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-9 col-md-9 col-lg-10">
+                                @Html.TextBoxFor(model => model.Subject, new { @class = "form-control input-sm", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.HtmlBody, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-9 col-md-9 col-lg-10">
+                                @Html.TextAreaFor(model => model.HtmlBody, new { @class = "form-control", @rows = "3", @readonly = "" })
+							</div>
+						</div>
+
+                         <div class="form-group">
+                            @Html.LabelFor(model => model.TextBody, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-9 col-md-9 col-lg-10">
+                                @Html.TextAreaFor(model => model.TextBody, new { @class = "form-control", @rows = "3", @readonly = "" })
+							</div>
+						</div>
+
+                        <div class="form-actions">
+							<button type="submit" class="btn btn-danger btn-sm">Delete</button> or 
+                            @Html.ActionLink("Cancel", "index", null, new { @class = "text-danger" })
+						</div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+

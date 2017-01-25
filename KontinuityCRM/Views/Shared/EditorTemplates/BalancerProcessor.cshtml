@@ -1,0 +1,10 @@
+﻿@model BalancerProcessor
+
+<h3>New</h3>
+
+@Html.HiddenFor(model => model.BalancerId)
+@Html.HiddenFor(model => model.ProcessorId)
+
+@Html.EditorFor(model => model.AllocationPercent)
+@Html.ValidationMessageFor(model => model.AllocationPercent)
+

@@ -1,0 +1,17 @@
+﻿@model KontinuityCRM.Models.DeclineReason
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Reason, new { @class = "col-sm-3 control-label no-padding-right" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.Reason, new { @class = "col-xs-12 col-sm-5" /*, @placeholder = "Category Name"*/ })
+        @Html.ValidationMessageFor(model => model.Reason)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.WildCard, new { @class = "col-sm-3 control-label no-padding-right" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.WildCard, new { @class = "col-xs-12 col-sm-5" /*, @placeholder = "Category Name"*/ })
+        @Html.ValidationMessageFor(model => model.WildCard)
+    </div>
+</div>

@@ -1,0 +1,116 @@
+﻿@model PagedList.IPagedList<KontinuityCRM.Models.PrepaidCard>
+    @{
+        ViewBag.Title = "Prepaid Templates";
+    }
+    <div class="page-header">
+        <h1 class="row no-padding">
+            <span class="col-sm-8 no-padding">
+                @ViewBag.Title
+            </span>
+            <span class="col-sm-4">
+                <span class="pull-right inline">
+                    <a href="@Url.Action("create")" class="btn btn-primary btn-round @Html.RenderHidden("create")">
+                        <i class="ace-icon fa fa-plus"></i>
+                        Create
+                    </a>
+                </span>
+            </span>
+        </h1>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            @Html.Partial("_PageTop")
+
+            <div style="overflow:scroll;
+    width:100%;">
+                <table class="table table-bordered table-striped table-hover" >
+                    <thead>
+                        <tr>
+                            <th class="@ViewBag.idOrderIcon">
+                                @Html.ActionQueryLink("Id", "index", new { sortOrder = ViewBag.IdSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                            </th>
+                            <th class="@ViewBag.firstnameOrderIcon">
+                                @Html.ActionQueryLink("First Name", "index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                            </th>
+                            <th class="@ViewBag.lastnameOrderIcon">
+                                @Html.ActionQueryLink("Last Name", "index", new { sortOrder = ViewBag.typeSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                            </th>
+                            <th class="@ViewBag.typeOrderIcon">
+                                @Html.ActionQueryLink("Address", "index", new { sortOrder = ViewBag.typeSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                            </th>
+                            <th class="@ViewBag.typeOrderIcon">
+                                @Html.ActionQueryLink("City", "index", new { sortOrder = ViewBag.typeSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                            </th>
+                            <th class="@ViewBag.typeOrderIcon">
+                                @Html.ActionQueryLink("State", "index", new { sortOrder = ViewBag.typeSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                            </th>
+                            <th class="@ViewBag.typeOrderIcon">
+                                @Html.ActionQueryLink("Zip", "index", new { sortOrder = ViewBag.typeSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                            </th>
+                            <th class="@ViewBag.typeOrderIcon">
+                                @Html.ActionQueryLink("Phone", "index", new { sortOrder = ViewBag.typeSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                            </th>
+                            <th class="@ViewBag.typeOrderIcon">
+                                @Html.ActionQueryLink("Email", "index", new { sortOrder = ViewBag.typeSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                            </th>
+                            <th class="@ViewBag.typeOrderIcon">
+                                @Html.ActionQueryLink("Amount", "index", new { sortOrder = ViewBag.typeSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                            </th>
+                            <th class="@ViewBag.typeOrderIcon">
+                                @Html.ActionQueryLink("Number", "index", new { sortOrder = ViewBag.typeSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                            </th>
+                            <th class="@ViewBag.typeOrderIcon">
+                                @Html.ActionQueryLink("Card Type", "index", new { sortOrder = ViewBag.typeSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                            </th>
+                            <th class="@ViewBag.typeOrderIcon">
+                                @Html.ActionQueryLink("Date", "index", new { sortOrder = ViewBag.typeSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                            </th>
+                            <th class="@ViewBag.typeOrderIcon">
+                                @Html.ActionQueryLink("Declined", "index", new { sortOrder = ViewBag.typeSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                            </th>
+                            <th class="@ViewBag.typeOrderIcon">
+                                @Html.ActionQueryLink("Stopped", "index", new { sortOrder = ViewBag.typeSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                            </th>
+
+                            @*<th>@Html.DisplayNameFor(model => model.Id)</th>
+                                <th>@Html.DisplayNameFor(model => model.Name)</th>
+                                <th>@Html.DisplayNameFor(model => model.Type)</th>
+                                <th>@Html.DisplayNameFor(model => model.LastUpdate)</th>
+                                <th>@Html.DisplayNameFor(model => model.UpdatedBy)</th>
+                                <th>@Html.DisplayNameFor(model => model.Publish)</th>*@
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                                <td>@Html.DisplayFor(modelItem => item.First_Name)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Last_Name)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Address)</td>
+                                <td>@Html.DisplayFor(modelItem => item.City)</td>
+                                <td>@Html.DisplayFor(modelItem => item.State)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Zip)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Phone)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Number)</td>
+                                <td>@Html.DisplayFor(modelItem => item.PaymentType)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Date)</td>
+                                <td>@Html.DisplayFor(modelItem => item.declined)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Stop)</td>
+
+                                <td>
+                                    @Html.ActionLink("Edit", "edit", new { id = item.Id }, new { @class = @Html.RenderHidden("edit") })
+                                    <span class='@Html.RenderHidden("delete")'>|</span>
+                                    @Html.ActionLink("Delete", "delete", new { id = item.Id }, new { @class = @Html.RenderHidden("delete") })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            @Html.Partial("_PageBottom", Model)
+        </div>
+    </div>

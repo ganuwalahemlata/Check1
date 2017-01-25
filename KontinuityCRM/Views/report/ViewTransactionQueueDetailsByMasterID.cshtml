@@ -1,0 +1,119 @@
+﻿@model PagedList.IPagedList<KontinuityCRM.Models.TransactionQueue>
+    @{
+        ViewBag.Title = "TransactionQueue Details By MasterID : " + ViewBag.TransactionQueMasterId;
+    }
+    @section Scripts {
+        <script>
+            $('#selectAll').click(function (e) {
+                var table = $(e.target).closest('table');
+                $('td input:checkbox[id^="someid_"]', table).prop('checked', this.checked);
+            });
+        </script>
+    }
+    @using (Html.BeginForm())
+    {
+        <div class="page-header">
+            <h1 class="row no-padding">
+                <span class="col-sm-8 no-padding">
+                    @ViewBag.Title
+                </span>
+            </h1>
+        </div>
+        <form method="get" class="form-horizontal">
+            <div class="row" style="float:left;width:50%;margin-bottom:10px">
+                @*<label class="control-label bolder blue col-sm-1"></label>*@
+                <div class="radio-inline">
+                    <label>
+                        <input name="decline" type="radio" class="ace" value="1" @ViewBag.All />
+                        <span class="lbl"> All </span>
+                    </label>
+                </div>
+                <div class="radio-inline">
+                    <label>
+                        <input name="decline" type="radio" class="ace" value="2" @ViewBag.Remaining />
+                        <span class="lbl"> Remaining </span>
+                    </label>
+                </div>
+                <div class="radio-inline">
+                    <label>
+                        <input name="decline" type="radio" class="ace" value="3" @ViewBag.Finished />
+                        <span class="lbl"> Finished </span>
+                    </label>
+                </div>
+            </div>
+            <div class="row" style="float:right;width:50%;margin-bottom:10px">
+                @*@if (ViewBag.Decline == "checked" && Model.Count != 0)
+                    {
+                        <input type="submit" name="processDecline" value="Execute all decline" class="btn btn-primary btn-round" style="float:right;" />
+                    }*@
+
+                @if (ViewBag.Decline == "checked" && Model.Count != 0)
+                {
+                    <input type="submit" name="processDeclineSelected" value="Execute Selected Transaction" class="btn btn-purple btn-round" style="float:right; margin-right:10px" />
+                }
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    @Html.Partial("_PageTop_ViewTransactionQueueDetailsByMasterID")
+                    <div style="overflow:scroll;width:100%;">
+                        <table name="transactionQueueMastersDetailsByID" class="table table-bordered table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    @if (ViewBag.Status == "Declined")
+                                    {
+                                        <th><input type="checkbox" id="selectAll" /></th>
+                                    }
+                                    <th>ID</th>
+                                    <th>Date</th>
+                                    <th>Prepaid Card</th>
+                                    <th>Remaining Amount</th>
+                                    <th>Processor</th>
+                                    <th>Amount</th>
+                                    <th>Time Imterval Min</th>
+                                    <th>Time Imterval Max</th>
+                                    <th>Last Updated Date</th>
+                                    <th>Finished</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    int i = 0;
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            @if (ViewBag.Status == "Declined")
+                                            {
+                                                <td style="width:2%">@Html.CheckBox("checkedItem", new { @id = "someid_" + i })</td>
+                                            }
+                                            <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Date)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.PrepaidCard.Number)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.PrepaidCard.RemainingAmount)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Processor.Name)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Amount)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.TimeIntervalMin)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.TimeIntervalMax)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.LastUpdatedDate)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.finished)</td>
+                                        </tr>
+                                        i++;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    @*@Html.Partial("_PageBottom", Model)*@
+                    <div class="row">
+                        <div class="col-sm-3 col-xs-3">
+                            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount - Total @Model.TotalItemCount
+                        </div>
+                        <div class="col-sm-9 col-xs-9">
+                            <div class="pull-right kpagination">
+                                @Html.PagedListPager(Model, page => Url.ActionQueryUrl("ViewTransactionQueueDetailsByMasterID", new { page, sortOrder = ViewBag.CurrentSort, All = ViewBag.All, Remaining = ViewBag.Remaining, Finished = ViewBag.Finished }, "display"))
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        }

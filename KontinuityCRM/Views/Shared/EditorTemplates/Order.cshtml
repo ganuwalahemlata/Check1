@@ -1,0 +1,392 @@
+﻿@model KontinuityCRM.Models.Order
+
+
+<form method="post" class="form-horizontal">
+        
+    @Html.HiddenFor(model => model.OrderId)
+    @Html.HiddenFor(model => model.CustomerId)
+    @Html.HiddenFor(model => model.IPAddress)
+    @Html.HiddenFor(model => model.Created)
+    @Html.HiddenFor(model => model.Status)
+    @Html.HiddenFor(model => model.CreditCardCVV)
+    @Html.HiddenFor(model => model.IPAddress)
+
+    @Html.ValidationSummary()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ShippingFirstName, new { @class = "col-sm-3 control-label no-padding-right" })
+        <div class="col-sm-9">
+            @Html.TextBoxFor(model => model.ShippingFirstName, new { @class = "col-xs-12 col-sm-5" })
+            @Html.ValidationMessageFor(model => model.ShippingFirstName)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ShippingLastName, new { @class = "col-sm-3 control-label no-padding-right" })
+        <div class="col-sm-9">
+            @Html.TextBoxFor(model => model.ShippingLastName, new { @class = "col-xs-12 col-sm-5" })
+            @Html.ValidationMessageFor(model => model.ShippingLastName)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Email, new { @class = "col-sm-3 control-label no-padding-right" })
+        <div class="col-sm-9">
+            @Html.TextBoxFor(model => model.Email, new { @class = "col-xs-12 col-sm-5" })
+            @Html.ValidationMessageFor(model => model.Email)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ShippingAddress1, new { @class = "col-sm-3 control-label no-padding-right" })
+        <div class="col-sm-9">
+            @Html.TextBoxFor(model => model.ShippingAddress1, new { @class = "col-xs-12 col-sm-5" })
+            @Html.ValidationMessageFor(model => model.ShippingAddress1)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ShippingAddress2, new { @class = "col-sm-3 control-label no-padding-right" })
+        <div class="col-sm-9">
+            @Html.TextBoxFor(model => model.ShippingAddress2, new { @class = "col-xs-12 col-sm-5" })
+            @Html.ValidationMessageFor(model => model.ShippingAddress2)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ShippingCity, new { @class = "col-sm-3 control-label no-padding-right" })
+        <div class="col-sm-9">
+            @Html.TextBoxFor(model => model.ShippingCity, new { @class = "col-xs-12 col-sm-5" })
+            @Html.ValidationMessageFor(model => model.ShippingCity)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ShippingPostalCode, new { @class = "col-sm-3 control-label no-padding-right" })
+        <div class="col-sm-9">
+            @Html.TextBoxFor(model => model.ShippingPostalCode, new { @class = "col-xs-12 col-sm-5" })
+            @Html.ValidationMessageFor(model => model.ShippingPostalCode)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ShippingProvince, new { @class = "col-sm-3 control-label no-padding-right" })
+        <div class="col-sm-9">
+            @Html.TextBoxFor(model => model.ShippingProvince, new { @class = "col-xs-12 col-sm-5" })
+            @Html.ValidationMessageFor(model => model.ShippingProvince)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ShippingCountry, new { @class = "col-sm-3 control-label no-padding-right" })
+        <div class="col-sm-9">
+            <div class="col-xs-12 col-sm-5 nopadding no-padding">
+                @Html.DropDownListFor(model => model.ShippingCountry,
+                    new SelectList(ViewBag.Countries, "CountryAbbreviation", "Name"), new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Phone, new { @class = "col-sm-3 control-label no-padding-right" })
+        <div class="col-sm-9">
+            @Html.TextBoxFor(model => model.Phone, new { @class = "col-xs-12 col-sm-5" })
+            @Html.ValidationMessageFor(model => model.Phone)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.BillingFirstName, new { @class = "col-sm-3 control-label no-padding-right" })
+        <div class="col-sm-9">
+            @Html.TextBoxFor(model => model.BillingFirstName, new { @class = "col-xs-12 col-sm-5" })
+            @Html.ValidationMessageFor(model => model.BillingFirstName)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.BillingLastName, new { @class = "col-sm-3 control-label no-padding-right" })
+        <div class="col-sm-9">
+            @Html.TextBoxFor(model => model.BillingLastName, new { @class = "col-xs-12 col-sm-5" })
+            @Html.ValidationMessageFor(model => model.BillingLastName)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.BillingAddress1, new { @class = "col-sm-3 control-label no-padding-right" })
+        <div class="col-sm-9">
+            @Html.TextBoxFor(model => model.BillingAddress1, new { @class = "col-xs-12 col-sm-5" })
+            @Html.ValidationMessageFor(model => model.BillingAddress1)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.BillingAddress2, new { @class = "col-sm-3 control-label no-padding-right" })
+        <div class="col-sm-9">
+            @Html.TextBoxFor(model => model.BillingAddress2, new { @class = "col-xs-12 col-sm-5" })
+            @Html.ValidationMessageFor(model => model.BillingAddress2)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.BillingCity, new { @class = "col-sm-3 control-label no-padding-right" })
+        <div class="col-sm-9">
+            @Html.TextBoxFor(model => model.BillingCity, new { @class = "col-xs-12 col-sm-5" })
+            @Html.ValidationMessageFor(model => model.BillingCity)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.BillingProvince, new { @class = "col-sm-3 control-label no-padding-right" })
+        <div class="col-sm-9">
+            @Html.TextBoxFor(model => model.BillingProvince, new { @class = "col-xs-12 col-sm-5" })
+            @Html.ValidationMessageFor(model => model.BillingProvince)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.BillingPostalCode, new { @class = "col-sm-3 control-label no-padding-right" })
+        <div class="col-sm-9">
+            @Html.TextBoxFor(model => model.BillingPostalCode, new { @class = "col-xs-12 col-sm-5" })
+            @Html.ValidationMessageFor(model => model.BillingPostalCode)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.BillingCountry, new { @class = "col-sm-3 control-label no-padding-right" })
+        <div class="col-sm-9">
+            <div class="col-xs-12 col-sm-5 nopadding no-padding">
+                @Html.DropDownListFor(model => model.BillingCountry, new SelectList(ViewBag.Countries, "CountryAbbreviation", "Name"), new { @class="form-control" })
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.AffiliateId, new { @class = "col-sm-3 control-label no-padding-right" })
+        <div class="col-sm-9">
+            @Html.TextBoxFor(model => model.AffiliateId, new { @class = "col-xs-12 col-sm-5" })
+            @Html.ValidationMessageFor(model => model.AffiliateId)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.SubId, new { @class = "col-sm-3 control-label no-padding-right" })
+        <div class="col-sm-9">
+            @Html.TextBoxFor(model => model.SubId, new { @class = "col-xs-12 col-sm-5" })
+            @Html.ValidationMessageFor(model => model.SubId)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.CreditCardNumber, new { @class = "col-sm-3 control-label no-padding-right" })
+        <div class="col-sm-9">
+            @Html.TextBoxFor(model => model.CreditCardNumberX, new { @class = "col-xs-12 col-sm-5" })
+            @Html.ValidationMessageFor(model => model.CreditCardNumber)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.SubId, new { @class = "col-sm-3 control-label no-padding-right" })
+        <div class="col-sm-9">
+            @Html.HiddenFor(model => model.CreditCardNumber)
+            @Html.TextBoxFor(model => model.SubId, new { @class = "col-xs-12 col-sm-5" })
+            @Html.ValidationMessageFor(model => model.SubId)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("Credit Card Expiration", new { @class = "col-sm-3 control-label no-padding-right" })
+        <div class="col-sm-9">
+            <div class="col-xs-12 col-sm-5 nopadding no-padding">
+                <div class="row">
+                    <div class="col-sm-5 col-xs-8">
+                        @Html.EnumDropdownListFor(model => model.CreditCardExpirationMonth, new { @class = "form-control" })
+                        </div>
+                    <div class="col-sm-4 col-xs-4">
+                        @Html.DropDownListFor(model => model.CreditCardExpirationYear, new SelectList(ViewBag.CreditCardExpirationYear, Model.CreditCardExpirationYear), new { @class = "form-control" })
+                    </div>
+                        @*<select name="CreditCardExpirationYear">
+                    @foreach (var item in ViewBag.CreditCardExpirationYear)
+                    {
+                        <option value="@item" @(item == Model.CreditCardExpirationYear ? "selected" : String.Empty)>@item</option>
+                    }
+                </select>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    @if (Model.Processor != null)
+    {
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right">Preserved Processor</label>
+                <div class="col-sm-9">@Model.Processor.Name</div>
+            </div>
+
+            @*if the order has a processor then show the processor' gateway*@
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right">Gateway</label>
+                <div class="col-sm-9">@Model.Processor.Gateway.Name</div>
+            </div>
+    }
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right">Transaction Id</label>
+        <div class="col-sm-9">
+            <input type="text" disabled="disabled" readonly="readonly"
+                    value="@Model.Transactions.Where(t => t.Type == TransactionType.Sale).Select(t => t.TransactionId).FirstOrDefault()" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right">Auth Id</label>
+        <div class="col-sm-9">
+            <input type="text" disabled="disabled" readonly="readonly"
+                    value="@Model.Transactions.Where(t => t.Type == TransactionType.Auth).Select(t => t.TransactionId).FirstOrDefault()" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.ShippingMethod, new { @class = "col-sm-3 control-label no-padding-right" })
+        <div class="col-sm-9">
+            <div class="col-xs-12 col-sm-5 nopadding no-padding">
+                @Html.DropDownListFor(model => model.ShippingMethodId,
+            ((IEnumerable<ShippingMethod>)ViewBag.ShippingMethods).Select(s => new SelectListItem
+            {
+                Value = s.Id.ToString(),
+                Text = String.Format("{0} ({1}) ${2}", s.Name, s.Id, s.Price.ToString("F"))
+
+            }), new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right">SubTotal</label>
+            <div class="col-sm-9">
+                $ @Model.SubTotalAmount.ToString("F")
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right">ShippingTotal</label>
+            <div class="col-sm-9">
+                $ @Model.ShippingMethod.Price.ToString("F")
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right">Tax</label>
+            <div class="col-sm-9">
+                $ 0.00 @*@Model.Tax*@
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label no-padding-right">Total</label>
+            <div class="col-sm-9">
+                $ @Model.TotalAmount.ToString("F")
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Status, new { @class = "col-sm-3 control-label no-padding-right" })
+            <div class="col-sm-9">
+                @Html.DisplayFor(model => model.Status)
+            </div>
+        </div>
+
+        @if (Model.Status == OrderStatus.Approved)
+    {
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label no-padding-right">Void/Refund</label>
+                <div class="col-sm-9">
+                    $ <input type="text" name="refund_amount" value="@Model.TotalAmount">
+                    @Html.ActionQueryLink("Void", "index", new { UserAction = UserAction.Void, oid = Model.OrderId }, new { @class = "btn btn-xs btn-primary" })
+                        
+                    <input type="submit" value="Refund" name="action:Refund" class="btn-xs btn btn-primary" />
+                    <div style="padding-top:5px;"> 
+                        Keep Recurring Active After Refund &nbsp;
+
+                        @Html.RadioButton("refund_keep_recurring", true)
+                        Yes
+                        @Html.RadioButton("refund_keep_recurring", false, true) No
+                    </div>
+                    <div>
+                        @Html.ValidationMessage("refund_amount")
+                    </div>
+                </div>
+            </div>
+    }
+
+    @* Products *@
+        
+    <div class="col-sm-12 padding-10">
+        <h3 class="row header smaller lighter purple">
+            <span class="col-sm-6"> Products </span><!-- /.col -->
+        </h3>
+    </div>
+           
+
+    <dl class="dl-horizontal">
+        @Html.EditorFor(model => model.OrderProducts)
+    </dl>
+
+
+    @* Notes *@
+        
+    <div class="col-sm-12 padding-10">
+        <h3 class="row header smaller lighter purple">
+            <span class="col-sm-6"> Notes </span><!-- /.col -->
+        </h3>
+    </div>
+
+    <div class="form-group">
+        <label class="col-sm-3 control-label no-padding-right">History</label>
+        <div class="col-sm-9">
+            <ul class="list-unstyled">
+                @foreach (var note in Model.Notes.OrderByDescending(n => n.NoteDate))
+                {
+                    <li>
+                        @note.NoteDate.ToString("MM/dd/yyyy hh:mm tt")
+                        <span>(Utc)  - </span>
+                        @note.Note
+                            
+                    </li>
+
+                }
+            </ul>
+        </div>
+    </div>
+     
+
+    <div class="clearfix form-actions no-padding-bottom">
+        <div class="col-md-offset-3 col-md-9">
+                
+            <input type="submit" value="Save" name="action:Save" class="btn-sm btn btn-primary" />
+            @Html.ActionLink("Place New Order", "new", new { id = Model.OrderId }, new { @class = "btn-sm btn btn-primary" })
+            @if (Model.OrderProducts.Any(o => o.NextDate != null))
+            {
+                @Html.ActionQueryLink("Force Rebill Now", "index", new { UserAction = UserAction.rebill, oid = Model.OrderId }, new { @class = "btn btn-sm btn-primary" })
+            }
+            @* Reattempt option for this order *@
+            @if (Model.Status == OrderStatus.Declined) // in this case can't be child orders
+            {
+                // allow if this order was recreted by the rebill then the recurring is on the parent else
+                // the order is an intial declined order so allow reattempt (start recurring)
+
+                if (!Model.IsRebill) // initial order
+                {
+                    // was an initial order so allow restart the recurring
+                    @Html.ActionQueryLink("Reattempt", "index", new { UserAction = UserAction.reattempt, oid = Model.OrderId }, new { @class = "btn btn-sm btn-primary" })
+                }
+            }
+                           
+        </div>
+    </div>
+
+   
+
+   
+</form>
+

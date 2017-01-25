@@ -1,0 +1,105 @@
+﻿@model PagedList.IPagedList<KontinuityCRM.Models.Event>
+
+@{
+    ViewBag.Title = "Events";
+}
+
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            @ViewBag.Title
+        </span>
+        <span class="col-sm-4">
+            <span class="pull-right inline">
+                <a href="@Url.Action("create")" class="btn btn-primary btn-round @Html.RenderHidden("create")">
+                    <i class="ace-icon fa fa-plus"></i>
+                    Create
+                </a>
+            </span>
+        </span>
+    </h1>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        @Html.Partial("_PageTop")
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th class="@ViewBag.idOrderIcon">
+                        @Html.ActionQueryLink("Id", "index", new { sortOrder = ViewBag.IdSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.nameOrderIcon">
+                        @Html.ActionQueryLink("Name", "index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.typeOrderIcon">
+                        @Html.ActionQueryLink("Type", "index", new { sortOrder = ViewBag.typeSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.templateOrderIcon">
+                        @Html.ActionQueryLink("Template", "index", new { sortOrder = ViewBag.templateSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.smtpOrderIcon">
+                        @Html.ActionQueryLink("SMTP", "index", new { sortOrder = ViewBag.smtpSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.productsOrderIcon">
+                        @Html.ActionQueryLink("Total Products", "index", new { sortOrder = ViewBag.productsSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.createdbyOrderIcon">
+                        @Html.ActionQueryLink("Created ", "index", new { sortOrder = ViewBag.createdbySortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.lastupdateOrderIcon">
+                        @Html.ActionQueryLink("Last Update", "index", new { sortOrder = ViewBag.lastupdateSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.updatedbyOrderIcon">
+                        @Html.ActionQueryLink("Updated By", "index", new { sortOrder = ViewBag.updatedbySortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>                  
+                    @*<th>@Html.DisplayNameFor(model => model.Id)</th>
+                    <th>@Html.DisplayNameFor(model => model.Name)</th>
+                    <th>@Html.DisplayNameFor(model => model.Type)</th>
+                    <th>@Html.DisplayNameFor(model => model.Template)</th>
+                    <th>SMTP</th>
+                    <th>Total Products</th>
+                    <th>@Html.DisplayNameFor(model => model.CreatedBy)</th>
+                    <th>@Html.DisplayNameFor(model => model.LastUpdate)</th>
+                    <th>@Html.DisplayNameFor(model => model.UpdatedBy)</th>*@
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                        <td>@item.Type.DisplayValue()</td>
+                        <td>
+                            (@Html.ActionLink(item.TemplateId.ToString(), "index", "emailtemplate", new { id = item.TemplateId }, null))
+                            @Html.DisplayFor(modelItem => item.Template.Name)
+                        </td>
+                        <td>
+                            (@Html.ActionLink(item.SmtpServerId.ToString(), "index", "smtp", new { id = item.SmtpServerId }, null))
+                            @Html.DisplayFor(modelItem => item.SmtpServer.Name)
+                        </td>
+                        <td>
+                            @*@item.Products.Count()*@
+                            @if (item.Products.Any())
+                            {
+                                @:@item.Products.Count()
+                            }
+                        </td>
+                        <td>@Html.DisplayFor(modelItem => item.CreatedBy.UserName)</td>
+                        <td>@Html.DisplayFor(modelItem => item.LastUpdate)</td>
+                        <td>@Html.DisplayFor(modelItem => item.UpdatedBy.UserName)</td>
+                        <td>
+                            @Html.ActionLink("Edit", "edit", new { id = item.Id }, new { @class = @Html.RenderHidden("edit") })
+                            <span class='@Html.RenderHidden("delete")'>|</span>
+                            @Html.ActionLink("Delete", "delete", new { id = item.Id }, new { @class = @Html.RenderHidden("delete") })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @Html.Partial("_PageBottom", Model)
+    </div>
+</div>
+

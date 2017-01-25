@@ -1,0 +1,354 @@
+﻿@using System.Web.Mvc.Html
+@model KontinuityCRM.Models.APIModels.PartialToOrderModel
+
+@{
+    ViewBag.Title = "Create Order";
+    ViewBag.icon = "fa-bullseye";
+    List<KontinuityCRM.Models.Product> products = ((List<KontinuityCRM.Models.Product>)ViewBag.Products).ToList();
+}
+
+@*<div id="breadcrumb">
+	<a href="@Url.Action("index", "home")" title="Go to Home" class="tip-bottom"><i class="fa fa-home"></i> Home</a>
+	<a href="@Url.Action("index")">Patials</a>
+	<a href="#" class="current">@ViewBag.Title</a>
+</div>*@
+
+@*<div class="container-fluid">*@
+    <div class="row">
+        <form method="post" class="form-horizontal" id="mform">
+            <div class="col-xs-12">
+
+                 @* Order Products *@
+                <div class="">
+
+                    <h3 class="row header smaller lighter purple">
+                        <span class="col-sm-6"> Products </span><!-- /.col -->
+                    </h3>
+
+                    @Html.ValidationSummary()
+
+                        
+                    <div class="form-group">
+                        @Html.Label("Select a product", new { @class = "col-sm-3 control-label" })
+                        <div class="col-sm-9">
+                            <div>
+                                <div class="col-xs-8 no-padding col-sm-5">
+                                    <select id="products" class="form-control">
+                                        <option value=""></option>
+                                        @foreach (var item in ViewBag.Products)
+                                        {
+                                            <option value="@item.ProductId" data-sku="@item.SKU">@item.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                                @* @Html.DropDownList("product", new SelectList(ViewBag.Products, "ProductId", "Name"))*@
+                                <button type="button" class="btn btn-default btn-sm plusbtn" id="addproduct"><i class="fa fa-plus"></i> Add</button>
+                            </div>
+                        </div>
+
+                            @* Products table *@
+                            <div class="col-sm-12 col-md-12 col-lg-12" style="margin-top: 20px;">
+
+                                <table class="table" id="ptable">
+                                    <tbody>
+
+                                        @if (Model != null && Model.OrderProducts != null)
+                                                {
+                                                    foreach (var item in Model.OrderProducts)
+                                                    {
+                                                        var actp = products.Single(p => p.ProductId == item.ProductId);
+                                                <tr>
+                                                    <td>
+                                                        <div class="col-sm-12 col-md-12 col-lg-12" style="padding: 0 15px 5px;">
+                                                            <strong>@actp.Name</strong>
+                                                            <input type="hidden" name="orderproducts.Index" value="@item.ProductId" />
+                                                            <input type="hidden" value="@item.ProductId" name="OrderProducts[@item.ProductId].ProductId">
+                                                        </div>
+
+                                                        <div class="col-sm-4 col-md-4" style="font-size: small; margin-top: 4px;">
+                                                            Sku: @actp.SKU
+                                                        </div>
+
+                                                        <div class="col-sm-6 col-md-6" style="font-size: small;">
+                                                            Qty:
+                                                            <input class="form-control input-sm" type="number" value="@item.Quantity" name="OrderProducts[@item.ProductId].Quantity" data-val-required="The Quantity field is required." data-val-number="The field Quantity must be a number." data-val="true" style="width: 30%; display: inline; font-size: small; padding: 2px 5px; height: inherit;">
+                                                            <div>
+                                                                @*@Html.ValidationMessageFor(m => m.OrderProducts[item.ProductId].Quantity)*@
+                                                                <span class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="OrderProducts[@item.ProductId].Quantity"></span>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </td>
+                                                    <td>
+                                                        <a href="#" data-id="@item.ProductId" class="rlink" data-sku="@actp.SKU" data-name="@actp.Name">Remove</a>
+                                                    </td>
+                                                </tr>
+                                                    }
+                                                }
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        
+
+                    </div>
+
+
+
+                            </div>
+
+                @* Order Data *@
+                <div class="">
+
+                    @*<div class="widget-title">
+                        <span class="icon"><i class="fa fa-info"></i></span>
+                        <h5>Order Info</h5>
+                    </div>*@
+
+                    <h3 class="row header smaller lighter purple">
+                        <span class="col-sm-6"> Shipping </span><!-- /.col -->
+                    </h3>
+
+                    
+
+                        <div class="form-group">
+                            @Html.Label("Shipping Method", new { @class = "col-sm-3 control-label" })
+                            <div class="col-sm-9">
+                                <div class="col-xs-12 no-padding col-sm-5">
+                                    @Html.DropDownListFor(model => model.ShippingMethodId,
+                                              ((IEnumerable<ShippingMethod>)ViewBag.ShippingMethods).Select(s => new SelectListItem
+                                              {
+                                                  Value = s.Id.ToString(),
+                                                  Text = String.Format("{0} ({1}) ${2}", s.Name, s.Id, s.Price.ToString("F"))
+
+
+                                              }), "", new { @class = "form-control" })
+                                </div>
+                                @*//new SelectList(ViewBag.ShippingMethods, "Id", "Name"), "")*@
+                                @Html.ValidationMessageFor(model => model.ShippingMethodId)
+                            </div>
+                        </div>
+
+                            
+                    
+                    
+                </div>
+
+                @* Payment Information *@
+                <div class="">
+
+                    <h3 class="row header smaller lighter purple">
+                        <span class="col-sm-6"> Payment </span><!-- /.col -->
+                    </h3>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PaymentType, new { @class = "col-sm-3 control-label" })
+                        <div class="col-sm-9">
+                            <div class="col-xs-12 no-padding col-sm-5">
+                                @Html.EnumDropdownListFor(model => model.PaymentType, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.CreditCardNumber, new { @class = "col-sm-3 control-label" })
+                        <div class="col-sm-9">
+                            @Html.TextBoxFor(model => model.CreditCardNumber, new { @class = "col-xs-12 col-sm-5" })
+                            @Html.ValidationMessageFor(model => model.CreditCardNumber)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Expiration Date", new { @class = "col-sm-3 control-label" })
+                        <div class="col-sm-9">
+                            <div class="row">
+                                @*<div class="col-sm-5">*@
+
+                                    <div class="col-sm-3 col-xs-8">
+                                        @Html.EnumDropdownListFor(model => model.CreditCardExpirationMonth, new { @class = "form-control" })
+                                    </div>
+                                    <div class="col-sm-2 col-xs-4">
+                                        @Html.DropDownListFor(model => model.CreditCardExpirationYear, new SelectList(ViewBag.CreditCardExpirationYears, "Value", "Text"), new { @class = "form-control" })
+                                    </div>
+                                @*</div>*@
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.CreditCardCVV, new { @class = "col-sm-3 control-label" })
+                        <div class="col-sm-9">
+                            @Html.TextBoxFor(model => model.CreditCardCVV, new { @class = "col-xs-4 col-sm-2" })
+                            @Html.ValidationMessageFor(model => model.CreditCardCVV)
+                        </div>
+                    </div>
+
+                    <div class="clearfix form-actions">
+                        <div class="col-md-offset-3 col-md-9">
+                            <button type="submit" class="btn btn-primary btn-round">
+                                <i class="ace-icon fa fa-check"></i>
+                                Create
+                            </button>
+                            &nbsp; &nbsp; &nbsp;
+                            <a href="@Url.Action("index")" class="btn btn-white btn-default btn-round">
+                                <i class="ace-icon fa fa-times red2"></i>
+                                Cancel
+                            </a>
+                        </div>
+                    </div>
+
+                   
+
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+
+    $(document).ready(function () {
+
+        //isChargeBack();
+        //$("#ss1 ins").click(function () {
+        //    isChargeBack();
+        //});
+
+        $("#addproduct").click(function () {
+            //alert('here');
+            var product = $('#products').find(":selected");
+            var productid = product.val();
+            var productname = product.text();
+            var sku = product.data('sku');
+
+            // this the no product
+            if (productid === '') {
+                return;
+            }
+            //console.log(product.length);
+            //console.log(product);
+            //console.log(productid);
+
+            //$("#ptable tbody:last").append('<tr> <td> <div class="col-sm-12 col-md-12 col-lg-12" style="padding: 0 15px 5px;"><strong>' + productname + '</strong><input type="hidden" name="orderproducts.Index" value="' + productid + '" /> <input type="hidden" value="' + productid + '" name="OrderProducts[' + productid + '].ProductId"> </div> <div class="col-sm-4 col-md-4" style="font-size: small; margin-top: 4px;"> Sku: ' + sku + ' </div> <div class="col-sm-6 col-md-6" style="font-size: small;"> Qty: <input class="form-control input-sm" type="text" value="1" name="OrderProducts[' + productid + '].Quantity" data-val-required="The Quantity field is required." data-val-number="The field Quantity must be a number." data-val="true" style="width: 30%; display: inline; font-size: small; padding: 2px 5px; height: inherit;"><div><span class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="OrderProducts[' + productid + '].Quantity"></span></div> </div> </td> <td><a href="#" data-id="' + productid + '" data-sku="' + sku + '" class="rlink" data-name="' + productname + '">Remove</a></td> </tr>');
+
+            $("#ptable tbody:last").append(addproduct(productname, productid, sku)).find('.datepicker').datepicker();
+
+
+
+            //product.attr('disabled', 'disabled');
+            //product.removeAttr("selected");
+            product.remove();
+            $('#products').select2();
+
+            var form = $("#mform");
+            form.removeData('validator');
+            form.removeData('unobtrusiveValidation');
+            $.validator.unobtrusive.parse(form);
+        });
+
+
+
+        //fetchproducts(1);
+    });
+
+    function addproduct(productname, productid, sku) {
+        var result = '<tr> <td>';
+        result += '<div class="col-sm-12 col-md-12 col-lg-12" style="padding: 0 15px 5px;">';
+        result += '<strong>' + productname + '</strong>'
+        result += '<input type="hidden" name="orderproducts.Index" value="' + productid + '" />';
+        result += '<input type="hidden" value="' + productid + '" name="OrderProducts[' + productid + '].ProductId">';
+        result += '</div>';
+
+        result += '<div class="row">';
+        result += '<div class="col-sm-3 col-md-3" style="font-size: small; margin-top: 4px;"> Sku: ' + sku + ' </div>';
+        result += '<div class="col-sm-9 col-md-9" style="font-size: small;">';
+        result += '<label>Qty:</label> <input class="form-control input-sm" type="text" value="1" name="OrderProducts[' + productid + '].Quantity" data-val-required="The Quantity field is required." data-val-number="The field Quantity must be a number." data-val="true" style="width: 30%; display: inline; font-size: small; padding: 2px 5px; height: inherit;">';
+        result += '<div><span class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="OrderProducts[' + productid + '].Quantity"></span></div> </div>'
+        result += '</div>';
+
+        //result += '<div class="row">';
+        //result += '<div class="col-sm-3 col-md-3" style="font-size: small; margin-top: 4px;"></div>';
+        //result += '<div class="col-sm-9 col-md-9" style="font-size: small;">';
+        //result += '<label>Price:</label> <input class="form-control input-sm" type="text" name="OrderProducts[' + productid + '].Price" data-val-number="The field NextProductId must be a number." data-val="true" style="width: 30%; display: inline; font-size: small; padding: 2px 5px; height: inherit;">';
+        //result += ' <span class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="OrderProducts[' + productid + '].Price"></span> </div>'
+        //result += '</div>';
+
+
+        //result += '<div class="row">';
+        //result += '<div class="col-sm-3 col-md-3" style="font-size: small; margin-top: 4px;"></div>';
+        //result += '<div class="col-sm-9 col-md-9" style="font-size: small;">';
+        //result += '<label>NextProductId:</label> <input class="form-control input-sm" type="text" name="OrderProducts[' + productid + '].NextProductId" data-val-number="The field NextProductId must be a number." data-val="true" style="width: 30%; display: inline; font-size: small; padding: 2px 5px; height: inherit;">';
+        //result += ' <span class="field-validation-valid" data-valmsg-replace="true" data-valmsg-for="OrderProducts[' + productid + '].NextProductId"></span> </div>'
+        //result += '</div>';
+
+        //result += '<div class="row">';
+        //result += '<div class="col-sm-3 col-md-3" style="font-size: small; margin-top: 4px;"></div>';
+        //result += '<div class="col-sm-9 col-md-9" style="font-size: small;">';
+        //result += '<label>NextDate:</label> <input class="form-control input-sm datepicker" type="text" name="OrderProducts[' + productid + '].NextDate" style="width: 30%; display: inline; font-size: small; padding: 2px 5px; height: inherit;">';
+        //result += '</div>'
+        result += '</div>';
+
+        result += '<div class="row"><a href="#" data-id="' + productid + '" data-sku="' + sku + '" class="rlink" data-name="' + productname + '">Remove</a></div>'
+        result += '</td></tr>'
+
+        return result;
+
+    }
+
+    $(document).on("click", "a.rlink", function () {
+
+        // remove the product from the table
+        $this = $(this);
+        $this.parents("tr:first").remove();
+        var pid = $this.data('id');
+        var pname = $this.data('name');
+        var sku = $this.data('sku');
+        // remove the disable status
+        //$("#products option[value='" + pid + "']").removeAttr("disabled");
+
+        var products = $("#products");
+        products.append($("<option></option>")
+            .attr("id", pid)
+            .data("sku", sku)
+            .text(pname));
+        products.select2();
+        return false;
+    });
+
+
+    @*function fetchproducts(catid)
+    {
+        $.getJSON('@Url.Action("productsincategory", "helper")' + '?categoryid=' + catid, function (data) {
+
+            var container = $('#products');
+            $.each(data, function (i, p) {
+
+                //console.log(p);
+                //container.append('<li>' + p.Name + '</li>');
+
+            });
+
+        });
+    }*@
+
+
+
+    @*function isChargeBack() {
+            var pdiv = $("#ss1 > div").first();
+            //console.log(pdiv);
+            if (pdiv.hasClass("checked")) {
+                $("#chargebackform").show();
+            }
+            else {
+                $("#chargebackform").hide();
+            }
+        }*@
+</script>
+}

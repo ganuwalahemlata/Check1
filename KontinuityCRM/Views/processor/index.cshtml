@@ -1,0 +1,219 @@
+﻿@model PagedList.IPagedList<KontinuityCRM.Models.Processor>
+
+@{
+    ViewBag.Title = "Processors";
+    ViewBag.icon = "fa-exchange";
+}
+
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            @ViewBag.Title
+        </span>
+        <span class="col-sm-4">
+            <span class="pull-right inline">
+                <a href="#myCreate" data-toggle="modal" class="btn btn-primary btn-round @Html.RenderHidden("create")">
+                    <i class="ace-icon fa fa-plus"></i>
+                    Create
+                </a>
+            </span>
+        </span>
+    </h1>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        @Html.Partial("_PageTop")
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th class="@ViewBag.idOrderIcon">
+                        @Html.ActionQueryLink("Id", "index", new { sortOrder = ViewBag.IdSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.nameOrderIcon">
+                        @Html.ActionQueryLink("Name", "index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.gatewayOrderIcon">
+                        @Html.ActionQueryLink("Gateway", "index", new { sortOrder = ViewBag.GatewaySortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.typeOrderIcon">
+                        @Html.ActionQueryLink("Type", "index", new { sortOrder = ViewBag.TypeSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Gateway.Name)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Type)</td>
+                        <td>
+                            @Html.ActionLink("Edit", "edit", new { id = item.Id }, new { @class = @Html.RenderHidden("edit") })
+                            @*<span class='@Html.RenderHidden("delete")'>|</span>*@
+                            @Html.ActionLink("Delete", "delete", new { id = item.Id }, new { data_toggle = "modal", Href = "#delete",@class="delete" ,dataid = item.Id })
+
+
+                            @*<a href="#delete"  data-toggle="modal" data-id=@item.Id >
+                                    Delete
+                                </a>*@
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @Html.Partial("_PageBottom", Model)
+
+        <div id="myCreate" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button data-dismiss="modal" class="close" type="button">×</button>
+                        <h3>Gateways Availables</h3>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <div class="form-horizontal">
+                            <div class="form-group" style="padding:0;">
+                                @Html.Label("Select a Gateway", new { @class = "col-sm-3 control-label" })
+                                <div class="col-sm-9">
+                                    @Html.DropDownList("dprovider", ((IEnumerable<Gateway>)ViewBag.Gateways).Select(p =>
+                                        new SelectListItem()
+                                        {
+                                            Value = p.Id.ToString(),
+                                            Text = p.Name,
+
+                                        }), new { @class = "chosen form-control" })
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" type="button" id="responder_select"> Select </button>
+                        <button class="btn btn-default" data-dismiss="modal" type="button"> Cancel </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div id="delete" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button data-dismiss="modal" class="close" type="button">×</button>
+                        <h3>Replace All Products and  Balancers</h3>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <div class="form-horizontal">
+                            <div class="form-group" style="padding:0;">
+                                @Html.Label("Select a Processor", new { @class = "col-sm-3 control-label" })
+                                <div class="col-sm-9">
+                                   
+                                    @*@Html.DropDownList("dprovider")*@
+                                    <select id="SelectProcessor"></select>
+                                   
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" type="button" id="responder_Processorselect"> Submit </button>
+                        <button class="btn btn-default" data-dismiss="modal" type="button"> Cancel </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/chosen.jquery.min.js"></script>
+    <script>
+
+        $("#responder_select").click(function () {
+            window.location = "@Url.Action("create")/" + $("#dprovider").val();
+        });
+
+        $('#myCreate').on('shown.bs.modal', function () {
+
+            //  $('.chosen-select', this).chosen('destroy').chosen();
+            $('.chosen-select', this).chosen();
+            $(".chosen").chosen({ width: "inherit" });
+            $(".chosen-container").css({
+                'width': '330px',
+            });
+        });
+        $("#responder_Processorselect").click(function () {
+            debugger;
+            if ($("#SelectProcessor option:selected").val() == 0) {
+                return;
+            }
+            window.location = "/processor/ReplaceProcessor?newPid=" + $("#SelectProcessor option:selected").val()+"&oldPid="+oldpid;
+        });
+        var oldpid;
+        $('.delete').click( function () {
+            debugger;
+            ;
+            oldpid = $(this).attr("dataid");
+          
+            $.ajax({
+                url: "/processor/GetProductsAndBalancer?id=" + oldpid,
+                type: 'get',
+                dataType: 'json',
+                data:{
+                    //id: $(this).attr("id")
+                },
+                success: function (data) {
+                   // alert(data)
+                    $("#SelectProcessor").append("<option value=0>Select processor...</option>");
+                    $.each(data.AvailableProcessor, function (index, p) {
+                       // alert(p.Name);
+                        $("#SelectProcessor").append("<option value='" + p.Id + "'>" + p.Name + "</option>");
+                    });
+                },
+                error: function (data) {
+                    debugger;
+                   // alert("error"+data)
+                },
+            });
+
+            //  $('.chosen-select', this).chosen('destroy').chosen();
+            //$('.chosen-select', this).chosen();
+            //$(".chosen").chosen({ width: "inherit" });
+            //$(".chosen-container").css({
+            //    'width': '330px',
+            //});
+        });
+
+        (function () {
+
+            $(".chosen").chosen({ max_selected_options: 2 });
+            $(".chosen-deselect").chosen({ allow_single_deselect: true });
+            $(".chosen").chosen().change();
+            $(".chosen").trigger('liszt:updated');
+            $(".chosen").chosen({ width: "inherit" });
+
+
+            if ($('#dprovider option').length < 1) {
+                noty({
+                    text: 'You need to create a gateway first',
+                    layout: 'topRight',
+                    closeWith: ['click'],
+                    type: 'error'
+                });
+            }
+        }())
+    </script>
+}
+@section styles{
+    <link href="~/Content/chosen.css" rel="stylesheet" />
+}

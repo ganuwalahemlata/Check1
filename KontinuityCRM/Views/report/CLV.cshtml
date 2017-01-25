@@ -1,0 +1,62 @@
+﻿@model DotNet.Highcharts.Highcharts
+
+@{
+    ViewBag.Title = "CLV Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+    <style>
+        .form-actions {
+            margin: 0;
+            background-color: transparent;
+            text-align: center;
+        }
+    </style>
+
+}
+
+<h2>CLV Report</h2>
+
+<div class="row">
+    <form method="post" class="form-horizontal" id="mform">
+        <div class="col-xs-12">
+
+            <h5 class="row header smaller lighter purple">
+                <span class="col-sm-6"> Date Range Filters </span><!-- /.col -->
+            </h5>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">From :</label>
+                <div class="col-sm-9">
+                    <input type="date" name="from" id="FromDate" value="@ViewBag.from" placeholder="From" class="col-xs-12 col-sm-5" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">To :</label>
+                <div class="col-sm-9">
+                    <input type="date" id="ToDate" name="to" value="@ViewBag.to" placeholder="To" class="col-xs-12 col-sm-5" />
+                </div>
+            </div>
+            <div class="form-actions">
+                <div class="col-sm-9">
+                    <button type="submit" class="btn btn-purple btn-sm">
+                        Apply
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+
+    <div class="center-block" style="width:90%;">
+        @(Model)
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/jquery-ui-1.10.3.min.js"></script>
+    <script src="~/Scripts/Highcharts-4.0.1/js/highcharts.js"></script>
+    <script src="~/Scripts/Highcharts-4.0.1/js/modules/funnel.js"></script>
+}
+

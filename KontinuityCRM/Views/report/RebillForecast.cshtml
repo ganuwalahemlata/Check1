@@ -1,0 +1,233 @@
+﻿@using KontinuityCRM.Models.ViewModels.Enum
+@model PagedList.IPagedList<KontinuityCRM.Models.ViewModels.RebillModel>
+
+@{
+    ViewBag.Title = "Rebill Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles {
+
+    <link href="~/Content/assets/css/datepicker.css" rel="stylesheet" />
+
+}
+
+
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+           Rebill Forecast
+        </span>
+    </h1>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+
+
+        <form method="get" class="form-horizontal">
+
+            <div class="row">
+
+                <label class="control-label bolder blue col-sm-1">View by </label>
+
+                <div class="checkbox-inline">
+                    <label>
+                        <input name="ProductId" type="checkbox" class="ace" @(ViewBag.ProductId == true ? "checked" : string.Empty) value="True" />
+                        <span class="lbl"> ProductId</span>
+                    </label>
+                </div>
+
+                <div class="checkbox-inline">
+                    <label>
+                        <input name="AffiliateId" type="checkbox" class="ace" @(ViewBag.AffiliateId == true ? "checked" : string.Empty) value="True" />
+                        <span class="lbl"> AffiliateId</span>
+                    </label>
+                </div>
+
+                <div class="checkbox-inline">
+                    <label>
+                        <input name="SubId" type="checkbox" class="ace" @(ViewBag.SubId == true ? "checked" : string.Empty) value="True" />
+                        <span class="lbl"> SubId</span>
+                    </label>
+                </div>
+
+                <div class="space-4"></div>
+
+            </div>
+            <div class="row">
+                <label class="control-label bolder blue col-sm-1">Date As</label>
+                <div class="radio-inline">
+                    <label>
+                        <input name="searchByDateOption" type="radio" class="ace" @(ViewBag.searchByDateOption == 1 ? "checked" : string.Empty) value="1" />
+                        <span class="lbl"> Rebill Date</span>
+                    </label>
+                </div>
+                <div class="radio-inline">
+                    <label>
+                        <input name="searchByDateOption" type="radio" class="ace" @(ViewBag.searchByDateOption == 2 ? "checked" : string.Empty) value="2" />
+                        <span class="lbl"> Sign Up Date</span>
+                    </label>
+                </div>
+                <div class="space-4"></div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-sm-4 col-xs-10">
+
+                    <div class="input-daterange input-group">
+                        <input type="text" class="form-control" name="start" value="@ViewBag.start" />
+                        <span class="input-group-addon">
+                            <i class="fa fa-exchange"></i>
+                        </span>
+
+                        <input type="text" class="form-control" name="end" value="@ViewBag.end" />
+
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-purple btn-sm">
+                                <span class="ace-icon fa fa-search icon-on-right bigger-110"></span>
+                            </button>
+                        </span>
+                    </div>
+
+
+                </div>
+
+                <div class="col-sm-4 col-sm-offset-4 col-xs-2">
+
+                    @Html.DropDownList("Display", new SelectList(new List<int>() { 10, 25, 50, 100, 500, 1000 }, ViewBag.Display), new { @class = "pull-right" })
+
+                </div>
+
+            </div>
+
+        </form>
+        <div class="space-4"></div>
+
+        <div class="table-outter-wrapper">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th class="@ViewBag.DateOrderIcon">
+                            @Html.ActionQueryLink("Date", "RebillForecast", new { sortOrder = ViewBag.DateSortParm }, null, "page,display")
+                        </th>
+                        @if (ViewBag.ProductId)
+                        {
+                            <th class="@ViewBag.ProductIdOrderIcon">
+                                @Html.ActionQueryLink("ProductId", "RebillForecast", new { sortOrder = ViewBag.ProductIdSortParm }, null, "page,display")
+                            </th>
+                        }
+                        @if (ViewBag.AffiliateId)
+                        {
+                            <th class="@ViewBag.AffiliateIdOrderIcon">
+                                @Html.ActionQueryLink("AffiliateId", "RebillForecast", new { sortOrder = ViewBag.AffiliateIdSortParm }, null, "page,display")
+                            </th>
+                        }
+                        @if (ViewBag.SubId)
+                        {
+                            <th class="@ViewBag.SubIdOrderIcon">
+                                @Html.ActionQueryLink("SubId", "RebillForecast", new { sortOrder = ViewBag.SubIdSortParm }, null, "page,display")
+                            </th>
+                        }
+                        <th class="@ViewBag.GrossOrderIcon">
+                            @Html.ActionQueryLink("Total", "RebillForecast", new { sortOrder = ViewBag.GrossSortParm }, null, "page,display")
+                        </th>
+
+                        <th class="@ViewBag.GrossOrderIcon">
+                            @Html.ActionQueryLink("No. Of Order", "RebillForecast", new { sortOrder = ViewBag.GrossSortParm }, null, "page,display")
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.ActionLink(item.DateT.ToString("MM/dd/yyyy"), "view", new { ProductId = ViewBag.ProductId, AffiliateId = ViewBag.AffiliateId, SubId = ViewBag.SubId, Date = @item.DateT.ToString("MM/dd/yyyy"), AffiliateIdVal = item.AffiliateId, ProductIdVal = item.ProductId, SubIdVal = item.SubId, SearchByDateOption = ViewBag.searchByDateOption })
+                            </td>
+                            @if (ViewBag.ProductId)
+                            {
+                               
+                                <td>
+                                    @Html.ActionLink(Convert.ToString(item.ProductId), "view", new { ProductId = ViewBag.ProductId, AffiliateId = ViewBag.AffiliateId, SubId = ViewBag.SubId, Date = @item.DateT.ToString("MM/dd/yyyy"), AffiliateIdVal = item.AffiliateId, ProductIdVal = item.ProductId == null ? 0 : item.ProductId.Value, SubIdVal = item.SubId == null ? "0" : item.SubId, SearchByDateOption = ViewBag.searchByDateOption })
+                                </td>
+                                
+                            }
+                            @if (ViewBag.AffiliateId)
+                            {
+                                <td>
+                                    @Html.ActionLink((item.AffiliateId != null ? item.AffiliateId.ToString() : "0"), "view", new { ProductId = ViewBag.ProductId, AffiliateId = ViewBag.AffiliateId, SubId = ViewBag.SubId, Date = @item.DateT.ToString("MM/dd/yyyy"), AffiliateIdVal = item.AffiliateId, ProductIdVal = item.ProductId, SubIdVal = item.SubId, SearchByDateOption = ViewBag.searchByDateOption })
+                                </td>
+                            }
+                            @if (ViewBag.SubId)
+                            {
+                                <td>
+                                    @Html.ActionLink((item.SubId != null ? item.SubId.ToString() : "0"), "view", new { ProductId = ViewBag.ProductId, AffiliateId = ViewBag.AffiliateId, SubId = ViewBag.SubId, Date = @item.DateT.ToString("MM/dd/yyyy"), AffiliateIdVal = item.AffiliateId, ProductIdVal = item.ProductId, SubIdVal = item.SubId, SearchByDateOption = ViewBag.searchByDateOption })
+                                </td>
+                            }
+                            <td>
+                                @Html.ActionLink(Convert.ToString(item.Total), "view", new { ProductId = ViewBag.ProductId, AffiliateId = ViewBag.AffiliateId, SubId = ViewBag.SubId, Date = @item.DateT.ToString("MM/dd/yyyy"), AffiliateIdVal = item.AffiliateId, ProductIdVal = item.ProductId.Value, SubIdVal = item.SubId, SearchByDateOption = ViewBag.searchByDateOption, status = "Gross" })
+                            </td>
+
+                            <td>
+                                @Html.ActionLink(Convert.ToString(item.Numberoforder), "view", new { ProductId = ViewBag.ProductId, AffiliateId = ViewBag.AffiliateId, SubId = ViewBag.SubId, Date = @item.DateT.ToString("MM/dd/yyyy"), AffiliateIdVal = item.AffiliateId, ProductIdVal = item.ProductId, SubIdVal = item.SubId, SearchByDateOption = ViewBag.searchByDateOption, status = "Gross" })
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @*@Model.TotalItemCount*@
+
+        <div class="row">
+
+            <div class="col-sm-3 col-xs-3">
+
+                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+            </div>
+
+            <div class="col-sm-9 col-xs-9">
+
+                <div class="pull-right kpagination">
+
+                    @Html.PagedListPager(Model, page => Url.ActionQueryUrl("rebill", new { page, sortOrder = ViewBag.CurrentSort }, "display"))
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+    </div>
+</div>
+
+@section scripts {
+
+    <script src="~/Content/assets/js/date-time/bootstrap-datepicker.js"></script>
+
+    <script>
+
+    (function () {
+
+        $('.input-daterange').datepicker({ autoclose: true });
+
+        $('#Display').change(function () {
+            var url = "@Html.Raw(Url.ActionQueryUrl("rebill", new { sortOrder = ViewBag.CurrentSort, display = "_kdpy_" }))";
+            window.location.href = url.replace("_kdpy_", $(this).val());
+        });
+
+    }())
+
+    </script>
+
+}
+
+
+

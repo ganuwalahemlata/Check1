@@ -1,0 +1,185 @@
+﻿@model KontinuityCRM.Models.EmailTemplate
+
+@{
+    var checkboxHtmlAttributes = new Dictionary<string, object>{{"class", "ace"}};
+
+    if (Model == null)
+    {
+        checkboxHtmlAttributes.Add("checked", "checked");
+    }    
+        
+}
+
+@Html.ValidationSummary(true)
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Subject, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.Subject, new { @class = "col-xs-12 col-sm-5" })
+        @Html.ValidationMessageFor(model => model.Subject)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Name, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextBoxFor(model => model.Name, new { @class = "col-xs-12 col-sm-5" })
+        @Html.ValidationMessageFor(model => model.Name)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Type, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        <div class="col-xs-12 col-sm-5 nopadding no-padding">
+            @Html.DropDownListFor(model => model.Type, KontinuityCRM.Models.NotificationType.OrderConfirmation.ToSelectList(), new { @class = "chosen form-control" })
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Description, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextAreaFor(model => model.Description, new { @class = "col-xs-12 col-sm-12", @rows = "3" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Publish, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        <div class="radio inline">
+            <label>
+                @Html.RadioButtonFor(model => model.Publish, true, checkboxHtmlAttributes)
+                <span class="lbl"> Yes</span>
+            </label>
+        </div>
+        <div class="radio inline">
+            <label>
+                @Html.RadioButtonFor(model => model.Publish, false, new { @class = "ace" })
+                <span class="lbl"> No</span>
+            </label>
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-sm-3">
+        <div class="clearfix">
+            @Html.LabelFor(model => model.HtmlBody, new { @class = "control-label pull-right" })
+        </div>
+        <div class="space-2"></div>
+        <a href="#myCreate" data-toggle="modal" class="pull-right">
+            View Tokens
+        </a>
+        
+    </div>
+    <div class="col-sm-9">
+        @Html.TextAreaFor(model => model.HtmlBody, new { @class = "ckeditor", @rows = "10" })
+        @Html.ValidationMessageFor(model => model.HtmlBody)
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.TextBody, new { @class = "col-sm-3 control-label" })
+    <div class="col-sm-9">
+        @Html.TextAreaFor(model => model.TextBody, new { @class = "col-xs-12 col-sm-12", @rows = "10" })
+        @Html.ValidationMessageFor(model => model.TextBody)
+    </div>
+</div>
+
+
+<div id="myCreate" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button data-dismiss="modal" class="close" type="button">×</button>
+                <h3>ContinuityCRM Tokens</h3>
+            </div>
+
+            <div class="modal-body">
+                <table class="table table-striped">
+                    <tbody>
+                        <tr><td><h5>Token</h5></td><td><h5>Description</h5></td></tr>
+
+                        <tr><td>{billingaddress2}</td><td>Customer's billing address 2</td></tr>
+                        <tr><td>{billingaddress}</td><td>Customer's billing address</td></tr>
+                        <tr><td>{billingcity}</td><td>Customer's billing city</td></tr>
+                        <tr><td>{billingcountry}</td><td>Customer's billing country</td></tr>
+                        <tr><td>{billingfirstname}</td><td>Customer's billing first name</td></tr>
+                        <tr><td>{billinglastname}</td><td>Consumer's billing last name</td></tr>
+                        <tr><td>{billingstate}</td><td>Customer's billing state</td></tr>
+                        <tr><td>{billingzipcode}</td><td>Customer's billing zipcode</td></tr>
+                        <tr><td>{checkinglastfour}</td><td>Customer's checking account number</td></tr>
+                        <tr><td>{customerid}</td><td>Customer's identifer</td></tr>
+                        <tr><td>{customerservicenumber}</td><td>Gateway customer service number</td></tr>
+                        <tr><td>{descriptor}</td><td>Gateway descriptor</td></tr>
+                        <tr><td>{emailaddress}</td><td>Customer's email address</td></tr>
+                        <tr><td>{gatewayalias}</td><td>Gateway alias assigned to the campaign</td></tr>
+                        @*<tr><td>{gateway_specific_html}</td><td>Gateway Specific HTML returned from business logic on the payment gateway.</td></tr>*@
+                        @*<tr><td>{gateway_specific_text}</td><td>Gateway Specific TEXT returned from business logic on the payment gateway.</td></tr>*@
+                        @*<tr><td>{giroaccountnumber}</td><td>Giro account number</td></tr>*@
+                        @*<tr><td>{girobankaddress}</td><td>Giro bank address</td></tr>*@
+                        @*<tr><td>{girobankname}</td><td>Giro bank name</td></tr>*@
+                        @*<tr><td>{giroiban}</td><td>Giro IBAN</td></tr>*@
+                        @*<tr><td>{girosortcode}</td><td>Giro sort code</td></tr>*@
+                        @*<tr><td>{giroswift}</td><td>Giro Swift code</td></tr>*@
+                        @*<tr><td>{nextsubscriptionamount}</td><td>Next subscription order amount total</td></tr>*@
+                        <tr><td>{nextsubscriptiondate}</td><td>Next subscription billing date</td></tr>
+                        <tr><td>{nextsubscriptionproduct}</td><td>Next subscription product name</td></tr>
+                        <tr><td>{orderdatetimecustom}</td><td>Order purchase date and time, using custom date format</td></tr>
+                        <tr><td>{orderdatetime}</td><td>Order purchase date and time</td></tr>
+                        <tr><td>{orderid}</td><td>Order identifer</td></tr>
+                        <tr><td>{ordertotal}</td><td>Order total price</td></tr>
+                        <tr><td>{phone}</td><td>Customer's telephone number</td></tr>
+                        <tr><td>{productdescription}</td><td>The description for the main product of the order</td></tr>
+                        <tr><td>{productname}</td><td>List of products purchased</td></tr>
+                        @*<tr><td>{producturl}</td><td>Product digitally delivery url</td></tr>*@
+                        @*<tr><td>{product_attributes}</td><td>Product attributes associated with the main product of the order.</td></tr>*@
+                        @*<tr><td>{product_summary_text}</td><td>Products, price and quantity breakdownin plain text</td></tr>*@
+                        @*<tr><td>{product_summary}</td><td>Products, price and quantity breakdownin HTML</td></tr>*@
+                        @*<tr><td>{refundamount}</td><td>Order refunded amount</td></tr>*@
+                        @*<tr><td>{retrydiscountamt}</td><td>The amount discount applied by a decline salvage retry attempt.</td></tr>*@
+                        @*<tr><td>{retrydiscountpct}</td><td>The percent discount applied by a decline salvage retry attempt.</td></tr>*@
+                        <tr><td>{rmanumber}</td><td>Order rma number</td></tr>
+                        @*<tr><td>{routinglastfour}</td><td>Customer's routing number</td></tr>*@
+                        @*<tr><td>{salestax}</td><td>Sales Tax Amount and Percentage</td></tr>*@
+                        <tr><td>{shippingaddress2}</td><td>Customer's shipping address 2</td></tr>
+                        <tr><td>{shippingaddress}</td><td>Customer's shipping address</td></tr>
+                        <tr><td>{shippingcity}</td><td>Customer's shipping city</td></tr>
+                        <tr><td>{shippingcountry}</td><td>Customer's shipping country</td></tr>
+                        <tr><td>{shippingfirstname}</td><td>Customer's shipping first name</td></tr>
+                        @*<tr><td>{shippinggroup}</td><td>Order Shipping Group</td></tr>*@
+                        <tr><td>{shippinglastname}</td><td>Consumer's shipping last name</td></tr>
+                        <tr><td>{shippingprice}</td><td>Order shipping price</td></tr>
+                        <tr><td>{shippingstate}</td><td>Customer's shipping state</td></tr>
+                        <tr><td>{shippingzipcode}</td><td>Customer's shipping zipcode</td></tr>
+                        <tr><td>{subtotal}</td><td>Order total plus upsell</td></tr>
+                        @*<tr><td>{taxfactor}</td><td>Sales Tax Dollar Amount</td></tr>
+                <tr><td>{telnaaccountid}</td><td>Telna account id</td></tr>
+                <tr><td>{telnaiccid}</td><td>Telna ICC id</td></tr>
+                <tr><td>{telnaphonenumber}</td><td>Telna phone number</td></tr>
+                <tr><td>{totalnontaxable}</td><td>Total Non Taxable of Order Total</td></tr>
+                <tr><td>{totaltaxable}</td><td>Total Taxable of Order Total</td></tr>
+                <tr><td>{tpl_product_attributes}</td><td>Product attributes.</td></tr>
+                <tr><td>{tpl_product_base_cost}</td><td>Base price setup in product configuration.</td></tr>
+                <tr><td>{tpl_product_id}</td><td>The product id.</td></tr>
+                <tr><td>{tpl_product_name}</td><td>The product name.</td></tr>
+                <tr><td>{tpl_product_quantity}</td><td>The quantity selected on the order.</td></tr>
+                <tr><td>{tpl_product_row}</td><td>Wrapper tag for inner tpl_product_ tags which can be used to display a product summary row. Multiple instances may be used.</td></tr>
+                <tr><td>{tpl_product_total_cost}</td><td>Price after quantity and custom pricing.</td></tr>
+                <tr><td>{trackingnumber}</td><td>Tracking number</td></tr>
+                <tr><td>{voidamount}</td><td>Order voided amount</td></tr>*@
+                    </tbody>
+                </table>
+
+
+            </div>
+            
+            <div class="modal-footer">
+                @*<button class="btn btn-primary" type="button" id="responder_select"> Select </button>*@
+                <button class="btn btn-default" data-dismiss="modal" type="button"> Close </button>
+            </div>
+
+        </div>
+    </div>
+</div>

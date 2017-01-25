@@ -1,0 +1,47 @@
+﻿@model IEnumerable<TrackerEnabledDbContext.Common.Models.AuditLogDetail>
+
+@{
+    ViewBag.Title = "Audit Logs";
+    ViewBag.icon = "fa-file";
+}
+
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            @ViewBag.Title
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+                Details
+            </small>
+        </span>
+    </h1>
+</div>
+
+
+<div class="row">
+    <div class="col-xs-12">
+
+        
+
+                 <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.ColumnName)</th>
+                            <th>@Html.DisplayNameFor(model => model.OriginalValue)</th>
+                            <th>@Html.DisplayNameFor(model => model.NewValue)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.ColumnName)</td>
+                                <td>@Html.DisplayFor(modelItem => item.OriginalValue)</td>
+                                <td>@Html.DisplayFor(modelItem => item.NewValue)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                
+            </div>
+        </div>

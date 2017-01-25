@@ -1,0 +1,563 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>Order Essence of Argan</title>
+    <link rel="stylesheet" href="/officialargan/styles/common/order.css" />
+    <link rel="stylesheet" href="/officialargan/styles/en/order_en.css" />
+    <link rel="stylesheet" href="/officialargan/styles/jquery.ketchup.css" />
+    <script src="~/officialargan/jquery.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+			var thisIsRequired = "This field is required";
+			var lengthBetween1 = "This field must have a length between";
+			var andWord = "and";
+			var validEmail = "Must be a valid E-Mail.";
+			var minLength = "This field must have a minimal length of";
+			var maxLength = "This field must have a maximal length of";
+			var mustBeAtLeast = "Must be at least";
+			var canNotGreaterThan = "Can not be greater than";
+			var mustBeBetween = "Must be between";
+			var mustBeANumber = "Must be a number.";
+			var mustBeADigits = "Must be digits.";
+			var mustBeAValidURL = "Must be a valid URL.";
+			var mustBeAValidUsername = "Must be a valid username.";
+			var mustBe = "Must be";
+			var mustContain = "Must contain";
+			var mustBeAValidDate = "Must be a valid date.";
+			var selectAtLeast = "Select at least";
+			var varCheckboxes = "checkboxes";
+			var isSelected = "VERIFY OFFER TERMS";
+			var selectNotMoreThan = "Select not more than";
+			var selectBetween = "Select between";
+    </script>
+    <script src="/officialargan/jquery.ketchup.all.min.js" type="text/javascript"></script>
+    <script type='text/javascript' src='/officialargan/js/country-translate.js'></script>
+    <script type='text/javascript' src='/officialargan/js/webforms.js'></script>
+    <!--[if IE]>
+        <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script type='text/javascript'>
+            // -- clients can use this jQuery instance ll(), but do not remove
+            var ll = jQuery.noConflict();
+    </script>
+    <script type="text/javascript">
+            ll(document).ready(function() {
+            	var decSep = ".";
+                var taxRate = 0.00;
+                ll('#billshipcheck').change(function(){
+                    var c = this.checked ? 'none' : 'block';
+                    ll('#billinfo').css('display', c);
+
+                    if(!this.checked){
+                        $('.order2-form-content').css({'height': 810});
+                        $('#order2-orderform').css({"height":881});
+                        $('#order2').css({"height":920});
+                        $('.order-footer').css({"top":750});
+                    }else{
+                        $('.order2-form-content').css({'height': 575});
+                        $('#order2-orderform').css({"height":646});
+                        $('#order2').css({"height":644});
+                        $('.order-footer').css({"top":642});
+                    }
+                });
+                $('#billshipcheck').trigger('change');
+                var date= new Date();
+                ll('option.month' + date.getMonth()).attr("selected","selected");
+                ll('#opt_in_form')
+                .bind('formIsValid', function(event, form) {
+                    //do whatever when the form is valid
+                    //form - the form that is valid (jQuery Object)
+                    ll('#processing').show();
+                    ll('#ordernow').hide();
+                })
+                .bind('formIsInvalid', function(event, form) {
+                    //do whatever when the form is invalid
+                    //form - the form that is invalid (jQuery Object)
+                })
+                .bind('fieldIsValid', function(event, form, el) {
+                    //do whatever if a field is valid
+                    //form - the form where the el is located (jQuery Object)
+                    //el   - the element that is valid (jQuery Object)
+                    //alert(el.attr('id'));
+                    ll("#"+el.attr('id')).removeClass("failed");
+                    ll("#"+el.attr('id')+"_status").show();
+
+                })
+                .bind('fieldIsInvalid', function(event, form, el) {
+                    //do whatever if a field is invalid
+                    //form - the form where the el is located (jQuery Object)
+                    //el   - the element that is invalid (jQuery Object)
+                    ll("#"+el.attr('id')).addClass("failed");
+                    ll("#"+el.attr('id')+"_status").hide();
+                })
+                .ketchup();
+
+                function creditCardTypeFromNumber(num) {
+                    // first, sanitize the number by removing all non-digit characters.
+                    num = num.replace(/[^\d]/g,'');
+                    if (num.match(/^5[1-5]\d{14}$/)) {
+                        return "master";
+                    } else if (num.match(/^4\d{15}/) || num.match(/^4\d{12}/)) {
+                        return "visa";
+                    }
+                    return false;
+                }
+
+                ll('#cc_number').change(function() {
+                    var type = creditCardTypeFromNumber(ll(this).val());
+                    if (type)
+                        ll('#cc_type').val(type);
+                });
+
+                ll('#upsell_10').click(function() {
+                    var total_js = getSandH();
+                    var upsellcost = '4.99';
+                    if(ll('#upsell_10').is(':checked')) {
+                        total_js = Number(total_js) + Number(upsellcost.replace(decSep, "."));
+                        sandh = getSandH() + Number(upsellcost.replace(decSep, "."));
+                    } else {
+                        total_js = Number(total_js) - Number(upsellcost.replace(decSep, "."));
+                        sandh = getSandH() - Number(upsellcost.replace(decSep, "."));
+                    }
+                    ll('#order2-total').html('<b>&#36;'+total_js.toFixed(2).replace(".", decSep)+'<input type="hidden" value="'+total_js.toFixed(2)+'" id="order2_total"></b>');
+                    ll('#order2-ship').html('&#36;'+total_js.toFixed(2).replace(".", decSep)+'<input type="hidden" value="'+total_js.toFixed(2)+'" id="order2_ship">');
+                    if('&#36;' == '&pound;' || '&#36;' == '&euro;' || '&#36;' == 'kr '){
+                    	$('#order2-sub').html('&#36;' + (total_js * taxRate).toFixed(2).replace(".", decSep)+'<input type="hidden" value="'+(total_js * taxRate).toFixed(2).replace(".", decSep)+'" id="order2_sub">');
+                        ll('#order2-total').html('<b>&#36;'+((total_js * taxRate) + total_js).toFixed(2).replace(".", decSep)+'<input type="hidden" value="'+((total_js * taxRate) + total_js).toFixed(2)+'" id="order2_total"></b>');
+                    }
+                });
+
+                ll('#promo-button').click(processpromocode);
+
+                function getSubTotal() {
+                    return Number(ll('#order2_sub').val().replace(decSep, "."));
+                }
+                function getSandH() {
+                    return Number(ll('#order2_ship').val().replace(decSep, "."));
+                }
+                function getTotal_js() {
+                    return Number(ll('#order2_total').val().replace(decSep, "."));
+
+                }
+                function calculateTotal() {
+                    subtotal = getSubTotal();
+                    sandh = getSandH();
+                    formatdisc = '2.00';
+                    total_js = Number(sandh)-Number(formatdisc.replace(decSep, "."));
+                    ll('#order2-total').html('<b>&#36;'+total_js.toFixed(2).replace(".", decSep)+'<input type="hidden" value="'+total_js.toFixed(2)+'" id="order2_total"></b>');
+                    ll('#order2-ship').html('&#36;'+total_js.toFixed(2).replace(".", decSep)+'<input type="hidden" value="'+total_js.toFixed(2)+'" id="order2_ship">');
+
+                }
+                function processpromocode()
+                {
+                    if(ll('#promo-input').val().toUpperCase() == 'FRIEND' || 'new') {
+                        //alterShipping();
+                        ll('#promo-verified').val('true');
+                        ll('#order2-promocodesubmit').html('<div class="discountApplied">Discount Applied!</div>');
+                        ll('#shipping_2 option[value="3"]').attr('selected','selected');
+                        //alert("valid");
+                        calculateTotal();
+                        if('&#36;' == '&pound;' || '&#36;' == '&euro;' || '&#36;' == 'kr '){
+                        	$('#order2-sub').html('&#36;' + (getTotal_js() * taxRate).toFixed(2).replace(".", decSep)+'<input type="hidden" value="'+(getTotal_js() * taxRate).toFixed(2).replace(".", decSep)+'" id="order2_sub">');
+                            ll('#order2-total').html('<b>&#36;'+((getSandH() * taxRate) + getSandH()).toFixed(2).replace(".", decSep)+'<input type="hidden" value="'+((getSandH() * taxRate) + getSandH()).toFixed(2)+'" id="order2_total"></b>');
+                        }
+                    } else {
+                        alert("Please enter a valid Promo Code.");
+                    }
+                }
+
+                if('&#36;' == '&pound;' || '&#36;' == '&euro;' || '&#36;' == 'kr '){
+                    $('#order2-sub').html('&#36;' + (getTotal_js() * taxRate).toFixed(2).replace(".", decSep)+'<input type="hidden" value="'+(getTotal_js() * taxRate).toFixed(2).replace(".", decSep)+'" id="order2_sub">');
+                    ll('#order2-total').html('<b>&#36;'+((getTotal_js() * taxRate) + getTotal_js()).toFixed(2).replace(".", decSep) +'<input type="hidden" value="'+((getTotal_js() * taxRate) + getTotal_js()).toFixed(2)+'" id="order2_total"></b>');
+                }
+		             });
+    </script>
+    <script type="text/javascript">
+            function getDate_en(days) {
+                var dayNames = new Array("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday");
+                var monthNames = new Array("January","February","March","April","May","June","July","August","September","October","November","December");
+                var now = new Date();
+                now.setDate(now.getDate() + days);
+                var nowString =  dayNames[now.getDay()] + ", " + monthNames[now.getMonth()] + " " + now.getDate() + ", " + now.getFullYear();
+                document.write(nowString);
+            }
+    </script>
+
+    <script type="text/javascript">
+            function getDate_de(days) {
+                var dayNames = new Array("Sonntag","Montag","Dienstag","Mittwoch","Donnerstag","Freitag","Samstag");
+                var monthNames = new Array("Januar","Februar","März","April","Mai","Juni","Juli","August","September","Oktober","November","Dezember");
+                var now = new Date();
+                now.setDate(now.getDate() + days);
+
+                var nowString =  dayNames[now.getDay()] + ", " + now.getDate() + " " + monthNames[now.getMonth()] +" " + now.getFullYear();
+                document.write(nowString);
+            }
+    </script>
+
+    <script type="text/javascript">
+            function getDate_es(days) {
+                var dayNames = new Array("domingo","lunes","martes","miércoles","jueves","viernes","sábado");
+                var monthNames = new Array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+                var now = new Date();
+                now.setDate(now.getDate() + days);
+                var nowString =  dayNames[now.getDay()] + ", " + monthNames[now.getMonth()] + " " + now.getDate() + ", " + now.getFullYear();
+                document.write(nowString);
+            }
+    </script>
+
+    <script type="text/javascript">
+            function getDate_fr(days) {
+                var dayNames = new Array("dimanche","lundi","mardi","mercredi","jeudi","vendredi","samedi");
+                var monthNames = new Array("janvier","février","mars","avril","mai","juin","juillet","août","septembre","octobre","novembre","décembre");
+                var now = new Date();
+                now.setDate(now.getDate() + days);
+                var nowString =  dayNames[now.getDay()] + ", " + monthNames[now.getMonth()] + " " + now.getDate() + ", " + now.getFullYear();
+                document.write(nowString);
+            }
+    </script>
+
+    <script type="text/javascript">
+            function getDate_it(days) {
+                var dayNames = new Array("Domenica","Lunedi","Martedi","Mercoledi","Giovedi","Venerdi","Sabato");
+                var monthNames = new Array("Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre");
+                var now = new Date();
+                now.setDate(now.getDate() + days);
+                var nowString =  dayNames[now.getDay()] + ", " + monthNames[now.getMonth()] + " " + now.getDate() + ", " + now.getFullYear();
+                document.write(nowString);
+            }
+    </script>
+
+    <script type="text/javascript">
+            function getDate_pt(days) {
+                var dayNames = new Array("Domingo","Segunda-feira","Terça-feira","Quarta-feira","Quinta-feira","Sexta-feira","Sábado");
+                var monthNames = new Array("Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro");
+                var now = new Date();
+                now.setDate(now.getDate() + days);
+                var nowString =  dayNames[now.getDay()] + ", " + monthNames[now.getMonth()] + " " + now.getDate() + ", " + now.getFullYear();
+                document.write(nowString);
+            }
+    </script>
+
+    <script type="text/javascript">
+            function getDate_da(days) {
+                var dayNames = new Array("Søndag","Mandag","Tirsdag","Onsdag","Torsdag","Fredag","Lørdag");
+                var monthNames = new Array("Januar","Februar","Marts","April","Maj","Juni","Juli","August","Setember","Oktober","November","December");
+                var now = new Date();
+                now.setDate(now.getDate() + days);
+                var nowString =  dayNames[now.getDay()] + " den " + now.getDate() + ". " + monthNames[now.getMonth()] + "  " + now.getFullYear();
+                document.write(nowString);
+            }
+    </script>
+
+    <script type="text/javascript">
+            function getDate_nl(days) {
+                var dayNames = new Array("zondag","maandag","dinsdag","woensdag","donderdag","vrijdag","zaterdag");
+                var monthNames = new Array("januari","februari","maart","april","mei","juni","juli","augustus","september","oktober","november","december");
+                var now = new Date();
+                now.setDate(now.getDate() + days);
+                var nowString =  dayNames[now.getDay()] + " " + now.getDate() + " " + monthNames[now.getMonth()] + " " + now.getFullYear();
+                document.write(nowString);
+            }
+    </script>
+
+    <script type="text/javascript" src="/js/send-ajax.js"></script>
+</head>
+<body>
+    <div id="container">
+        <div id="order1">
+            <div id="wrinkletext_1" class="wrinkletext trebuchetfont"> Scientifically Advanced Wrinkle</div>
+            <div id="wrinkletext_2" class="wrinkletext trebuchetfont"> REDUCTION & PREVENTION</div>
+            <div id="wrinkletext_3" class="wrinkletext trebuchetfont"> Without using BOTOX!®</div>
+        </div>
+        <div id="order2">
+            <div class="left-side">
+                <div class="left-side-title">
+                    <div id="order2-box1"></div>
+                    <div id="order2-text2">Quantity</div>
+                    <div id="order2-text3">Price</div>
+                    <div id="order2-promobox"></div>
+                    <div id="order2-promo-inputbox"></div>
+                </div>
+                <div class="product-image">
+                    <img src="/images/common/order2-box1bottle.jpg" width="50" height="179" />
+                </div>
+                <div class="left-side-data">
+                    <div class="left-side-promocode">
+                        <div id="order2-promodesc">REDUCE YOUR SHIPPING COSTS</div>
+                        <div id="order2-promocodeinput">
+                            <input type="text" name="promocode" id="promo-input" value="NEW" />.
+                        </div>
+
+                        <div id="order2-promocodesubmit">
+                            <a href="#" id="promo-button">Enter Promo Code</a>
+                        </div>
+
+                        <div id="order2-productname">Argan Oil - Free Sample 30ml</div>
+                        <div id="order2-quantitynum">1</div>
+                        <div id="order2-price">&#36;0.00</div>
+
+                        <div id="order2-sublabel">Tax</div>
+
+                        <div id="order2-sub">&#36;0.00 <input type="hidden" id="order2_sub" value="0.00" /></div>
+
+                        <div id="order2-shiplabel">Shipping & Handling</div>
+                        <div id="order2-ship">&#36;5.99<input type="hidden" id="order2_ship" value="5.99" /></div>
+
+                        <div id="order2-totallable">Total</div>
+                        <div id="order2-total">&#36;5.99<input type="hidden" id="order2_total" value="5.99" /></div>
+                    </div>
+                    <div id="order2-text4">
+                        <span style="color: #333333; font-weight: bold; font-size: 11pt;">Your Shipment is estimated to arrive by</span>:&nbsp;<span style="font-weight: bold; font-size: 11pt; color: #d40303;">
+                            <script type="text/javascript">getDate_en(3);</script>
+                        </span>
+                        <span style="display: block; color: #333333; font-weight: bold; font-size: 17pt; margin: 5px 0px 25px 0px;">GET YOUR SAMPLE OF ESSENCE OF ARGAN</span>
+                    </div>
+                </div>
+
+                <div class="left-side-terms">
+                    PRODUCT EVALUATION INFORMATION: Act now and you will be shipped a 30-day supply of Essence of Argan for the non-refundable Shipping and Handling cost of &#36; 5.99. If you feel Essence of Argan is not for you, simply cancel within 14 days from the day you signed up on our website to avoid being billed for the Product Evaluation Bottle. Otherwise, do nothing and you will be successfully enrolled into our Elite Member's Program, ensuring you receive a month's supply of Essence of Argan EVERY 30 DAYS at the discounted price of &#36;83.80 (plus s&amp;h). To cancel, simply call 888-285-4784 between the hours of 8am to 8pm EST Mon-Sat. Any charges on your card will be described as EOAofficial8882854784. Thank you for your patronage and Congratulations on receiving this exclusive offer. Remember to tell us how much you love our product at: testimonials@officialargan.com. Please read our full terms and conditions <a href='http://us.officialargan.com/en/terms.php' target='_blank'>here</a>
+                </div>
+
+                <div id="order2-trust">
+                    <img src="/images/common/trust.jpg" alt="" /><br /><br />
+                </div>
+            </div>
+            <div id="order2-orderform">
+                <span class="order2-form-title">SHIPPING AND PAYMENT FINAL STEP</span>
+
+                <div class="order2-form-content">
+                    @*action="step2process.php?geo=us"  action="/api/partials/toorder"  *@
+                    <form name="opt_in_form" id="opt_in_form" method="post" onsubmit="document.charset = 'ISO-8859-1'">
+                        <input type="hidden" name="product_name" id="product_name" value="Argan Oil - Free Sample 30ml" />
+                        <input type="hidden" id="geo" name="geo" value="US" />
+                        <input type="hidden" id="country" name="country" value="US" />
+                        <input type="hidden" id="custom_product" name="custom_product" value="828" />
+                        <input type="hidden" name="step" value="second" />
+                        <input type="hidden" name="temp_order_id" value="1426865" />
+                        <input type="hidden" id="hasFormSubmitted" value="" />
+                        <input type="hidden" name="campaign_id" value="212" />
+                        <input type="hidden" id="isWebForm" value="1" />
+                        <input type="hidden" id="AFID" value="" />
+                        <input type="hidden" id="SID" value="" />
+                        <div style="display:none;">
+                            <select name="shipping_2" id="shipping_2" onchange="SetShippingValue()">
+                                <option title="5.99" value="1">Standard Mail</option>
+                                <option title="3.99" value="3">Discount Shipping</option>
+                            </select>
+                        </div>
+
+                        @* njhones here *@
+                        <input type="hidden" name="ShippingMethodId" value="@ViewBag.ShippingMethod.Id" />
+                        <input type="hidden" name="OrderProducts[0].ProductId" value="@ViewBag.Product.ProductId" /> 
+                        <input type="hidden" name="OrderProducts[0].Quantity" value="1" /> 
+
+                        
+
+
+                        <div style="padding:10px; margin:0 auto; font-size:14px;">
+                            <input name="billshipcheck" id="billshipcheck" type="checkbox" checked="checked"> <span style="font-size: 11px;font-weight: bold"> Billing address is the same as Shipping address</span>
+                            <br>
+                            <div id="billinfo" style="display:none;">
+                                <div class="form-input">
+                                    <div class="form-label ">First Name</div>
+                                    <input type="text" name="fname" class="basic fname" id="fname" value="">
+                                </div>
+                                <br>
+                                <div class="form-input">
+                                    <div class="form-label ">Last Name</div>
+                                    <input type="text" name="lname" class="basic lname" id="lname" value="">
+                                </div>
+                                <br>
+                                <div class="form-input">
+                                    <div class="form-label ">Address Line 1</div>
+                                    <input type="text" name="fields_address1" class="basic address-line1" id="fields_address1" maxlength="50" value="">
+                                </div>
+
+                                <br>
+                                <div class="form-input">
+                                    <div class="form-label">Country</div>
+                                    <div class="country-field" id="countryDiv">
+                                        <select size="1" name="country" id="country">
+                                            <option value="US" selected='selected'>United States</option>
+                                            <option value="CA">Canada</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-status"></div>
+                                </div>
+                                <br>
+                                <div class="form-input">
+                                    <div class="form-label">Postal Code</div>
+                                    <input type="text" name="fields_zip" class="zip-field" onchange="getcitystate(this)" class="basic" id="fields_zip" value="">
+                                    <div class="form-status">
+                                        <div id="fields_zip_status" class="check hidden">
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-input">
+                                    <div class="form-label">City</div>
+                                    <input type="text" name="fields_city" class="basic city-field" id="fields_city" value="">
+                                    <div class="form-status">
+                                        <div id="fields_city_status" class="check hidden"></div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-input">
+                                    <div class="form-label">State</div>
+                                    <div id="state_cus1">
+                                        <input type="text" onchange="SetStateHid(this);" value="" name="fields_state" class="basic " id="fields_state">
+                                    </div>
+                                    <input type="text" style="display: none;" name="fields_state_hid" id="fields_state_hid">
+
+                                    <div class="form-status"></div>
+                                </div>
+                            </div>
+                            <div style="clear:both"></div>
+                            <div id="we-accept" style="font-weight: bold;">
+                                We Accept<br />
+                                <img src="/images/common/cc.jpg" alt="" />
+                            </div>
+
+                            <div class="order-label">Card Type:</div>
+                            <div class="order-input">
+                                <select id="cc_type" name="PaymentType" class="input_number">
+                                    <option value="Visa">Visa</option>
+                                    <option value="MasterCard">Master Card</option>
+                                </select>
+                            </div>
+                            <div class="order-status"><div class="check hidden" id="cc_type_status"></div></div>
+                            <div style="clear:both"></div>
+                            <div class="order-label">Card #:</div>
+                            <div class="order-input"><input type="text" maxlength="16" id="cc_number" data-validate="validate(required, digits, minlength(15))" autocomplete="off" name="CreditCardNumber" class="basic" style="width: 150px;" /></div>
+                            <div class="order-status"><div class="check hidden" id="cc_number_status"></div></div>
+                            <div style="clear:both"></div>
+                            <div class="order-label lh13">Exp Date:</div>
+                            <div class="order-input">
+                                <select name="CreditCardExpirationMonth" id="fields_expmonth" class="input_number" style="width: 50px;">
+                                    <option class="month0" value="01">01</option>
+                                    <option class="month1" value="02">02</option>
+                                    <option class="month2" value="03">03</option>
+                                    <option class="month3" value="04">04</option>
+                                    <option class="month4" value="05">05</option>
+                                    <option class="month5" value="06">06</option>
+                                    <option class="month6" value="07">07</option>
+                                    <option class="month7" value="08">08</option>
+                                    <option class="month8" value="09">09</option>
+                                    <option class="month9" value="10">10</option>
+                                    <option class="month10" value="11">11</option>
+                                    <option class="month11" value="12">12</option>
+
+                                </select>
+                                /
+                                <select name="CreditCardExpirationYear" id="fields_expyear" class="input_number" style="width: 60px;">
+                                    <option value="15">2015</option>
+                                    <option value="16">2016</option>
+                                    <option value="17">2017</option>
+                                    <option value="18">2018</option>
+                                    <option value="19">2019</option>
+                                    <option value="20">2020</option>
+                                    <option value="21">2021</option>
+                                    <option value="22">2022</option>
+                                    <option value="23">2023</option>
+                                    <option value="24">2024</option>
+                                    <option value="25">2025</option>
+                                    <option value="26">2026</option>
+                                    <option value="27">2027</option>
+                                    <option value="28">2028</option>
+                                    <option value="29">2029</option>
+                                    <option value="30">2030</option>
+                                    <option value="31">2031</option>
+                                    <option value="32">2032</option>
+                                </select>
+                                <input type="hidden" id="cc_expires" value="" name="cc_expires" />
+                            </div>
+                            <div class="order-status"><div class="check hidden" id="cc_expires_status"></div></div>
+                            <div style="clear:both"></div>
+                            <div class="order-label">CVV:</div>
+                            <div class="order-input"><input type="text" data-validate="validate(required, digits, minlength(3))" id="cc_cvv" name="CreditCardCVV" class="basic" style=" width: 60px;" maxlength="3" /></div>
+                            <div class="order-status"><div class="check hidden" id="cc_cvv_status"></div></div>
+
+                            <div id="upsells"><input type="checkbox" id="upsell_10" name="upsell_10" value="833" style="height: 15px; width: 15px;" /><strong>RUSH MY ORDER FOR ONLY &#36;4.99<br /><div style="font-size:9px; margin-bottom:5px;">By clicking the submit button, I agree that I am over 18 years of age and to the terms & conditions</div></div><div id="processing">
+                                <img src="/images/en/order-loading.gif"><br />Please wait - refreshing may result in duplicate charge
+                            </div>
+                            <input type="submit" value="Send me my evaluation" id="ordernow" onclick="window.onbeforeunload = UnPopIt;" /><input type="hidden" name="tempOrderId" value="1426865"><input type="hidden" name="AFID" value=""><input type="hidden" name="SID" value=""><input type="hidden" name="geo" value="us"><input type="hidden" name="prevpage" value="https://officialargan.com:443/en/order.php?tempOrderId=1426865&AFID=&SID=&geo=us">
+                    </form>						<div style="position:relative; width:276px;height:155px;margin: 10px auto 0 auto; background:url('images/en/order_secured_ss.jpg') center;">
+                        <span style="display: block;position: absolute;left: 35px;top: 12px;font-size: 12px;font-weight: bold;">100% Safe and Secure Transaction</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="order-footer">
+        <div id="footer">
+            <br>
+            <a href="http://us.officialargan.com/en/terms.php?ss=0" onclick="window.open(this.href, 'targetWindow', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=400,height=600');return false;">Terms and Conditions</a> |
+            <a href="http://us.officialargan.com/en/privacy.php" onclick="window.open(this.href, 'targetWindow', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=400,height=600');return false;">Privacy Policy</a> |
+            <a href="http://us.officialargan.com/en/contact.php" onclick="window.open(this.href, 'targetWindow', 'toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=400,height=350');return false;">Contact</a><br>
+            <!-- 6741 W. Sunrise Blvd., Bay #5, Plantation, Fl. 33313
+               9 Karpenisiou Street, Strovolos, 2021 Nicosia, Cyprus -->
+            &copy;
+            2012-2015 All Rights Reserved     - Life Style Ventures, LTD. - Palazzo Pietro Stiges, 103, Strait Street, Valletta, Malta, VLT 1436    <br><br>
+            ALL PRODUCT RETURNS:<br> <p><span class='green-bold'><b>Life Style Ventures, LTD.</b></span><br />6741 W. Sunrise Blvd.<br />Bay #5 <br />Plantation, Fl. 33313<br /></p>
+        </div>
+
+        <!-- async clicky tracking below-->
+        <script type="text/javascript">
+var clicky_custom = clicky_custom || {};
+clicky_custom.cookie_domain = ".officialargan.com";
+var clicky_site_ids = clicky_site_ids || [];
+clicky_site_ids.push(100711539);
+(function() {
+  var s = document.createElement('script');
+  s.type = 'text/javascript';
+  s.async = true;
+  s.src = '//static.getclicky.com/js';
+  ( document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0] ).appendChild( s );
+})();
+        </script>
+        <noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/100711539ns.gif" /></p></noscript>
+        <!-- end async clicky tracking -->
+    </div>
+    <script language="javascript" type="text/javascript">
+            function getStates(country){
+                $.ajax({
+                    url:'includes/getstates.php',
+                    dataType:'json',
+                    data: 'country='+country,
+                    success:function(res){
+                        if(res.result=='success'){
+                            $("#fields_state").replaceWith(res.states);
+                            $("#fields_state").css({'width':'120px','margin-left':'100px'});
+                        }
+                    },
+                    error:function(err){
+                        console.log(err);
+                    }
+                });
+            }
+            var initcountry = $("#country").val().toLowerCase();
+            getStates(initcountry);
+    </script>
+    <script type="text/javascript">
+        		     function PopIt() { $("#promo-button").trigger('click');
+		     					return "WAIT! BEFORE YOU GO - WE HAVE A SPECIAL OFFER!" + "\n\n\n"
+		     						 + "TAKE ADVANTAGE OF THIS SPECIAL OFFER !!!!! " + "\n"
+		     						 + "GET YOUR TRIAL NOW FOR ONLY $3.99 SHIPPING AND HANDLING"
+		     						 + "\n\n\n" + "SIMPLY PRESS THE 'Cancel' or 'Stay On This Page' BUTTON TO HAVE THE DISCOUNTED SHIPPING AUTOMATICALLY APPLIED"; }
+		     function UnPopIt()  { /* nothing to return */ }
+
+		     $(document).ready(function() {
+		     	window.onbeforeunload = PopIt;
+				$("a").click(function(){ window.onbeforeunload = UnPopIt; });
+				$("#ordernow").click(function(){ window.onbeforeunload = UnPopIt; });
+		     });
+    </script>
+</body>
+</html>

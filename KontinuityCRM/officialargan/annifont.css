@@ -1,0 +1,7 @@
+@font-face {
+  font-family: 'annifont';
+  src: url('/fonts/annifont.eot');
+  src: url('/fonts/annifont.eot?#ie8fix') format('embedded-opentype'), 
+  	   url('/fonts/annifont.woff') format('woff'),
+  	   url('/fonts/annifont.ttf') format('truetype');
+}

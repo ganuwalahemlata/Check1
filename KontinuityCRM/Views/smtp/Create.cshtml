@@ -1,0 +1,179 @@
+﻿@model KontinuityCRM.Models.SmtpServer
+
+@{
+    ViewBag.Title = "SMTP Mail Server";
+    ViewBag.icon = "fa-envelope";
+}
+
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            @ViewBag.Title
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+                Create
+            </small>
+        </span>
+    </h1>
+</div>
+
+@*<div id="breadcrumb">
+	<a href="@Url.Action("index", "home")" title="Go to Home" class="tip-bottom"><i class="fa fa-home"></i> Home</a>
+    <a href="@Url.Action("index")">SMTP Mail Servers</a>
+	<a href="#" class="current">Create</a>
+</div>*@
+
+@*<div class="container-fluid">*@
+    <div class="row">
+        <div class="col-xs-12">
+
+            <form method="post" class="form-horizontal">
+
+                @Html.ValidationSummary(true)
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.Name, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.Name)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Host, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.Host, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.Host)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Port, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.Port, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.Port)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Email, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.Email, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.Email)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.From, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.From, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.From)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.UserName, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.UserName, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.UserName)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Password, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        @Html.TextBoxFor(model => model.Password, new { @class = "col-xs-12 col-sm-5" })
+                        @Html.ValidationMessageFor(model => model.Password)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Authorization, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        <div class="radio inline">
+                            <label>
+                                @Html.RadioButtonFor(model => model.Authorization, true, new { @class = "ace", @checked = "checked" })
+                                <span class="lbl"> Yes</span>
+
+                            </label>
+                        </div>
+
+                        <div class="radio inline">
+                            <label>
+                                @Html.RadioButtonFor(model => model.Authorization, false, new { @class = "ace" })
+                            <span class="lbl"> No</span>
+                        </label>
+                    </div>
+
+                </div>
+                    @*<div class="col-sm-9">
+                        <label>@Html.RadioButtonFor(model => model.Authorization, true, new { @checked = "checked" }) Yes</label>
+                        <label>@Html.RadioButtonFor(model => model.Authorization, false) No</label>
+                    </div>*@
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Publish, new { @class = "col-sm-3 control-label" })
+                    <div class="col-sm-9">
+                        <div class="radio inline">
+                            <label>
+                                @Html.RadioButtonFor(model => model.Publish, true, new { @class = "ace", @checked = "checked" })
+                                <span class="lbl"> Yes</span>
+
+                            </label>
+                        </div>
+
+                        <div class="radio inline">
+                            <label>
+                                @Html.RadioButtonFor(model => model.Publish, false, new { @class = "ace" })
+                                <span class="lbl"> No</span>
+                            </label>
+                        </div>
+
+                        @*<label>@Html.RadioButtonFor(model => model.Publish, true) Yes</label>
+            <label>@Html.RadioButtonFor(model => model.Publish, false) No</label>*@
+                    </div>
+                    @*<div class="col-sm-9">
+                        <label>@Html.RadioButtonFor(model => model.Publish, true, new { @checked = "checked" }) Yes</label>
+                        <label>@Html.RadioButtonFor(model => model.Publish, false) No</label>
+                    </div>*@
+                </div>
+
+                <div class="clearfix form-actions">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button type="submit" class="btn btn-primary btn-round">
+                            <i class="ace-icon fa fa-check"></i>
+                            Create
+                        </button>
+
+                        &nbsp; &nbsp; &nbsp;
+                        <a href="@Url.Action("index")" class="btn btn-white btn-default btn-round">
+                            <i class="ace-icon fa fa-times red2"></i>
+                            Cancel
+                        </a>
+                    </div>
+                </div>
+
+            </form>
+
+            @*<div class="widget-box">
+
+                <div class="widget-title">
+                    <span class="icon"><i class="fa fa-plus"></i></span>
+                    <h5>@ViewBag.Title</h5>
+                </div>
+
+                <div class="widget-content nopadding">
+
+                   
+
+                </div>
+            </div>*@
+
+        </div>
+    </div>
+@*</div>*@
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

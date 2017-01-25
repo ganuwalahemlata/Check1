@@ -1,0 +1,73 @@
+﻿@model KontinuityCRM.Models.Postback
+
+@{
+    ViewBag.Title = "Postback Create";
+    ViewBag.icon = "fa-inbox";
+}
+
+<div id="breadcrumb">
+	<a href="@Url.Action("index", "home")" title="Go to Home" class="tip-bottom"><i class="fa fa-home"></i> Home</a>
+    <a href="@Url.Action("index")">Postbacks</a>
+	<a href="#" class="current">Create</a>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-8">
+
+            <div class="widget-box">
+
+                <div class="widget-title">
+                    <span class="icon"><i class="fa fa-plus"></i></span>
+                    <h5>@ViewBag.Title</h5>
+                </div>
+
+                <div class="widget-content nopadding">
+
+                    <form method="post" class="form-horizontal">
+                    
+                        @Html.ValidationSummary(true)
+
+                        <div class="form-group">
+                             @Html.LabelFor(model => model.PostbackURL, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-9 col-md-9 col-lg-10">
+                                @Html.TextBoxFor(model => model.PostbackURL, new { @class = "form-control input-sm" })
+                                @Html.ValidationMessageFor(model => model.PostbackURL)
+							</div>
+						</div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Product, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-9 col-md-9 col-lg-10">
+                               @Html.DropDownListFor(model => model.ProductId, new SelectList(ViewBag.Products, "ProductId", "Name"), "")
+                               @Html.ValidationMessageFor(model => model.ProductId)
+							</div>
+						</div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.EventType, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-9 col-md-9 col-lg-10">
+                                @Html.EnumDropDownListFor(Model => Model.EventType)
+							</div>
+						</div>
+
+                        <div class="form-group">
+                             @Html.LabelFor(model => model.Parameters, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-9 col-md-9 col-lg-10">
+                                @Html.TextBoxFor(model => model.Parameters, new { @class = "form-control input-sm" })
+                                @Html.ValidationMessageFor(model => model.Parameters)
+							</div>
+						</div>
+
+                        <div class="form-actions">
+							<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Create</button> or 
+                            @Html.ActionLink("Cancel", "index", null, new { @class = "text-danger" })
+						</div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

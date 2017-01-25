@@ -1,0 +1,23 @@
+/* ::::: https://getessenceofargan.com/assets/site/argan/css/styles.essenceofargan.min.css ::::: */
+
+body { background: none repeat scroll 0% 0% rgb(239, 239, 239); }
+#subpages_content { display: block; margin: 0px; min-height: 685px; background-image: url('home-bg_image.jpg'); background-repeat: no-repeat; background-position: center top; }
+#subpages_content .subpage_headline_1 { display: block; margin: 0px auto; }
+.nosplay_btn, .content_2_img_pic_2, .subpage_headline_1_22, .png_imachecresponsi, .subpage_headline_1_258 { display: none; }
+/* ::::: https://getessenceofargan.com/assets/site/argan/css/normalize.css ::::: */
+
+audio:not([controls]) { display: none; height: 0px; }
+html { font-family: sans-serif; }
+body { margin: 0px; }
+img { border: 0px none; }
+svg:not(:root) { overflow: hidden; }
+button::-moz-focus-inner, input::-moz-focus-inner { border: 0px none; padding: 0px; }
+/* ::::: https://getessenceofargan.com/assets/site/argan/css/upsells.css ::::: */
+
+.upsell_wrapper { position: relative; background: url('full_idro.jpg') repeat scroll 0% 0% transparent; height: 430px; margin: 0px auto; max-width: 750px; }
+#subpages_content { min-height: 575px; }
+@media screen and (max-width: 770px) {
+	.upsell_wrapper { position: relative; background: url('320_idro.jpg') no-repeat scroll 0% 0% transparent; height: 600px; margin: 0px auto; max-width: 320px; }
+}
+/* ::::: https://getessenceofargan.com/assets/shared/styles/views.css ::::: */
+

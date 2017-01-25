@@ -1,0 +1,126 @@
+﻿@model PagedList.IPagedList<KontinuityCRM.Models.FulfillmentProvider>
+
+@{
+    ViewBag.Title = "Fulfillment Providers";
+}
+
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            @ViewBag.Title
+        </span>
+        <span class="col-sm-4">
+            <span class="pull-right inline">
+                <a href="#myCreate" data-toggle="modal" class="btn btn-primary btn-round @Html.RenderHidden("create")">
+                    <i class="ace-icon fa fa-plus"></i>
+                    Create
+                </a>
+            </span>
+        </span>
+    </h1>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        @Html.Partial("_PageTop")
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th class="@ViewBag.idOrderIcon">
+                        @Html.ActionQueryLink("Id", "index", new { sortOrder = ViewBag.IdSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.nameOrderIcon">
+                        @Html.ActionQueryLink("Name", "index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.aliasOrderIcon">
+                        @Html.ActionQueryLink("Alias", "index", new { sortOrder = ViewBag.AliasSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.dateOrderIcon">
+                        @Html.ActionQueryLink("Created Date", "index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Id)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Type)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Alias)</td>
+                        <td>@Html.DisplayFor(modelItem => item.CreatedDate)</td>
+                        <td>
+                            @Html.ActionLink("Edit", "edit", new { id = item.Id }, new { @class = @Html.RenderHidden("edit") })
+                            <span class='@Html.RenderHidden("delete")'>|</span>
+                            @Html.ActionLink("Delete", "delete", new { id = item.Id }, new { @class = @Html.RenderHidden("delete") })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @Html.Partial("_PageBottom", Model)
+
+        <div id="myCreate" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button data-dismiss="modal" class="close" type="button">×</button>
+                        <h3>Fulfillment Providers</h3>
+                    </div>
+                    
+                    <div class="modal-body">
+
+                        <div class="form-horizontal">
+                            <div class="form-group" style="padding:0;">
+                                @Html.Label("Select a Provider", new { @class = "col-sm-3 control-label" })
+                                <div class="col-sm-9">
+                                    <div class="col-xs-12 col-sm-12 nopadding no-padding">
+                                        @Html.DropDownList("dprovider", new SelectList(ViewBag.Providers, "Value", "Text"), new { @class = "chosen form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" type="button" id="responder_select"> Select </button>
+                        <button class="btn btn-default" data-dismiss="modal" type="button"> Cancel </button>                            
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+
+        $("#responder_select").click(function () {
+            window.location = "@Url.Action("create")/" + $("#dprovider").val();
+        })
+        $('#myCreate').on('shown.bs.modal', function () {
+
+            //  $('.chosen-select', this).chosen('destroy').chosen();
+            $('.chosen-select', this).chosen();
+            $(".chosen").chosen({ width: "inherit" });
+            debugger;
+            $(".chosen-container").css({
+                'width': '330px',
+            });
+        });
+
+        (function () {
+
+            $(".chosen").chosen({ max_selected_options: 2 });
+            $(".chosen-deselect").chosen({ allow_single_deselect: true });
+            $(".chosen").chosen().change();
+            $(".chosen").trigger('liszt:updated');
+            $(".chosen").chosen({ width: "inherit" });
+        }())
+</script>
+}
+@section styles{
+    <link href="~/Content/chosen.css" rel="stylesheet" />
+}

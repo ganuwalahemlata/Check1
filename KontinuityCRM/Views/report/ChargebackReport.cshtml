@@ -1,0 +1,165 @@
+﻿@model IEnumerable<KontinuityCRM.Models.ViewModels.ChargeBackReport>
+
+@{
+    ViewBag.Title = "Chargeback Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var currencySymbol = System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencySymbol;
+    
+
+}
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            @ViewBag.Title
+        </span>
+    </h1>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+
+
+        <div class="widget-box collapsed">
+
+            <div class="widget-header widget-header-small">
+                <h6 class="widget-title">
+                    <i class="ace-icon fa fa-sort"></i>
+                    Apply Filters
+                </h6>
+
+                <div class="widget-toolbar">
+
+                    <a href="#" data-action="collapse">
+                        <i class="ace-icon fa fa-plus" data-icon-show="fa-plus" data-icon-hide="fa-minus"></i>
+                    </a>
+
+                </div>
+            </div>
+
+            <div class="widget-body">
+                <div class="widget-main">
+                    <form method="get" class="form-horizontal">
+                        <div class="row">
+                            <div class="col-sm-4 col-md-4">
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-md-6 col-lg-6 control-label">Affiliate ID</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        <input id="AffiliateId" name="AffiliateId" type="text" value="">
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-md-6 col-lg-6 control-label">Processors</label>
+                                    <div class="">
+                                        @Html.DropDownList("processors", new SelectList(ViewBag.Processors, "Id", "Name"), "-- Select Processor --", new { @class = "chosenprocessors col-sm-6 col-md-6 col-lg-6" })
+                                    </div>
+                                </div>
+
+
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary btn-sm" id="showresults">Show Results</button>
+                                </div>
+                            </div>
+                            <div class="col-sm-8 col-md-8">
+                                <div class="form-group">
+                                    <label class="col-sm-2 col-md-2 col-lg-2 control-label">Sub ID</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        <input id="SubId" name="SubId" type="text" value="">
+                                    </div>
+                                </div>
+
+                                <div class="input-daterange form-group">
+                                    <label class="col-sm-2 col-md-2 col-lg-2 control-label">Date</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        <input type="text" name="start" value="@ViewBag.start" />
+                                        <i class="fa fa-exchange"></i>
+                                        <input type="text" name="end" value="@ViewBag.end" />
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <div class="space-8"></div>
+        <table class="table table-bordered table-striped table-hover">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Processor)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Chargebacks)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalTransactions)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ChargebackAmounts)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalAmounts)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ChargebacksRatio)
+                </th>
+
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Processor)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Chargebacks)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TotalTransactions)
+                    </td>
+                    <td>
+                        @currencySymbol  @Html.DisplayFor(modelItem => item.ChargebackAmounts)
+                    </td>
+                    <td>
+                       @currencySymbol @Html.DisplayFor(modelItem => item.TotalAmounts)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ChargebacksRatio) %
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+    </div>
+    @Html.Partial("_PageBottom", Model)
+</div>
+@section breadcrumbs {
+    <li class="active capitalize">
+        Report
+    </li>
+    <li class="active capitalize">
+        Chargeback Report
+    </li>
+}
+@section scripts {
+
+    <script src="~/Content/assets/js/date-time/bootstrap-datepicker.js"></script>
+    <script src="~/Content/assets/js/ace/ace.widget-box.js"></script>
+    <script>
+
+        (function () {
+
+            $('.input-daterange').datepicker({ autoclose: true });
+
+        }());
+
+    </script>
+
+}
+
+

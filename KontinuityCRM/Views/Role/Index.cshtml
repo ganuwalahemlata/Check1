@@ -1,0 +1,72 @@
+﻿@model PagedList.IPagedList<KontinuityCRM.Models.UserGroup>
+
+@{
+    ViewBag.Title = "Roles";
+    ViewBag.icon = "fa-user";
+}
+
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            @ViewBag.Title
+        </span>
+        <span class="col-sm-4">
+            <span class="pull-right inline">
+                <a href="@Url.Action("create")" class="btn btn-primary btn-round @Html.RenderHidden("create")">
+                    <i class="ace-icon fa fa-plus"></i>
+                    Create
+                </a>
+            </span>
+        </span>
+    </h1>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+        @Html.Partial("_PageTop")
+        <table class="table table-bordered table-striped table-hover">
+            <thead>
+                <tr>
+                    <th class="@ViewBag.UserGroupIdOrderIcon">
+                        @Html.ActionQueryLink("Id", "roles", new { sortOrder = ViewBag.UserGroupIdSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.NameOrderIcon">
+                        @Html.ActionQueryLink("Name", "roles", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th class="@ViewBag.DescriptionOrderIcon">
+                        @Html.ActionQueryLink("Description", "roles", new { sortOrder = ViewBag.DescriptionSortParm, currentFilter = ViewBag.CurrentFilter }, null, "SearchString,display,page")
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.UserGroupId)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                        <td>
+                            @Html.ActionLink("Edit", "edit", new { id = item.UserGroupId }, new { @class = @Html.RenderHidden("edit") })
+                            <span class='@Html.RenderHidden("delete")'>|</span>
+                            @Html.ActionLink("Delete", "delete", new { id = item.UserGroupId }, new { @class = @Html.RenderHidden("delete") + " DeleteGroup" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @Html.Partial("_PageBottom", Model)
+
+    </div>
+</div>
+<script>
+    $(function () {
+        $('.DeleteUser').click(function () {
+            $.post($(this).attr('href'), function () {
+                location.reload();
+            });
+            return false;
+        });
+    })
+
+</script>

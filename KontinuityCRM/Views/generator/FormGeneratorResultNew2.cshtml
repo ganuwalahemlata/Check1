@@ -1,0 +1,447 @@
+﻿
+@model KontinuityCRM.Models.ViewModels.FormGenerationModel
+
+@using KontinuityCRM.Helpers
+@{
+    var formId = Guid.NewGuid().ToString();
+    var shippingPrinted = false;
+    var productPrinted = false;
+
+    Layout = null;
+}
+@{
+    if (!Model.IsPreview)
+    {
+        <link href="@Url.ContentAbsUrl("~/Content/bootstrap.min.css")" rel="stylesheet">
+    }
+}
+<form accept-charset='ISO-8859-1' role="form" class="form-horizontal" method="post" id="generator-form-@formId" name="generator-form-@formId">
+    <div id="form-rootwizard">
+        <ul class="hidden">
+            @{
+                for (int i = 1; i < 2; i++)
+                {
+                    var hidden = (Model.TotalPages == 1) ? "hidden" : "";
+
+                    <li><a href="#form-tab-@i" data-toggle="tab" class='@hidden'>Page #@i</a></li>
+                }
+
+            }
+        </ul>
+        <div class="tab-content" style="width:100%">
+            @{
+                for (int i = 1; i < 2; i++)
+                {
+                    <div class="tab-pane row" style="margin-left: 26px;" id="form-tab-@i">
+                        <div class="row">
+                            @{
+                                if (i + 1 == 1 && Model.HasBillingFields())
+                                {
+                                    <div class="form-group col-sm-12">
+                                        <label class=" checkbox-inline">
+                                            <input type="checkbox" id="billingVisibility" onchange=" setBillingVisibility(); "> My billing address is different than my shipping address
+                                        </label>
+                                    </div>
+                                }
+                            }
+                        </div>
+                        <div class="row" style="width:50%;float:left;">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading accordion-style1">Product Information</div>
+                                <div class="panel-body">
+                                    @{
+                                        foreach (var item in Model.GetPropertiesForPage(1))
+                                        {
+                                            if (item.InputType == HtmlInputType.product)
+                                            {
+                                                if (Model.Products.Count > 0)
+                                                {
+                                                    <div class="form-group col-sm-12">
+                                                        @{
+                                                            int count = 0;
+                                                            foreach (var product in Model.Products)
+                                                            {
+                                                                <div class="radio">
+                                                                    @*<input type="radio" name="ProductId" id="ProductId-@product.ProductId" value="@product.ProductId" data-value="@product.ProductId" required>*@
+                                                                    <label> Product Name : </label>  <label> @product.Name </label>
+                                                                </div>
+
+
+
+                                                                <div class="radio">
+                                                                    @*<input type="radio" name="ProductId" id="ProductId-@product.ProductId" value="@product.ProductId" data-value="@product.ProductId" required>*@
+                                                                    <label> Product Price : </label>   <label> $@product.Price </label>
+                                                                </div>
+                                                                if (count != Model.Products.Count - 1)
+                                                                {
+                                                                    <div style="border-bottom:1px solid lightblue"></div>
+                                                                }
+                                                                count++;
+
+                                                            }
+
+                                                        }
+                                                    </div>
+                                                                    }
+                                                                }
+                                                            }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="width:40%;float:left;margin-left:25px">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading accordion-style1">Billing Information</div>
+                                <div class="panel-body">
+                                    @{
+                                        foreach (var item in Model.GetPropertiesForPage(1))
+                                        {
+                                            if (item.InputType == HtmlInputType.product)
+                                            {
+                                                if (Model.Products.Count > 0)
+                                                {
+
+                                                }
+                                            }
+                                            else
+                                                            if (item.InputType == HtmlInputType.shippingMethod)
+                                            {
+                                                if (Model.ShippingMethods.Count > 1)
+                                                {
+                                                    shippingPrinted = true;
+                                                    <div class="form-group col-sm-5">
+                                                        <label for="ShippingMethodId" class="control-label">Shipping Method</label>
+                                                        <select class="form-control" name="ShippingMethodId" id="ShippingMethodId" required>
+                                                            @{
+                                                                foreach (ShippingMethod method in Model.ShippingMethods)
+                                                                {
+                                                                    <option value="@method.Id">@method.Name</option>
+                                                                }
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-sm-1">
+                                                    </div>
+                                                                    }
+                                                                }
+                                                                else
+                                if (item.InputType != HtmlInputType.date)
+                                                                {
+                                                                    var pattern = "";
+                                                                    var billingClass = "";
+                                                                    var required = item.Required ? "required" : "";
+                                                                    if (item.Name.StartsWith("Billing"))
+                                                                    {
+                                                                        billingClass = "billing-field";
+                                                                    }
+                                                                    if (!string.IsNullOrEmpty(item.ValidationExpression))
+                                                                    {
+                                                                        pattern = "pattern=" + item.ValidationExpression;
+                                                                    }
+                                                                    <div class="form-group col-sm-5 @billingClass ">
+                                                                        <label for="@item.Name" class="control-label">@item.Label</label>
+                                                                        <input type="@item.InputType" class="form-control" id="@item.Name" name="@item.Name" @required pageindex="@i" @pattern />
+                                                                    </div>
+                                                                    <div class="col-sm-1"></div>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <div class="form-group col-sm-5">
+                                                                        <label for="CreditCardExpirationMonth" class="control-label">Month</label>
+                                                                        <select class="form-control" id="CreditCardExpirationMonth" name="CreditCardExpirationMonth" pageindex="@i">
+                                                                            <option value="1">January</option>
+                                                                            <option value="2">February</option>
+                                                                            <option value="3">March</option>
+                                                                            <option value="4">April</option>
+                                                                            <option value="5">May</option>
+                                                                            <option value="6">June</option>
+                                                                            <option value="7">July</option>
+                                                                            <option value="8">August</option>
+                                                                            <option value="9">September</option>
+                                                                            <option value="10">October</option>
+                                                                            <option value="11">November</option>
+                                                                            <option value="12">December</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-sm-1">
+                                                                    </div>
+                                                                    <div class="form-group col-sm-5">
+                                                                        <label for="CreditCardExpirationYear" class="control-label">Year</label>
+                                                                        <input type="number" class="form-control" id="CreditCardExpirationYear" name="CreditCardExpirationYear" value="@DateTime.Now.Year" min="@DateTime.Now.Year" pageindex="@i" />
+                                                                    </div>
+                                                                    <div class="col-sm-1">
+                                                                    </div>
+                                                                    }
+                                                                }
+                                                                if (Model.ShippingMethods.Count > 1)
+                                                                {
+                                                                    if ((i + 1) == Model.ShippingMethodPage && !shippingPrinted)
+                                                                    {
+                                                                        shippingPrinted = true;
+                                                                        <div class="form-group col-sm-5">
+                                                                            <label for="ShippingMethodId" class="control-label">Shipping Method</label>
+                                                                            <select class="form-control" name="ShippingMethodId" id="ShippingMethodId" required>
+                                                                                @{
+                                                                                    foreach (ShippingMethod method in Model.ShippingMethods)
+                                                                                    {
+                                                                                        <option value="@method.Id">@method.Name</option>
+                                                                                    }
+                                                                                }
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="col-sm-1">
+                                                                        </div>
+                                                                                        }
+                                                                                    }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                                                                                    }
+            }
+            @{
+
+
+                <ul class="pager wizard">
+                    <li class="last" id="btnLast"><a href="#">Submit</a></li>
+                </ul>
+            }
+        </div>
+    </div>
+    <div class="alert alert-danger prospect-error hidden">There was an error creating the prospect...</div>
+    <div class="alert alert-danger order-error hidden">There was an error processing the request...</div>
+    <div class="alert alert-success hidden">The order was created successfully...</div>
+    <div class="progress hidden generated-progress">
+        <div class="progress-bar progress-bar-info
+                    progress-bar-striped active"
+             style="width: 100%">
+        </div>
+    </div>
+    <input type="hidden" name="PartialId" id="PartialId" value='0' />
+    @{
+        if (Model.Products.Count == 1)
+        {
+            <input type="hidden" name="ProductId" id="ProductId" value='@Model.Products[0].ProductId' />
+        }
+        if (Model.ShippingMethods.Count == 1)
+        {
+            <input type="hidden" name="ShippingMethodId" id="ShippingMethodId" value='@Model.ShippingMethods[0].Id' />
+        }
+    }
+</form>
+@{
+    if (!Model.IsPreview)
+    {
+        <script src="@Url.ContentAbsUrl("~/Scripts/jquery-2.1.3.min.js")"></script>
+        <script src="@Url.ContentAbsUrl("~/Scripts/bootstrap.min.js")"></script>
+        <script src="@Url.ContentAbsUrl("~/Scripts/form2js.js")"></script>
+        <script src="@Url.ContentAbsUrl("~/Scripts/json2.js")"></script>
+        <script src="@Url.ContentAbsUrl("~/Scripts/jquery.bootstrap.wizard.min.js")"></script>
+        <script src="@Url.ContentAbsUrl("~/Scripts/validator.min.js")"></script>
+    }
+}
+<script src="@Url.ContentAbsUrl("~/Scripts/jquery.creditCardValidator.js")"></script>
+<script type="text/javascript">
+    var preview = false;
+    $(document).ready(function() {
+        var totalPages = @Model.TotalPages;
+        console.log("starting form initialization");
+        var $validator = $("#form-rootwizard").bootstrapWizard({
+            tabClass: "nav nav-pills",
+            shown: false,
+            onNext: function(tab, navigation, index) {
+                $(".alert-danger").addClass("hidden");
+                $(".prospect-error").addClass("hidden");
+                //                var $valid = $("#generator-form-@formId").valid();
+                var formHasErrors = false;
+                $('#generator-form-@formId').validator('validate');
+                $('.form-group').each(function() {
+                    formHasErrors = formHasErrors || $(this).hasClass('has-error');
+                });
+                if ((index - 1) == $("#generator-form-@formId #CreditCardNumber").attr("pageIndex")) {
+                    var result = $("#generator-form-@formId #CreditCardNumber").validateCreditCard();
+                    if (!result.valid) {
+                        $("#generator-form-@formId #CreditCardNumber").addClass("has-error");
+                        formHasErrors = true;
+                    }
+                }
+                if (formHasErrors) {
+                    return false;
+                }
+                if (index + 1 == totalPages) {
+                    $("#btnNext").css('display', 'none');
+                    $("#btnLast").css('display', '');
+                }
+                @{
+                    if (Model.UseProspect)
+                    {
+                        <text>
+                saveUpdateProspect();
+                </text>
+                    }
+                }
+
+            },
+            onLast: function(tab, navigation, index) {
+                $(".alert-danger").addClass("hidden");
+                $(".prospect-error").addClass("hidden");
+                var formHasErrors = false;
+                $('#generator-form-@formId').validator('validate');
+                var result = $("#generator-form-@formId #CreditCardNumber").validateCreditCard();
+                if (!result.valid) {
+                    $("#CreditCardNumber").addClass("has-error");
+                    formHasErrors = true;
+                }
+
+                $('.form-group').each(function() {
+                    formHasErrors = formHasErrors || $(this).hasClass('has-error');
+                });
+                if (formHasErrors) {
+                    //                    $validator.focusInvalid();
+                    return false;
+                }
+                saveDirectOrder();
+
+
+                console.log("last received");
+                return false;
+            }
+        });
+        @*@{
+    if (Model.HasBillingFields())
+    {
+        <text>
+        setBillingVisibility();
+        </text>
+    }
+}*@
+    });
+
+
+    function saveDirectOrder() {
+        var data = form2js("generator-form-@formId", ".", false, function (node) {
+        }, false, true);
+
+        var ParcialIdVar = sessionStorage.getItem("PartialId");
+        var ProductIdVar = sessionStorage.getItem("ProductId");
+
+        data.ProductId = ProductIdVar;
+
+        if (ParcialIdVar != null) {
+            var customer = {};
+            $.ajax({
+                url: '@Url.ContentAbsUrl("~/API/Partials/")' + ParcialIdVar,
+                headers: {
+                    'APIkey': '@formId',
+                },
+                method: 'GET',
+                crossDomain: true,
+            })
+                   .done(function (result) {
+
+                       $("#PartialId").val(result.PartialId);
+
+                       data.FirstName = result.FirstName;
+                       data.LastName = result.LastName;
+                       data.Address1 = result.Address1;
+                       data.City = result.City;
+                       data.State = result.State;
+                       data.Country = result.Country;
+                       data.PostalCode = result.PostalCode;
+                       data.Email = result.Email;
+                       data.Phone = result.Phone;
+                       data.BillingFirstName = result.FirstName;
+                       data.BillingLastName = result.LastName;
+                       data.BillingAddress1 = result.Address1;
+                       data.BillingCity = result.City;
+                       data.BillingProvince = result.Province;
+                       data.BillingCountry = result.Country;
+                       data.OrderProducts = JSON.parse('[{ "ProductId": 1, "Quantity": 1 }]');
+
+                       if ($('#billingVisibility').is(":checked")) {
+
+
+                           data.BillingPostalCode = $("#BillingPostalCode").val();;
+                           data.BillingFirstName =$("#BillingFirstName").val();;
+                           data.BillingLastName = $("#BillingLastName").val();;
+                           data.BillingAddress1 = $("#BillingAddress1").val();;
+                           data.BillingCity = $("#BillingCity").val();;
+                           data.BillingProvince = $("#BillingProvince").val();;
+                           data.BillingCountry = $("#BillingCountry").val();;
+
+                       }
+                       else {
+
+                           data.BillingPostalCode = result.PostalCode;
+                           data.BillingFirstName = result.FirstName;
+                           data.BillingLastName = result.LastName;
+                           data.BillingAddress1 = result.Address1;
+                           data.BillingCity = result.City;
+                           data.BillingProvince = result.Province;
+                           data.BillingCountry = result.Country;
+                       }
+                       data.ShippingFirstName = result.FirstName;
+                       data.ShippingLastName = result.LastName;
+                       data.ShippingAddress1 = result.Address1;
+                       data.ShippingCity = result.City;
+                       data.ShippingPostalCode = result.PostalCode;
+                       data.ShippingCountry = result.Country;
+
+                       $.ajax({
+
+                           url: '@Url.ContentAbsUrl("~/API/Partials/Order/")' + ParcialIdVar,
+                           headers: {
+                               'APIkey': '@formId',
+                               'Content-Type': 'application/x-www-form-urlencoded'
+                           },
+                           method: 'POST',
+
+                           data: data,
+                           crossDomain: true,
+
+                       })
+                        .done(function (result) {
+                            console.log(data);
+                            $(".generated-progress").addClass("hidden");
+                            $(".alert-success").removeClass("hidden");
+
+                            //sessionStorage.removeItem("PartialId")
+                            //sessionStorage.removeItem("ProductId")
+
+                            sessionStorage.setItem("OrderId", result.OrderId);
+                            // sessionStorage.setItem("ProductId", ProductIdVar);
+                            sessionStorage.setItem("ProductQuantity", 1);
+
+                        })
+                        .fail(function (data) {
+                            console.error(data);
+                            $(".generated-progress").addClass("hidden");
+                            var texttoadd = JSON.parse(data.responseText);
+
+                            // $(texttoadd).appendTo('.order-error-reason');
+                            if (texttoadd.Message != null) {
+
+                                texttoadd = texttoadd.Message;
+                            }
+                            else {
+                                texttoadd = texttoadd.TransactionResponse + ' ' + data.statusText;
+                            }
+                            var text = '<p style=" background-color: transparent; ">' + texttoadd  + '</p>';
+                            $(".order-error").empty()
+                            $(text).appendTo('.order-error');
+                            $(".order-error").removeClass("hidden");
+
+                        });
+
+                   })
+                   .fail(function (data) {
+                       var texttoadd = data.error;
+                       $(texttoadd).appendTo('.order-error-reason');
+                       $(".order-error-reason").removeClass("hidden");
+                   });
+        }
+    }
+
+
+</script>

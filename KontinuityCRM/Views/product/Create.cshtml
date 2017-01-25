@@ -1,0 +1,57 @@
+﻿@model KontinuityCRM.Models.Product
+@{
+    ViewBag.Title = "Product";
+    ViewBag.icon = "fa-tags";
+}
+@*<div id="breadcrumb">
+        <a href="@Url.Action("index", "home")" title="Go to Home" class="tip-bottom"><i class="fa fa-home"></i> Home</a>
+        <a href="@Url.Action("index")">Producs</a>
+        <a href="#" class="current">Create</a>
+    </div>*@
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            @ViewBag.Title
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+                Create
+            </small>
+        </span>
+    </h1>
+</div>
+@*<div class="container-fluid">*@
+@Html.EditorForModel(new { Edit = false })
+@*</div>*@
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Content/assets/js/ace/ace.widget-box.js"></script>
+    <script src="~/Scripts/Product/product.js" type="text/javascript"></script>
+  <script src="~/Scripts/chosen.jquery.min.js"></script>
+<script type="text/javascript">
+
+        (function () {
+
+            $(".chosen").chosen({ max_selected_options: 2 });
+            $(".chosen-deselect").chosen({ allow_single_deselect: true });
+            $(".chosen").chosen().change();
+            $(".chosen").trigger('liszt:updated');
+
+
+            if ($('#CategoryId option').length < 1) {
+                noty({
+                    text: 'You need to create a category first',
+                    layout: 'topRight',
+                    closeWith: ['click'],
+                    type: 'error'
+                });
+            }
+
+        }())
+</script>
+}
+
+
+@section styles{
+    <link href="~/Content/chosen.css" rel="stylesheet" />
+
+}

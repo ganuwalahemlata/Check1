@@ -1,0 +1,62 @@
+﻿@model IEnumerable<KontinuityCRM.Models.OrderProduct>
+
+@{
+    ViewBag.Title = String.Format("Order {0} Products", ViewBag.Order.OrderId);
+    ViewBag.icon = "fa-shopping-cart";
+}
+
+<div id="breadcrumb">
+	<a href="@Url.Action("index", "home")" title="Go to Home" class="tip-bottom"><i class="fa fa-home"></i> Home</a>
+    <a href="@Url.Action("index")" title="Go to Orders" class="tip-bottom"><i class="fa fa-shopping-cart"></i> Orders</a>
+	<a href="#" class="current">Products</a>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+
+        <a href="@Url.Action("addproduct", new { id = ViewBag.Order.OrderId })" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Add Product</a>
+
+        <div class="widget-box">
+            
+            <div class="widget-title">
+                <span class="icon"><i class="fa @ViewBag.icon"></i></span>
+                <h5>@ViewBag.Title</h5>
+            </div>
+            
+            <div class="widget-content nopadding">
+
+                <table class="table table-bordered table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Qty</th>
+                            @*<th>@Html.DisplayNameFor(model => model.Quantity)</th>*@
+                            <th>@Html.DisplayNameFor(model => model.Price)</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.Product.Name)</td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Quantity)
+                                </td>
+                                <td>
+                                    $ @Html.DisplayFor(modelItem => item.Price)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Edit", "editproduct", new { id=item.OrderProductId }) |
+                                    @Html.ActionLink("Delete", "deleteproduct", new { id=item.OrderProductId })
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+</div>

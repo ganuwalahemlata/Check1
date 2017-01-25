@@ -1,0 +1,189 @@
+﻿@model KontinuityCRM.Models.ViewModels.PartialToOrdersFilter
+
+@{
+    ViewBag.Title = "PartialOrderConversions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles {
+
+    <link href="~/Content/assets/css/datepicker.css" rel="stylesheet" />
+
+}
+
+
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            Partial to Order Conversions
+        </span>
+    </h1>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+
+        <div class="widget-box collapsed">
+
+            <div class="widget-header widget-header-small">
+                <h6 class="widget-title">
+                    <i class="ace-icon fa fa-sort"></i>
+                    Apply Filters
+                </h6>
+
+                <div class="widget-toolbar">
+
+                    <a href="#" data-action="collapse">
+                        <i class="ace-icon fa fa-plus" data-icon-show="fa-plus" data-icon-hide="fa-minus"></i>
+                    </a>
+
+                </div>
+            </div>
+            @* Search form *@
+            <div class="widget-body">
+                <div class="widget-main">
+                    <form method="get" class="form-horizontal">
+
+                        <div class="row">
+                            <div class="col-sm-4 col-md-4">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.TimeZoneId, new { @class = "col-sm-6 col-md-6 col-lg-6 control-label" })
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        <div class="no-padding">
+                                            @Html.DropDownListFor(model => model.TimeZoneId,
+                                        ((IEnumerable<StandardTimeZone>)ViewBag.TimeZones).Select(s => new SelectListItem
+                                        {
+                                            Value = s.Id.ToString(),
+                                            Text = s.DisplayName
+
+                                        }), "", new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-md-6 col-lg-6 control-label">Product ID</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        @Html.TextBoxFor(model => model.ProductId)
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-md-6 col-lg-6 control-label">Category ID</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        @Html.TextBoxFor(model => model.CategoryId)
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-md-6 col-lg-6 control-label">Affiliate ID</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        @Html.TextBoxFor(o => o.AffiliateId)
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-sm-6 col-md-6 col-lg-6 control-label">Sub ID</label>
+                                    <div class="col-sm-6 col-md-6 col-lg-6">
+                                        @Html.TextBoxFor(model => model.SubId)
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary btn-sm" id="showresults">Show Results</button>
+                                    @* <button type="button" class="btn btn-default btn-sm">Clear</button>*@
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="space-4"></div>
+
+        <div class="results">
+            <table class="table table-bordered table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th class="">
+                            Date
+                        </th>
+                        <th class="">
+                            No. of Partials
+                        </th>
+                        <th class="">
+                            No. of Orders from Partials
+                        </th>
+                        <th class="">
+                            Conversion Rate %
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Data)
+                    {
+                        <tr>
+
+                            <td>
+                                @item.Date.ToString("MM/dd/yyyy")
+                            </td>
+                            <td>
+                                @item.TotalPartials
+                            </td>
+                            <td>
+                                @item.PartialToOrders
+                            </td>
+                            <td>
+                                @item.Conversion
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @*<div class="row">
+
+                <div class="col-sm-3 col-xs-3">
+
+                    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+                </div>
+
+                <div class="col-sm-9 col-xs-9">
+
+                    <div class="pull-right kpagination">
+
+                        @Html.PagedListPager(Model, page => Url.ActionQueryUrl("rebill", new { page, sortOrder = ViewBag.CurrentSort }, "display"))
+
+                    </div>
+
+                </div>
+
+            </div>*@
+
+
+
+    </div>
+</div>
+
+@section scripts {
+
+    <script src="~/Content/assets/js/date-time/bootstrap-datepicker.js"></script>
+    <script src="~/Content/assets/js/ace/ace.widget-box.js"></script>
+    <script>
+
+        (function () {
+
+            $('.input-daterange').datepicker({ autoclose: true });
+
+            $('#Display').change(function () {
+                var url = "@Html.Raw(Url.ActionQueryUrl("rebill", new { sortOrder = ViewBag.CurrentSort, display = "_kdpy_" }))";
+                window.location.href = url.replace("_kdpy_", $(this).val());
+            });
+
+        }())
+
+    </script>
+}
+
+
+
+

@@ -1,0 +1,112 @@
+﻿@model KontinuityCRM.Models.PrepaidCardTransactionQueue
+
+@{
+    ViewBag.Title = "Prepaid Card Transaction Queue";
+    ViewBag.icon = "fa-envelope-o";
+}
+
+@*<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script type="text/javascript">
+    function onBegin() {
+        $("#divLoading").html('<image src="../Content/ajax-loader.gif" alt="Loading, please wait" />');
+    }
+    function onComplete() {
+        $("#divLoading").html("");
+    }
+</script>*@
+
+<div class="page-header">
+    <h1 class="row no-padding">
+        <span class="col-sm-8 no-padding">
+            @ViewBag.Title
+            <small>
+                <i class="ace-icon fa fa-angle-double-right"></i>
+                Create
+            </small>
+        </span>
+    </h1>
+</div>
+
+
+<div class="row">
+    <div class="col-xs-12">
+
+        <form method="post" class="form-horizontal">
+
+            @Html.ValidationSummary(true)
+
+         
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.no_of_transactions, new { @class = "col-sm-3 control-label" })
+                <div class="col-sm-9">
+                    @Html.TextBoxFor(model => model.no_of_transactions, new { @class = "col-xs-12 col-sm-5" })
+                   
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.amount, new { @class = "col-sm-3 control-label" })
+                <div class="col-sm-9">
+                    @Html.TextBoxFor(model => model.amount, new { @class = "col-xs-12 col-sm-5" })
+                </div>
+            </div>
+
+            @*<div class="form-group">
+                @Html.LabelFor(model => model.MerchantAccountId, new { @class = "col-sm-3 control-label" })
+                <div class="col-sm-9">
+                    @Html.TextBoxFor(model => model.MerchantAccountId, new { @class = "col-xs-12 col-sm-5" })
+                    @Html.ValidationMessageFor(model => model.MerchantAccountId)
+                </div>
+            </div>*@
+
+
+            <div class="form-group" style="padding:0;">
+                @Html.Label("Select a Processor", new { @class = "col-sm-3 control-label" })
+                <div class="col-sm-9">
+                    @Html.DropDownList("ProcessorID", (IEnumerable<SelectListItem>)ViewBag.Processors, new { id = "ProcessorID", @class = "chosen" })
+
+
+                </div>
+            </div>
+
+            <div class="clearfix form-actions">
+                <div class="col-md-offset-3 col-md-9">
+                    <button type="submit" class="btn btn-primary btn-round">
+                        <i class="ace-icon fa fa-check"></i>
+                        Create
+                    </button>
+                    &nbsp; &nbsp; &nbsp;
+                    <a href="@Url.Action("index")" class="btn btn-white btn-default btn-round">
+                        <i class="ace-icon fa fa-times red2"></i>
+                        Cancel
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Content/ckeditor/ckeditor.js"></script>
+    <script src="~/Scripts/chosen.jquery.min.js"></script>
+    <script type="text/javascript">
+
+        (function () {
+
+            $(".chosen").chosen({ max_selected_options: 2 });
+            $(".chosen-deselect").chosen({ allow_single_deselect: true });
+            $(".chosen").chosen().change();
+            $(".chosen").trigger('liszt:updated');
+        }())
+    </script>
+}
+
+
+@section styles{
+    <link href="~/Content/chosen.css" rel="stylesheet" />
+
+}

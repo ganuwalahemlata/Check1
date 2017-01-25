@@ -1,0 +1,56 @@
+﻿@model KontinuityCRM.Models.CustomField
+
+@{
+    ViewBag.Title = "CustomField Edit";
+    ViewBag.icon = "fa-user";
+}
+
+<div id="breadcrumb">
+	<a href="@Url.Action("index", "home")" title="Go to Home" class="tip-bottom"><i class="fa fa-home"></i> Home</a>
+    <a href="@Url.Action("index", "productvariant")" class="tip-bottom"><i class="fa fa-random"></i> ProductVariants</a>
+	<a href="@Url.Action("index")" class="tip-bottom"><i class="fa fa-user"></i> CustomFields</a>
+	<a href="#" class="current">Edit</a>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+
+            <div class="widget-box">
+
+                <div class="widget-title">
+                    <span class="icon"><i class="fa fa-edit"></i></span>
+                    <h5>@ViewBag.Title</h5>
+                </div>
+
+                <div class="widget-content nopadding">
+
+                    @using (Html.BeginForm("edit", "customfield", FormMethod.Post, new { @class = "form-horizontal"}))
+                    {
+                        @Html.ValidationSummary(true)
+                        @Html.HiddenFor(model => model.CustomFieldId)
+
+                        <div class="form-group">
+                             @Html.LabelFor(model => model.Name, new { @class = "col-sm-3 col-md-3 col-lg-2 control-label" })
+							<div class="col-sm-9 col-md-9 col-lg-10">
+                                @Html.TextBoxFor(model => model.Name, new { @class = "form-control input-sm" })
+                                @Html.ValidationMessageFor(model => model.Name)
+							</div>
+						</div>
+                        
+                        <div class="form-actions">
+							<button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-save"></i> Save</button> or 
+                            @Html.ActionLink("Cancel", "index", null, new { @class = "text-danger" })
+						</div>
+
+                    }
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
