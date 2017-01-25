@@ -24,9 +24,6 @@ KontinuityCRM/Helpers/ScheduledTasks/JobScheduler.cs
 /KontinuityCRM/Models/UserGroupsInRoles.cs
 /KontinuityCRM/Models/Gateways/AuthorizeNET.cs
 /KontinuityCRM/Controllers/BlacklistController.cs
-*.dll
-*.xml
-*.pdb
 KontinuityCRM/logs/archive/logfile_2016-11-13.00.log
 *.log
 KontinuityCRM/logs/archive/logfile_2016-11-18.00.log
